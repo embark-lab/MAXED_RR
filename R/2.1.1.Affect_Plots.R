@@ -13,58 +13,12 @@ library(effsize)
 
 load(file = 'data/Affect/MAXED_Affect.RData')
 
-# Settings and Themes
 
-transparent_theme <- theme(
-  panel.background = element_rect(fill = "transparent", colour = NA),
-  plot.background = element_rect(fill = "transparent", colour = NA),
-  strip.background = element_rect(fill = "transparent", colour = NA),
-  legend.background = element_rect(fill = "transparent", colour = NA),
-  legend.box.background = element_rect(fill = "transparent", colour = NA)
-)
-
-theme_1 <- 
-  theme_minimal() +
-  theme(
-    text = element_text(size = 18, family = "Avenir"),
-    axis.title = element_text(size = 18, face = "bold"),
-    axis.text = element_text(size = 18),
-    plot.title = element_text(hjust = 0.5, size = 18, family = "Avenir", face = "bold"),
-    legend.position = "top",
-    plot.background = element_rect(fill = 'transparent', colour = "#1a4e66", size = 3))
-
-
-custom_colors <- c("ED" ="#fc6d46", "Control" =  "#1a4e66")
-
-pilot_ids <- c('MAXED_1001', 'MAXED_1003', 'MAXED_1010', "MAXED_1011", "MAXED_1012")
-
-negative_emotions <- c("Crummy", "Fatigued")
-positive_emotions <- c("Calm", "Enthusiastic")
-
-positive_fill <-"#c2b824"  # Color for negative emotions
-negative_fill <- "darkgrey"  # Color for positive emotions
-
-combine_plots <- function(plot_neg, plot_pos, title_text) {
-  caption_text <- "Note: Responses rated every 5 minutes on 5-point Likert scale from \n 0 (Do Not Feel) to 4 (Feel Very Strongly)"
-  wrapped_caption <- str_wrap(caption_text, width = 80)  
-  
-  combined_plot <- plot_neg + plot_pos + plot_layout(ncol = 1) +
-    plot_annotation(title = title_text,
-                    caption = wrapped_caption,
-                    theme = theme(text = element_text(size = 18, family = 'Garet', face = "bold", color = '#1A4F66'))) &
-    theme(plot.title.position = "plot",
-          plot.title = element_text(hjust = 0.5),
-          plot.caption = element_text(hjust = 0, size = 14)) +
-    theme(panel.background = element_rect(fill = 'transparent', colour = 'transparent'),
-          plot.background = element_rect(fill = 'transparent', colour = 'transparent'))  # added this line
-  
-  return(combined_plot)
-}
-
+source(file = 'R/source/0.themes_and_settings.R')
+source(file = 'R/source/Functions.R')
 
 affect_plot_ex_df <- Affect %>% 
   filter(task %in% c('Prescribed', 'SelfPaced') & variable != 'Percieved Exertion' & condition == 'Exercise')
-
 custom_linetypes <- c("SelfPaced" = "dotted", "Prescribed" = "dashed")
 
 # Plot for negative emotions
@@ -132,9 +86,8 @@ df_list <- list()
 for (var in vars) {
   # For each unique variable, filter, group, mutate and then store the resultant data frame in the list
   df_temp <- affect %>%
-    filter(variable == var, 
-           study_visit != 'c') %>%
-    group_by(id, task) %>%
+    filter(variable == var) %>%
+    group_by(id, task, condition) %>%
     mutate(var_30 =  ifelse(time == 30, value, NA_real_),
            max_var = max(value, na.rm = TRUE),
            min_var = min(value, na.rm = TRUE),
@@ -154,96 +107,89 @@ for (var in vars) {
   df_list[[var]] <- df_temp
 }
 
-# Initialize a list to store the plots
-plot_list <- list()
+all_data <- bind_rows(df_list, .id = "variable")
+all_data$variable <- factor(all_data$variable, levels = c("Enthusiastic", "Calm", "Crummy", "Fatigued"))
+all_data <- all_data |> 
+  filter(!is.na(bl_var))
+
+annotation_df <- list()
 
 for (var in vars) {
-  # Compute Cohen's d for each variable
-  d_p <- cohen.d(data = df_list[[var]] %>% filter(task == 'Prescribed'), var_change_30 ~ group_factor)
-  d_sp <- cohen.d(data = df_list[[var]] %>% filter(task == 'SelfPaced'), var_change_30 ~ group_factor)
+  d_p_e <- effsize::cohen.d(data = df_list[[var]] %>% filter(condition == 'Exercise', task == 'Prescribed'), var_change ~ group_factor)
+  d_p_e_30 <- effsize::cohen.d(data = df_list[[var]] %>% filter(condition == 'Exercise', task == 'Prescribed'), var_change_30 ~ group_factor)
+  d_sp_e <- effsize::cohen.d(data = df_list[[var]] %>% filter(condition == 'Exercise', task == 'SelfPaced'), var_change ~ group_factor)
+  d_sp_e_30 <- effsize::cohen.d(data = df_list[[var]] %>% filter(condition == 'Exercise', task == 'SelfPaced'), var_change_30 ~ group_factor)
+  d_p_r <- effsize::cohen.d(data = df_list[[var]] %>% filter(condition == 'Rest', task == 'Prescribed'), var_change ~ group_factor)
+  d_p_r_30 <- effsize::cohen.d(data = df_list[[var]] %>% filter(condition == 'Rest', task == 'Prescribed'), var_change_30 ~ group_factor)
+  d_sp_r <- effsize::cohen.d(data = df_list[[var]] %>% filter(condition == 'Rest', task == 'SelfPaced'), var_change ~ group_factor)
+  d_sp_r_30 <- effsize::cohen.d(data = df_list[[var]] %>% filter(condition == 'Rest', task == 'SelfPaced'), var_change_30 ~ group_factor)
   
-  # Create a plot for each variable
-  bp <- ggplot(df_list[[var]], aes(x = task, y = var_change_30, color = group_factor, fill = group_factor, alpha = 0.2)) +
-    geom_point() +
-    geom_boxplot() +
-    scale_color_manual(name = 'Group', values = custom_colors) +
-    scale_fill_manual(name = "Group", values = custom_colors) +
-    labs(
-      y = '', 
-      title = var, # Using the variable name as the title
-      x = ''
-    ) +
-    theme_1  +
-    guides(alpha = FALSE) +
-    ylim(-3,6) +
-    geom_text(aes(
-      label = ifelse(!is.na(d_p$estimate), paste("d =", round(d_p$estimate*-1, 2)), NA), 
-      x= task, y = 3.5),
-      vjust = -1, size = 5, fontface = 'bold', family = 'Avenir', 
-      color = ifelse(!is.na(d_p$estimate) < 0, "#fc6d46", "#1A4F66"),
-      inherit.aes = FALSE)# Adjust ncol to your preference
-
-  # Append the plot to the list
-  plot_list[[var]] <- bp
+  
+  df_temp <- data.frame(
+    variable = var,
+    max_change_controlvED_d = c(d_p_e$estimate*-1, d_sp_e$estimate*-1, d_p_r$estimate*-1, d_sp_r$estimate*-1),
+    change_30_controlvED_d = c(d_p_e_30$estimate*-1, d_sp_e_30$estimate*-1, d_p_r_30$estimate*-1, d_sp_r_30$estimate*-1),
+    task = c('Prescribed', 'SelfPaced', 'Prescribed', 'SelfPaced'),
+    condition = c('Exercise', 'Exercise', 'Rest', 'Rest')
+  )
+  
+  annotation_df[[var]] <- df_temp
 }
 
+annotation_df <- bind_rows(annotation_df)
+all_data <- left_join(all_data, annotation_df, by = c("variable", 'condition', 'task'))
+all_data$variable <- factor(all_data$variable, levels = c("Enthusiastic", "Calm", "Crummy", "Fatigued"))
 
-bp <- ggplot(df_list$Enthusiastic, aes(x = task, y = var_change_30, color = group_factor, fill = group_factor)) +
-  geom_point(alpha = 0.2) +
-  geom_boxplot(alpha = 0.2) +
-  scale_color_manual(name = 'Group', values = custom_colors) +
+
+exercise_data <- all_data |> 
+  filter(condition == 'Exercise')
+
+affect_d_plot_exercise_30<- ggplot(exercise_data, aes(x = task, y = var_change_30, fill = group_factor, alpha = 0.2)) +
+  geom_point() +
+  geom_boxplot() +
+  scale_color_manual(name = 'Task', values = embarktools::embark_palette()) +
   scale_fill_manual(name = "Group", values = custom_colors) +
-  theme_1  
+  labs(y = '', x = '') +
+  guides(alpha = FALSE) +
+  ylim(-3,5) +
+  theme(legend.position = 'none') +
+  facet_wrap(~ variable, scales = "free", ncol = 2) +
+  geom_text(aes(
+    label = ifelse(!is.na(change_30_controlvED_d), paste("d =", round(change_30_controlvED_d, 2)), NA), 
+    x= task, y = 3.5),
+    vjust = -1, size = 5, fontface = 'bold', family = 'Avenir', 
+    color = ifelse(subset(exercise_data, !is.na(change_30_controlvED_d))$change_30_controlvED_d > 0, "#fc6d46", "#1A4F66"),
+    inherit.aes = FALSE)# Adjust ncol to your preference
 
-legend_grob <- get_legend(bp)
-library(grid)
-# Set all backgrounds in the legend grob to transparent
-legend_grob$grobs <- lapply(legend_grob$grobs, function(x) {
-  if("rect" %in% class(x)) {
-    x$gp$fill <- "transparent"
-  }
-  return(x)
-})
+affect_d_plot_exercise_30 <- affect_d_plot_exercise_30 + 
+  labs(title = "Affect Changes During Exercise (30 min vs BL) Across Groups") +
+  embarktools::embark_theme_a 
 
 
-# Modify each plot in your plot_list:
-plot_list<- lapply(plot_list, function(p) p + transparent_theme)
 
-# Create a combined title
-title_plot <- ggdraw() + 
-  draw_label("Affective Changes during Exercsie (30m vs. BL)", fontface='bold', size=18)
+save_plot("figs/2.affect/affect_change_plot.png", affect_d_plot_exercise_30, base_height=10, base_width=15)
 
-# Create a plot for the legend
-legend_plot <- get_legend(
-  ggplot(df_list$Enthusiastic, aes(x = task, y = var_change_30, color = group_factor, fill = group_factor)) +
-    geom_point(alpha = 0.2) +
-    geom_boxplot(alpha = 0.2) +
-    scale_color_manual(name = 'Group', values = custom_colors) +
-    scale_fill_manual(name = "Group", values = custom_colors) +
-    theme_1
-)
-library(cowplot)
+affect_d_plot_exercise_max<- ggplot(exercise_data, aes(x = task, y = var_change, fill = group_factor, alpha = 0.2)) +
+  geom_point() +
+  geom_boxplot() +
+  scale_color_manual(name = 'Task', values = embarktools::embark_palette()) +
+  scale_fill_manual(name = "Group", values = custom_colors) +
+  labs(y = '', x = '') +
+  guides(alpha = FALSE) +
+  ylim(-3,5) +
+  theme(legend.position = 'none') +
+  facet_wrap(~ variable, scales = "free", ncol = 2) +
+  geom_text(aes(
+    label = ifelse(!is.na(max_change_controlvED_d), paste("d =", round(max_change_controlvED_d, 2)), NA), 
+    x= task, y = 3.5),
+    vjust = -1, size = 5, fontface = 'bold', family = 'Avenir', 
+    color = ifelse(subset(exercise_data, !is.na(max_change_controlvED_d))$max_change_controlvED_d > 0, "#fc6d46", "#1A4F66"),
+    inherit.aes = FALSE)# Adjust ncol to your preference
 
-# 2x2 grid of plots
-plots_grid <- plot_grid(
-  plot_list[[vars[2]]], plot_list[[vars[3]]],
-  plot_list[[vars[4]]], plot_list[[vars[1]]],
-  ncol = 2
-)
+affect_d_plot_exercise_max <- affect_d_plot_exercise_max + 
+  labs(title = "Affect Changes During Exercise (Max vs BL) Across Groups") +
+  embarktools::embark_theme_a 
 
-# Now, combine the title, legend, and 2x2 grid
-affect_change_plot <- plot_grid(
-  title_plot, 
-  legend_plot, 
-  plots_grid, 
-  ncol = 1,
-  rel_heights = c(0.1, 0.05, 1)  # Adjust these values as needed for better alignment
-) 
-
-# View the combined plot
-affect_change_plot
-
-save_plot("figs/2.affect/affect_change_plot.png", affect_change_plot, base_height=10, base_width=15)
 
 
 plot_list_variance <- list()

@@ -1,5 +1,5 @@
 source('R/source/Functions.R')
-
+library(haven)
 # Exercise Session Info
 load('data/RedCap/redcap_raw_enrolled.RData')
 filenames <- as.list(list.files('data/RedCap/'))
@@ -10,6 +10,8 @@ groups <- recalculate_groups(redcap_raw_enrolled)
 groups$id = as.character((groups$record_id))
 groups <- select(groups, id, group, group_factor) |> 
   filter(!is.na(group)) 
+
+save(groups, file = 'data/RedCap/groups.RData')
 
 # Clean Rest Session Data
 rest_data <- redcap_raw_enrolled %>%
@@ -85,4 +87,4 @@ ex_data_1 <- ex_data %>%
 
 
 # Save Exercise Paramter Data
-save(ex_data, file = 'data/Exercise_Params/Exercise_Session_Data.RData')
+save(ex_data_1, file = 'data/Exercise_Params/Exercise_Session_Data.RData')

@@ -14,10 +14,7 @@ library(gridSVG)
 load(file = 'data/BISS/biss_data.RData')
 
 # Plot settings for session
-custom_linetypes <- c("Self-Paced" = "dotted", "Prescribed" = "dashed")
-
-pilot_ids <- c('MAXED_1001', 'MAXED_1003', 'MAXED_1010', "MAXED_1011", "MAXED_1012")
-
+source(file = 'R/source/0.themes_and_settings.R')
 custom_colors <- c("#fc6d46","#1a4e66")
 BISS$variable <- factor(BISS$variable, levels = c("Phys Attract", "Appearance", "Looks", "Shape", 'Weight', 'Avg Person', "Average" ))
 
@@ -130,7 +127,7 @@ create_biss_plot <- function(data, condition_1, plot_title) {
 }
 
 biss_plot_exercise <- create_biss_plot(BISS, 'Exercise', 'Body Image States Scale Scores Over Time During Exercise')
-ggsave(file = 'figs/3.body_image/biss_plot_exercise.png')
+ggsave(file = 'figs/3.body_image/biss_plot_exercise.png', height = 10, width =10)
 
 biss_plot_rest <- create_biss_plot(BISS, 'Rest', 'Body Image States Scale Scores Over Time During Rest')
 ggsave(file = 'figs/3.body_image/biss_plot_rest.png')
@@ -224,7 +221,7 @@ biss_d_plot_exercise <- biss_d_plot_exercise +
 
 biss_d_plot_exercise
 
-ggsave(biss_d_plot_exercise, file = 'figs/3.body_image/biss_change_max_exercise.png')
+ggsave(biss_d_plot_exercise, file = 'figs/3.body_image/biss_change_max_exercise.png', height = 10, width = 10)
 
 biss_d_plot_exercise_30<- ggplot(exercise_data, aes(x = task, y = var_change_30, fill = group_factor, alpha = 0.2)) +
   geom_point() +
@@ -248,4 +245,4 @@ biss_d_plot_exercise_30 <- biss_d_plot_exercise_30 +
   embarktools::embark_theme_a 
 
 biss_d_plot_exercise_30
-ggsave(biss_d_plot_exercise_30, file = 'figs/3.body_image/biss_change_30_exercise.png')
+ggsave(biss_d_plot_exercise_30, file = 'figs/3.body_image/biss_change_30_exercise.png', height = 10, width = 10)

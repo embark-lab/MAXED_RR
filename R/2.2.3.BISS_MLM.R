@@ -1,4 +1,4 @@
-# Description: This script runs the multilevel models for the affect data.
+# Description: This script runs the multilevel models for the BISS data.
 
 # Load packages
 library(tidyr)
@@ -9,77 +9,77 @@ library(lmerTest)
 library(cgwtools)
 
 
-load("data/Affect/MAXED_Affect.RData")
+load("data/BISS/biss_data.RData")
 
-Affect_Variables <- c('Crummy', 'Calm', 'Enthusiastic', 'Fatigued')
-Tasks <- c('Prescribed', 'SelfPaced')
+biss_Variables <- (unique(BISS$variable))
+Tasks <- unique(BISS$task)
 
 # Make an empty list to hold the models
-affect_models <- list()
-affect_emmeans <- list()
-affect_models_ed <- list()
-affect_emmeans_ed <- list()
-affect_hov <- list()
+biss_models <- list()
+biss_emmeans <- list()
+biss_models_ed <- list()
+biss_emmeans_ed <- list()
+biss_hov <- list()
 
 # Loop through the variables
 for (t in Tasks) {
-for (var in Affect_Variables) {
-  df <- Affect %>%
+for (var in biss_Variables) {
+  df <- BISS %>%
     filter(task == t & variable == var)
   print(head(df))
   # Overall:
   
 # run lmm
-affect_models[[var]][[t]] <-  lmer(value ~ 1 + age + group_factor + time + bmi*condition + time*condition + time*group_factor*condition + (1+time|condition:id), data = df, control = lmerControl(optimizer = "bobyqa")) 
+biss_models[[var]][[t]] <-  lmer(value ~ 1 + age + group_factor + time + bmi*condition + time*condition + time*group_factor*condition + (1+time|condition:id), data = df, control = lmerControl(optimizer = "bobyqa")) 
 
-print(summary(affect_models[[var]][[t]]))
+print(summary(biss_models[[var]][[t]]))
 
 # run emmeans
-affect_emmeans[[var]][[t]] <- emmeans(affect_models[[var]][[t]], ~ time * condition * group_factor, at = list(time = seq(0, 30, by = 5)), data = df)
+biss_emmeans[[var]][[t]] <- emmeans(biss_models[[var]][[t]], ~ time * condition * group_factor, at = list(time = seq(0, 30, by = 5)), data = df)
 }
 }
   
  # Within ED:
 
-ed_df <- Affect |> 
+ed_df <- BISS |> 
   filter(group_factor == 'ED')
 
 # Loop through the variables
 for (t in Tasks) {
-  for (var in Affect_Variables) {
+  for (var in biss_Variables) {
     df <- ed_df %>%
       filter(variable == var) |> 
       filter(task == t) 
         
     # run lmm
-    affect_models_ed[[var]][[t]] <-  lmer(value ~ 1 + age +  time + bmi*condition + time*condition + (1+time|condition:id), data = df) 
-    print(summary(affect_models_ed[[var]][[t]]))
+    biss_models_ed[[var]][[t]] <-  lmer(value ~ 1 + age +  time + bmi*condition + time*condition + (1+time|condition:id), data = df) 
+    print(summary(biss_models_ed[[var]][[t]]))
     # run emmeans
-    affect_emmeans_ed[[var]][[t]] <- emmeans(affect_models_ed[[var]][[t]], ~ time*condition, at = list(time = seq(0, 30, by = 5)), data = df)
+    biss_emmeans_ed[[var]][[t]] <- emmeans(biss_models_ed[[var]][[t]], ~ time*condition, at = list(time = seq(0, 30, by = 5)), data = df)
   }
 }
   
 # Heterogeneity of Variance
   # Loop through the variables
 for (t in Tasks) {
-  for (var in Affect_Variables) {
-    df <- Affect %>%
+  for (var in biss_Variables) {
+    df <- BISS %>%
       filter(variable == var) |> 
       filter(task == t) 
     
     # run lmm
-    affect_hov[[var]][[t]] <-  lmer(value ~ (1+group_factor*time|condition:id), data = df) 
+    biss_hov[[var]][[t]] <-  lmer(value ~ (1+ group_factor*time|condition:id), data = df) 
     }
 }
 
-save(affect_models, affect_emmeans, affect_models_ed, affect_emmeans_ed, affect_hov, file = "results/affect_models.RData")
+save(biss_models, biss_emmeans, biss_models_ed, biss_emmeans_ed, biss_hov, file = "results/biss_models.RData")
 
 
 process_model_summaries <- function(models_list) {
   # Create a list to hold the model summaries
   model_summaries <- list()
   # Loop through the variables and tasks
-  for (var in Affect_Variables) {
+  for (var in biss_Variables) {
     for (t in Tasks) {
       # Extract the model for the current variable and task
       if (!is.null(models_list[[var]]) && !is.null(models_list[[var]][[t]])) {
@@ -103,7 +103,7 @@ process_model_summaries <- function(models_list) {
   
   # Remove '...' and any numbers from the row names
   rownames(combined_coefs) <- gsub("\\.\\.\\.", "", rownames(combined_coefs))
-  # Break apart the model column into the affect variable and task
+  # Break apart the model column into the biss variable and task
   combined_coefs <- separate(combined_coefs, model, c("variable", "task"), sep = "_")
   # Make rownames a column called "term"
   combined_coefs <- mutate(combined_coefs, term = rownames(combined_coefs))
@@ -115,16 +115,16 @@ process_model_summaries <- function(models_list) {
                                                          "(Intercept)" = "Intercept",
                                                          "age" = "Age",
                                                          "bmi" = "BMI",
-                                                         "conditionExercise" = "Condition",
+                                                         "conditionRest" = "Condition",
                                                          "time" = "Time",
                                                          "group_factorED" = "Group",
                                                          "time:conditionExercise" = "Time x Condition",
                                                          "time:group_factorED" = "Time x Group",
                                                          "time:conditionExercise:group_factorED" = "Time x Condition x Group", 
                                                          "bmi:conditionExercise" = "BMI x Condition",
-                                                         "group_factorED:conditionExercise" = "Group x Condition",
+                                                         "group_factorED:conditionRest" = "Group x Condition",
                                                          "group_factorED:time" = "Group x Time",
-                                                         "group_factorED:time:conditionExercise" = "Group x Time x Condition"))
+                                                         "group_factorED:time:conditionRest" = "Group x Time x Condition"))
   
   # Change p-values to non-scientific notation
   combined_coefs$`Pr(>|t|)` <- format(combined_coefs$`Pr(>|t|)`, scientific = FALSE)
@@ -137,10 +137,10 @@ process_model_summaries <- function(models_list) {
   # Assign the modified dataframe to the new object name in the global environment
   assign(new_object_name, combined_coefs, envir = .GlobalEnv)
   # Save
-  resave(list = new_object_name, file = paste0("results/affect_models.RData"))
+  resave(list = new_object_name, file = paste0("results/biss_models.RData"))
   
 }
 
-process_model_summaries(affect_models)
-process_model_summaries(affect_models_ed)
-process_model_summaries(affect_hov)
+process_model_summaries(biss_models)
+process_model_summaries(biss_models_ed)
+process_model_summaries(biss_hov)

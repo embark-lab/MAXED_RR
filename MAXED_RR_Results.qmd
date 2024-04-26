@@ -14,7 +14,7 @@ library(kableExtra)
 
 ## Preliminary Analysis
 
-*We will provide sample descriptive statistics for both ED and HC groups on variables of interest (e.g., age, ED diagnosis, BMI, compulsive exercise, Eating Disorder Examination \[EDE\] subscales). Comparison of affect ratings before and after milkshake ingestion will also serve as a manipulation check to clarify the degree to which negative affect (specifically anxiety) increased as a result of this challenge.*
+*We will provide sample descriptive statistics for both ED and HC groups on variables of interest (e.g., age, ED diagnosis, BMI, compulsive exercise, Eating Disorder Examination* subscales). Comparison of affect ratings before and after milkshake ingestion will also serve as a manipulation check to clarify the degree to which negative affect (specifically anxiety) increased as a result of this challenge.
 
 @tbl-x presents xxx
 
@@ -24,7 +24,7 @@ library(kableExtra)
 
 ## **Aim 2: Characterize variability in biobehavioral response to in-lab exercise**.
 
-*We will characterize changes during exercise in state body image, mood, and biological markers in both ED and HC groups; we will specifically characterize mean levels of, and variability in, biobehavioral response to exercise across the ED and HC groups. We will evaluate exercise-induced changes in DA, 5-HT, BDNF, leptin, and eCB biomarkers for the Prescribed Exercise Task. Shifts in affect and biomarkers will be evaluated descriptively with measures of central tendency, skew, and variance. We will further characterize shifts in biomarkers through linear mixed effect models.*
+*We will characterize changes during exercise in state body image, mood, and biological markers in both ED and HC groups; we will specifically characterize mean levels of, and variability in, biobehavioral response to exercise across the ED and HC groups. We will evaluate exercise-induced changes in DA, 5-HT, BDNF, leptin, and eCB biomarkers for the Prescribed Exercise Task. Shifts in affect, body image, and biomarkers will be evaluated descriptively with measures of central tendency, skew, and variance. We will further characterize shifts in affect and body image through linear mixed effect models.*
 
 Specific models tested are noted in @tbl-params.
 
@@ -66,13 +66,9 @@ knitr::include_graphics("figs/2.affect/affect_variance_plot.png")
 
 ```
 
-### Average Change
+##### Affective Response to Exercise across ED and Control
 
 Raw changes indicate that, relative to controls, ED participants may feel less crummy after Self-Paced exercise. Raw change scores across groups comparing 30 min vs. BL along with the maximum increases and maximum decreases from baseline are presented in @tbl-affectChange.
-
-### Between-Subject Variability across ED and Control
-
-Standard deviations are presented in @tbl-affectChange, along with Levine's tests evaluating equality of between-subject variability in across ED and HC groups
 
 ```{r echo=FALSE}
 #| label: tbl-affectChange
@@ -89,15 +85,19 @@ affect_descriptives %>%
   kable_styling(full_width = FALSE)
 ```
 
-### Within-Subject Variability across ED and Control
-
-When looking at variability within, rather than between, subjects there is indication of potential differential variability in affect during exercise in ED compared with controls. In the Prescribed Task, those with EDs may experience less affective variability, particularly related to Fatigue and Enthusiasm. In comparison, in the self-paced task, ED participants may demonstrate grater variability in fatigue, enthusiasm and feeling crummy (with less variability in feeling calm) relative to controls.
-
 #### Body Image
 
-Visual depiction of raw changes in affect measurements during exercise across groups is presented in Figure @fig-BissLoessPlot.
+Visual depiction of raw changes in body image changes during exercise across groups is presented in Figure @fig-BissLoessPlot.
 
-Average levels of change from 0 to 30 minutes along, the Max vs. Baseline Values, and Variance in affect across groups are presented in @fig-BISSChange.
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: fig-BissLoessPlot
+#| fig-cap: "Body Image Changes During Exercise" 
+#| layout-ncol: 1
+knitr::include_graphics("figs/3.body_image/biss_plot_exercise.png")
+
+```
+
+Average levels of change from 0 to 30 minutes along, the Max vs. Baseline Values, and Variance in affect across groups are presented in @fig-BISSChange. Raw changes indicate that, relative to controls, ED participants may feel less crummy after Self-Paced exercise. Raw change scores across groups comparing 30 min vs. BL along with the maximum increases and maximum decreases from baseline are presented in @tbl-BISSChange.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #| label: fig-BISSChange
@@ -111,7 +111,35 @@ knitr::include_graphics("figs/3.body_image/biss_change_max_exercise.png")
 
 ```
 
+```{r, echo = FALSE}
+#| label: tbl-BISSChange
+#| tbl-cap: 'Variability in BISS Changes Across Groups'
+
+load('Results/BISS_descriptives.RData')
+
+BISS_descriptives$p.value <- as.numeric(BISS_descriptives$p.value)
+rows_to_bold <- which(BISS_descriptives$p.value < 0.05)
+
+BISS_descriptives %>%
+  kable(format = "html", escape = FALSE) %>%
+  row_spec(rows_to_bold, bold = TRUE) %>%  # Make specific rows bold
+  kable_styling(full_width = FALSE)
+```
+
 #### Biomarker Response
+
+```{r, echo = FALSE, warning = FALSE}
+#| label: fig-biomarker
+#| fig-cap: NA
+#| fig-subcap:
+#|   - "Individual-Level"
+#|   - "Group Aggregates" 
+#| layout-ncol: 1
+knitr::include_graphics("figs/4.biomarkers/Assay_results.png")
+knitr::include_graphics("figs/4.biomarkers/Assay_summary_results.png")
+```
+
+A visual depiction of biomarker response -- at both individual and group-aggregate levels -- is presented in @fig-biomarker
 
 ### Response to Exercise vs. Rest across ED and Control Groups
 
@@ -166,10 +194,10 @@ From an interpretation of the estimated marginal means, there are initial indica
 
 *Within ED:*
 
-Results for the model run *within* the ED group are presentd in @tbl-affect-ed. A Time x Condition effect emerged for calmness during Prescribed and fatigue during Self-Paced exercise. Individuals reported feeling less calm and more fatigued over time during exercise vs. rest. Older age was associated with feeling less crummy during the Self-Paced task and less Fatigued during the Prescribed task.
+Results for the model run *within* the ED group are presentd in @tbl-affectED. A Time x Condition effect emerged for calmness during Prescribed and fatigue during Self-Paced exercise. Individuals reported feeling less calm and more fatigued over time during exercise vs. rest. Older age was associated with feeling less crummy during the Self-Paced task and less Fatigued during the Prescribed task.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-#| label: tbl-affect-ed
+#| label: tbl-affectED
 #| tbl-cap: "ED - Affect over time. Note. Rest Condition and Control Group set as reference, ED and Exercise set as Comparison. Positive effects represent higher scores for ED Group and Exercise Condition"
 
 library(knitr)
@@ -199,23 +227,94 @@ table1 %>%
 
 *Heterogeneity of Variance:*
 
-Regarding heterogeneity of variance in response to Exercise across groups, xxxx
-
-**KS note to self -- these kind of look suspicious - double check that model is specified correctly**
+Regarding heterogeneity of variance in response to Exercise across groups, we examined whether there was evidence of heterogeneity of between-person variance in affect during exercise across groups by incorporating a random effect of group into a model with age, time, group, and group x time fixed effects, using the `nlme` package. We then compared model fit of this model to the model without a random effect of group. To examine potential heterogeneity of within person variance across groups, we then incorporated a xxx effect into the model, and compared the model with between-person random effects only to that with both between- and within- person random effects specified across groups.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #| label: tbl-affectHOV
-#| tbl-cap: "Heterogeneity of Variance in Group * Time Interaction within Condition and Participant"
+#| tbl-cap: "Heterogeneity of Variance in Affect Measurements During Exercise across Groups"
 
 library(knitr)
 library(kableExtra)
 library(dplyr)
-load('results/affect_models.RData')
+load('results/affect_hov_results.RData')
 
-table1 <- affect_hov_summary |> 
+# Assuming affect_hov_results is your target data frame
+affect_hov_results[] <- lapply(affect_hov_results, function(x) if(is.numeric(x)) sprintf("%.2f", x) else x)
+
+rows_to_bold <- which(affect_hov_results$`p-value` < 0.05)
+
+ 
+# Create the table with kable and kableExtra styling
+affect_hov_results %>%
+  kable(format = "html", escape = FALSE) %>%
+  row_spec(rows_to_bold, bold = TRUE) %>%  # Make specific rows bold
+  kable_styling(full_width = FALSE)
+```
+
+#### Body Image
+
+*Overall:*
+
+Results from each variable in the overall model are presented in @tbl-bodyimage with estimated marginal means for each timepoint are presented in @fig-bissemm.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-bodyimage
+#| tbl-cap: "Overall Model - BISS over time. Note. Rest Condition and Control Group set as reference, ED and Exercise set as Comparison. Positive effects represent higher scores for ED Group and Exercise Condition"
+
+library(knitr)
+library(kableExtra)
+library(dplyr)
+load('results/biss_models.RData')
+
+table1 <- biss_models_summary |> 
   mutate(Estimate = sprintf("%.3f", Estimate),
          `Std. Error` = sprintf("%.3f", `Std. Error`),
-         df = round(df, 0),  
+         df = round(df, 0),  # Assuming you still want to round the degrees of freedom
+         `t value` = sprintf("%.3f", `t value`))
+
+table1$`Pr(>|t|)` <- as.numeric(table1$`Pr(>|t|)`)
+rows_to_bold <- which(table1$`Pr(>|t|)` < 0.05)
+
+        
+table1$`Pr(>|t|)` =  sprintf("%.2e", table1$`Pr(>|t|)`)  # Scientific notation for p-values
+
+
+# Create the table with kable and kableExtra styling
+table1 %>%
+  kable(format = "html", escape = FALSE) %>%
+  row_spec(rows_to_bold, bold = TRUE) %>%  # Make specific rows bold
+  kable_styling(full_width = FALSE)
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: fig-bissemm
+#| fig-cap: "BISS Estimated Marginal Means During Exercise" 
+#| fig-subcap:
+#|   - "Prescribed"
+#|   - "Self-Paced" 
+#| layout-ncol: 1
+knitr::include_graphics("figs/3.body_image/biss_emmeans_prescribed.png")
+knitr::include_graphics("figs/3.body_image/biss_emmeans_selfpaced.png")
+```
+
+*Within ED:*
+
+see @tbl-biss-ed
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-biss-ed
+#| tbl-cap: "ED - BISS over time. Note. Rest Condition and Control Group set as reference, ED and Exercise set as Comparison. Positive effects represent higher scores for ED Group and Exercise Condition"
+
+library(knitr)
+library(kableExtra)
+library(dplyr)
+load('results/biss_models.RData')
+
+table1 <- biss_models_ed_summary |> 
+  mutate(Estimate = sprintf("%.3f", Estimate),
+         `Std. Error` = sprintf("%.3f", `Std. Error`),
+         df = round(df, 0),  # Assuming you still want to round the degrees of freedom
          `t value` = sprintf("%.3f", `t value`))
 
 table1$`Pr(>|t|)` <- as.numeric(table1$`Pr(>|t|)`)
@@ -232,24 +331,79 @@ table1 %>%
   kable_styling(full_width = FALSE)
 ```
 
-#### Body Image
-
-*Overall:*
-
-*Within ED:*
-
 *Heterogeneity of Variance:*
+
+see
 
 #### Biomarker Response
 
 *Overall:*
 
+Differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise are presented in @fig-forest. Full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary @tbl-BiomarkerChange
+
+```{r, echo=FALSE}
+#| label: fig-forest
+#| fig-cap: Pre-, Post- , Raw Change, and Residualized Change Scores in biomarkers across ED vs.Control Groups
+
+knitr::include_graphics("figs/4.biomarkers/Exercise_Biomarker_ForestPlot.png")
+
+```
+
 *Within ED:*
 
-*Heterogeneity of Variance:*
+Differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise are presented in @fig-forestED. Full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary @tbl-BiomarkerChangeED
+
+```{r, echo=FALSE}
+#| label: fig-forestED
+#| fig-cap: Difference between Post- vs. Pre-exercise Biomarkers within the ED Group
+
+knitr::include_graphics("figs/4.biomarkers/ED_Biomarker_ForestPlot.png")
+```
+
+*Heterogeneity of Variance at Baseline and 30 min:*
 
 ## **Aim 3: Define preliminary estimates of associations between task-based measures of acute exercise response, self-reported functions of exercise, DEx, and ED severity among the ED group.**
 
 *Within the ED group, we will calculate correlations between acute exercise parameters/response and ED-related measures. We will conduct a linear regression to obtain slope estimates for affect and body image shifts for each individual, within exercise condition. We will also conduct a linear regression estimating post-biomarker scores across all individuals with EDs in the exercise condition, saving residuals.*
 
 *We will quantify Pearson correlations with 95% confidence intervals between these slope estimates, biomarker residuals, Self-Paced Task exercise parameters (e.g., average bike speed, HR), functions of exercise subscales, self-report of compulsive exercise, and EDE global scores. We will estimate Pearson correlations and 95% confidence intervals for these correlations.*
+
+Correlations for Exercise Responses themselves are presented in @fig-exresponse.
+
+```{r, echo=FALSE}
+#| label: fig-exresponse
+#| fig-cap: Exercise Response Correlations among Control and ED groups
+
+knitr::include_graphics("figs/5.correlations/Ex_response_cormat.png")
+```
+
+Correlations between exercise response variables with key variables of interest are presented in @fig-exresponse2
+
+```{r, echo=FALSE}
+#| label: fig-exresponse2
+#| fig-cap: Correlations between Exercise Response and Individual Difference Variables
+
+knitr::include_graphics("figs/5.correlations/exercise_response_correlation_matrix_separated.png")
+```
+
+# Supplement
+
+```{r, echo = FALSE}
+#| label: tbl-BiomarkerChange
+#| tbl-cap: Differences in Biomarker Measurements Across ED and HC Groups
+
+load(file = 'Results/supplement_ttable.RData')
+
+knitr::kable(supplement_ttable)
+```
+
+```{r, echo = FALSE}
+#| label: tbl-BiomarkerChangeED
+#| tbl-cap: Paired-sample t-tests for differences between Pre- and Post- Exercise Biomarkers in the ED group
+
+load(file = 'results/ed_biomarkers.RData')
+
+knitr::kable(ed_biomarkers)
+```
+
+# 
