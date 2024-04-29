@@ -2,3 +2,11 @@ project:
   title: "Maxed Registered Report Results"
   type: website  
   output-dir: docs
+format:
+  html:
+    # Enable table of contents
+    toc: true
+    # Depth of headers to include in the toc (1 = h1, 2 = h2, etc.)
+    toc-depth: 4
+    # Position of the toc; can be "auto", "float", or "fixed"
+    toc-position: fixed

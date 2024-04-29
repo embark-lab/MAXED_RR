@@ -15,11 +15,11 @@ library(kableExtra)
 
 *We will provide sample descriptive statistics for both ED and HC groups on variables of interest (e.g., age, ED diagnosis, BMI, compulsive exercise, Eating Disorder Examination* subscales). Comparison of affect ratings before and after milkshake ingestion will also serve as a manipulation check to clarify the degree to which negative affect (specifically anxiety) increased as a result of this challenge.
 
-## **Aim 1: Confirm feasibility of paradigms evaluating acute response to exercise among outpatient individuals with EDs.**
+## **Aim 1: Feasiblity**
 
 *We will confirm feasibility of our exercise-based tasks via a) study dropout at all timepoints, b) adverse events, c) completion rates of exercise task on Day B, d) completion rates of milkshake task across ED and HC participants. Over the course of the study, we expect both ED and HC groups to meet thresholds of \< 20% dropout, zero adverse events, and \> 80% task completion.*
 
-## **Aim 2: Characterize variability in biobehavioral response to in-lab exercise**.
+## **Aim 2: Variability in Exercise Response**
 
 *We will characterize changes during exercise in state body image, mood, and biological markers in both ED and HC groups; we will specifically characterize mean levels of, and variability in, biobehavioral response to exercise across the ED and HC groups. We will evaluate exercise-induced changes in DA, 5-HT, BDNF, leptin, and eCB biomarkers for the Prescribed Exercise Task. Shifts in affect, body image, and biomarkers will be evaluated descriptively with measures of central tendency, skew, and variance. We will further characterize shifts in affect and body image through linear mixed effect models.*
 
@@ -185,7 +185,7 @@ knitr::include_graphics("figs/4.biomarkers/ED_Biomarker_ForestPlot.png")
 
 ```
 
-## **Aim 3: Define preliminary estimates of associations between task-based measures of acute exercise response, self-reported functions of exercise, DEx, and ED severity among the ED group.**
+## **Aim 3: Exercise Response Correlations**
 
 *Within the ED group, we will calculate correlations between acute exercise parameters/response and ED-related measures. We will conduct a linear regression to obtain slope estimates for affect and body image shifts for each individual, within exercise condition. We will also conduct a linear regression estimating post-biomarker scores across all individuals with EDs in the exercise condition, saving residuals.*
 
@@ -242,6 +242,9 @@ knitr::include_graphics("figs/5.correlations/exercise_response_correlation_matri
 ```
 
 # Supplement
+
+All supplemental tables are available in the [Supplemental Tables Excel Workbook](Supplemental_Tables.xlsx). Supplemental tables and figures are also presented below
+
 
 ### Affect
 
