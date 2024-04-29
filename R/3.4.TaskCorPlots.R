@@ -13,7 +13,7 @@ Exercise_vars <- c('cet_total_Day_C',
                    'fomb_SNR_mean_Day_C', 
                    'muscularity_sum_Day_C')
 Weight_vars <- c('bmi_at_intake_Intake', 
-                 'wt_suppress_high_current_Intake')
+                 'wt_suppress')
 
 Actigraph_vars <- c('MVPA_bouted', 'LPA_bouted')
 
@@ -125,7 +125,7 @@ Exercise_vars <- c('CET',
                    'DFM')
 
 Weight_vars <- c('BMI', 
-                 'Wt Suppres')
+                 'Wt Suppress')
 
 Activity_vars <- c('MVPA', 
                    'LPA')

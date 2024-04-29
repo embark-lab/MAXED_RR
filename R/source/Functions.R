@@ -17,20 +17,3 @@ process_ex_data <- function(ex_data, suffix) {
     filter(rowSums(is.na(select(., -id))) != (ncol(.) - 1))
 }
 
-# combine plots for affect loess plots
-combine_plots <- function(plot_neg, plot_pos, title_text) {
-  caption_text <- "Note: Responses rated every 5 minutes on 5-point Likert scale from \n 0 (Do Not Feel) to 4 (Feel Very Strongly)"
-  wrapped_caption <- str_wrap(caption_text, width = 80)  
-  
-  combined_plot <- plot_neg + plot_pos + plot_layout(ncol = 1) +
-    plot_annotation(title = title_text,
-                    caption = wrapped_caption,
-                    theme = theme(text = element_text(size = 18, family = 'Garet', face = "bold", color = '#1A4F66'))) &
-    theme(plot.title.position = "plot",
-          plot.title = element_text(hjust = 0.5),
-          plot.caption = element_text(hjust = 0, size = 14)) +
-    theme(panel.background = element_rect(fill = 'transparent', colour = 'transparent'),
-          plot.background = element_rect(fill = 'transparent', colour = 'transparent'))  # added this line
-  
-  return(combined_plot)
-}

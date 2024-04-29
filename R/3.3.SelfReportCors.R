@@ -121,7 +121,7 @@ cor_vars2_ED <- cor_vars2 |>
   # make all columns (except for ID) numeric
   mutate(across(-id, as.numeric))
   
-# make a correlation matrix, excluding ID and removing pairwise NA values
+# make a correlation matrix, excluding ID and removing pairwise NA values -- also add standard deviation
 exercise_response_cors_ED <- cor(cor_vars2_ED |>
                              select(-id), use = "pairwise.complete.obs")
 

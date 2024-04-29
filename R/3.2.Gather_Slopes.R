@@ -99,6 +99,9 @@ key_affect_variables <- c('Calm_P',
 # combine a list of all key vars
 key_variables <- c(key_biomarker_variables, key_BISS_variables, key_affect_variables, 'group')
 
+# save exercise response data
+save(exercise_response_data, file = "data/Exercise_Response_Summary_Data.RData")
+
 exercise_response_cors_control <- cor(exercise_response_data |>
                                    filter(group == "0") |>
                                    select(-id), use = "pairwise.complete.obs")
@@ -180,6 +183,10 @@ ggsave("figs/5.correlations/Ex_response_cormat.png", width = 10, height = 10, dp
 combined_correlation_data |>
   group_by(dataset) |>
   summarize(mean_correlation = mean(sqrt(correlation^2), na.rm = TRUE))
+
+# save combined correlation data as .RData
+save(combined_correlation_data, file = "results/ex_response_correlation_data.RData")
+
 
 # calculate average r2 for each group within key variable categories
 corr_data2 <- combined_correlation_data |> 
