@@ -1,7 +1,6 @@
 ---
 title: "MAXED Registered Report Results"
-type: website
-output-dir: docs
+format: html
 ---
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
