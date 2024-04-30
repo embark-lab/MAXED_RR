@@ -1,4 +1,8 @@
-load('data/Exercise_Response_Summary_Data.RData')
+library(dplyr)
+library(ggplot2)
+library(embarktools)
+
+load('data/Exercise_Response/Exercise_Response_Summary_Data.RData')
 
 # select group == 1 for separate dataset
 ex_response_ED <- exercise_response_data |>
@@ -54,3 +58,42 @@ cor_ci_results_control <- get_cor_ci(ex_response_control)
 
 # save results
 save(cor_ci_results_control, file = "results/Corr_CI_Results_control.RData")
+
+# combine results
+# add group column
+cor_ci_results_ed$group <- "ED"
+cor_ci_results_control$group <- "Control"
+
+# combine results
+cor_ci_results <- rbind(cor_ci_results_ed, cor_ci_results_control)
+
+# select key variables
+key_biomarker_variables <- c('Leptin_ResidChange', 
+                             'BDNF_ResidChange', 
+                             'Cortisol_ResidChange')
+key_BISS_variables <- c('Average_P', 
+                        'Average_SP',
+                        'Weight_P', 
+                        'Weight_SP',
+                        'Shape_P',
+                        'Shape_SP')
+
+key_affect_variables <- c('Calm_P', 
+                          'Calm_SP',
+                          'Enthusiastic_P',
+                          'Enthusiastic_SP',
+                          'Fatigued_P',
+                          'Fatigued_SP',
+                          'Crummy_P',
+                          'Crummy_SP',
+                          'Percieved_Exertion_SP',
+                          'Percieved_Exertion_P'
+)
+
+key_variables <- c(key_biomarker_variables, key_BISS_variables, key_affect_variables)
+
+cor_ci_results <- cor_ci_results |>
+  filter(var1 %in% key_variables & var2 %in% key_variables)
+
+save(cor_ci_results, file = "results/Corr_CI_Results.RData")
+

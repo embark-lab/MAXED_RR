@@ -100,7 +100,7 @@ key_affect_variables <- c('Calm_P',
 key_variables <- c(key_biomarker_variables, key_BISS_variables, key_affect_variables, 'group')
 
 # save exercise response data
-save(exercise_response_data, file = "data/Exercise_Response_Summary_Data.RData")
+save(exercise_response_data, file = "data/Exercise_Response/Exercise_Response_Summary_Data.RData")
 
 exercise_response_cors_control <- cor(exercise_response_data |>
                                    filter(group == "0") |>
@@ -206,3 +206,5 @@ corr_data2 <- combined_correlation_data |>
 corr_data2 <- corr_data2 |>
   filter(category1 == category2)
 
+
+load("results/ex_response_correlation_data.RData")

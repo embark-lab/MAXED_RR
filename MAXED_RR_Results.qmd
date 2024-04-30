@@ -164,11 +164,11 @@ knitr::include_graphics("figs/4.biomarkers/Assay_results.png")
 knitr::include_graphics("figs/4.biomarkers/Assay_summary_results.png")
 ```
 
-#### Overall
+#### Overall Model
 
 Differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise are presented in @fig-forest. Full t-test results across both exercise and rest conditions along with tests of heterogeneity of variance in exercise condition response across the ED and Control group using each outcome approach are presented in Supplementary @tbl-BiomarkerChange.
 
-#### **Within ED Group**
+#### Within ED Group Model
 
 Differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise are presented in @fig-forest, and full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary @tbl-BiomarkerChangeED. \# KS NOTE: Not putting any text here yet to explain graphs since we'll have more biomarker data incoming \##
 
@@ -185,54 +185,68 @@ knitr::include_graphics("figs/4.biomarkers/ED_Biomarker_ForestPlot.png")
 
 ```
 
-## **Aim 3: Exercise Response Correlations**
+## Aim 3: Exercise Response Correlations
 
 *Within the ED group, we will calculate correlations between acute exercise parameters/response and ED-related measures. We will conduct a linear regression to obtain slope estimates for affect and body image shifts for each individual, within exercise condition. We will also conduct a linear regression estimating post-biomarker scores across all individuals with EDs in the exercise condition, saving residuals.*
 
 *We will quantify Pearson correlations with 95% confidence intervals between these slope estimates, biomarker residuals, Self-Paced Task exercise parameters (e.g., average bike speed, HR), functions of exercise subscales, self-report of compulsive exercise, and EDE global scores. We will estimate Pearson correlations and 95% confidence intervals for these correlations.*
 
+### Exercise Response
+
 ```{r, echo=FALSE}
-load('results/Corr_CI_Results_ed.RData')
+load('results/Exercise_Response_Correlation_Matrix.RData')
+
 load('results/Corr_CI_Results_control.RData')
+load('results/Corr_CI_Results_ed.RData')
 
-# filter out biomarker variables for now
-biomarkers <- c('Cortisol_RawChange', 'BDNF_RawChange', 'Leptin_RawChange', 'Cortisol_ResidChange', 'BDNF_ResidChange', 'Leptin_ResidChange')
-cor_ci_results_ed_nobio <- cor_ci_results_ed[!cor_ci_results_ed$var1 %in% biomarkers & !cor_ci_results_ed$var2 %in% biomarkers,]
+columns_to_reverse <- as.vector(unique(cor_ci_results_full$var1))
 
-cor_ci_results_control_nobio <- cor_ci_results_control[!cor_ci_results_control$var1 %in% biomarkers & !cor_ci_results_control$var2 %in% biomarkers,]
-
-# combine the two dataframes
-# add a column 'ED' to the ED dataframe, 'Control' to the control dataframe
-cor_ci_results_ed$Group <- 'ED'
-cor_ci_results_control$Group <- 'Control'
-
-cor_ci_results <- rbind(cor_ci_results_ed, cor_ci_results_control) |> 
+cor_ci_results <- cor_ci_results_full |> 
   # drop p-values
-  dplyr::select(-p_value) |>
+  dplyr::select(-p_value, -significance, -group) |> 
   # round to 2 decimal places using sprintf
-  dplyr::mutate(across(c(estimate, ci_lower, ci_upper), ~sprintf("%.2f", .)))
+  dplyr::mutate(across(c(estimate, ci_lower, ci_upper), ~sprintf("%.2f", .))) |> 
 # put estimate and ci(95%) in the same column
-cor_ci_results <- cor_ci_results |>
   dplyr::mutate(estimate = paste(estimate, ' (', ci_lower, ', ', ci_upper, ')', sep = '')) |>
   dplyr::select(-ci_lower, -ci_upper) |> 
-  rename('Correlation (95% CI)' = estimate)
+  rename('Correlation (95% CI)' = estimate) |> 
+  # order by var2
+  dplyr::arrange(var2)
 
 # Pivot the data to wide format
 cor_ci_results_wide <- cor_ci_results |>
   tidyr::pivot_wider(names_from = var2, values_from = 'Correlation (95% CI)')
 
+# order by var1
+cor_ci_results_wide <- cor_ci_results_wide |>
+  dplyr::arrange(var1)
+
+cor_ci_results_wide <- cor_ci_results_wide %>%
+  slice(n():1)
+
+data_part <- cor_ci_results_wide %>% select(-var1)  # Assuming 'var1' is your row identifier
+
+# Transpose the data part
+cor_ci_results_wide <- as.data.frame(t(data_part))
+colnames(cor_ci_results_wide) <-columns_to_reverse
+
+
 ```
 
-Correlations between acute exercise response variables are presented in @fig-exresponse, and full correlation data with 95% CIs is presented in @tbl-exresponsecorrs. Average zero-order $r^2$ between exercise response variables in the control group is `r round(mean(cor_ci_results_control_nobio$estimate*2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(cor_ci_results_ed_nobio$estimate*2, na.rm = TRUE), 2)`, indicating stronger association between exercise response variables in the ED group, relative to the control group.
+Correlations between acute exercise response variables are presented in Supplemental @fig-exresponse, and full correlation data with 95% CIs is presented in @tbl-exresponsecorrs. Average zero-order $r^2$ between exercise response variables in the control group is `r round(mean(cor_ci_results_control$estimate^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(cor_ci_results_ed$estimate^2, na.rm = TRUE), 2)`, indicating slightly stronger association between exercise response variables in the ED group, relative to the control group, with little evidence of collinearity across exercise response measures -- indicating relative independence of exercise response measures across the three domains of assessment.
 
-```{r, echo=FALSE}
-#| label: fig-exresponse
-#| fig-cap: Exercise Response Correlations among Control and ED groups
+### Correlations with Additional Variables
 
-knitr::include_graphics("figs/5.correlations/Ex_response_cormat.png")
+```{r, echo = FALSE}
+load('results/exercise_corrs_cleaned.Rdata')
+corrs_long_ed <- cors_long |> 
+  filter(group == 'ED')
+corrs_long_control = cors_long |> 
+  filter(group == 'Control')
+
 ```
 
-Correlations between exercise response variables with key variables of interest are presented in @fig-exresponse2. Full correlation data with 95% CIs is presented in @tbl-exresponsecorrs2. *For only those in the ED group only, greater body image response to acute exercise was associated with higher Self-Paced exercise intensity, higher self-reported drive for muscularity, and lower body mass index. Increases in feeling fatigued and crummy during Prescribed exercise were associated with drive for muscularity and compulsive exercise only for the ED group (all Pearson rs \> 0.25).*
+Correlations between exercise response variables with key variables of interest are presented in @fig-exresponse2. Full correlation data with 95% CIs is presented in @tbl-exresponsecorrs2. Average zero-order $r^2$ between acute exercise response and key variables of interest in the control group is `r round(mean(corrs_long_control$correlation^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(corrs_long_ed$correlation^2, na.rm = TRUE), 2)`. For only those in the ED group only, greater body image response to acute exercise was associated with key variables, including higher self-reported drive for muscularity, higher social negative reinforcement, lower social positive reinforcement, lower body mass index, and lower weight suppression. Increases in feeling crummy during Prescribed exercise were associated with higher BMI and lower MVPA in the control group only, and higher social positive reinforcement for exercise in both groups. Perceived Exertion during prescribed exercise was associated with higher drive for muscularity only for the ED group, and feeling crummy during self-paced exercise was associated with lower exertion during exercise across groups. For the control group, but not the ED group, feeling crummy during self paced exercise was associated with higher BMI and lower weight suppression.
 
 ```{r, echo=FALSE}
 #| label: fig-exresponse2
@@ -244,7 +258,6 @@ knitr::include_graphics("figs/5.correlations/exercise_response_correlation_matri
 # Supplement
 
 All supplemental tables are available in the [Supplemental Tables Excel Workbook](Supplemental_Tables.xlsx). Supplemental tables and figures are also presented below
-
 
 ### Affect
 
@@ -537,11 +550,87 @@ load(file = 'results/ed_biomarkers.RData')
 knitr::kable(ed_biomarkers)
 ```
 
+### Exercise Response Correlations
+
+```{r, echo=FALSE}
+#| label: fig-exresponse
+#| fig-cap: Exercise Response Correlations among Control and ED groups
+
+knitr::include_graphics("figs/5.correlations/exercise_response_correlation_matrix.png")
+```
+
 ```{r, echo = FALSE}
 #| label: tbl-exresponsecorrs
 #| tbl-cap: Correlations (and 95% CI) Between Exercise Response Variables
 
 knitr::kable(cor_ci_results_wide)
+```
+
+Note. Correlations are presented with 95% confidence intervals. ED Group below the diagiagonal, HC Group above the diagonal.
+
+```{r, echo = FALSE}
+#| label: tbl-exresponsecorrs2
+#| tbl-cap: Correlations (and 95% CI) Between Exercise Response Variables and Key Variables 
+
+corrs_long <- cors_long |> 
+  dplyr::filter(!is.na(correlation)) |> 
+  # drop p-values
+  dplyr::select(-p_value) |> 
+  # round to 2 decimal places using sprintf
+  dplyr::mutate(across(c(correlation, ci_lower, ci_upper), ~sprintf("%.2f", .))) |> 
+# put estimate and ci(95%) in the same column
+  dplyr::mutate(correlation = paste(correlation, ' (', ci_lower, ', ', ci_upper, ')', sep = '')) |>
+  dplyr::select(-ci_lower, -ci_upper) |> 
+  rename('Correlation (95% CI)' = correlation)  |> 
+  # rename variable 2 column to 'Key Variable'
+  dplyr::rename(Key_Variable = variable2) |>
+  # rename variable 1 column to 'Ex Response Variable'
+  dplyr::rename(Ex_Response_Variable = variable1) 
+
+# Split into four dataframes based on group and condition
+corrs_long_control_SP <- corrs_long |> 
+  dplyr::filter(group == 'Control', Condition == 'SelfPaced') |> 
+  dplyr::select(-group, -Condition)
+
+corrs_long_control_P <- corrs_long |>
+  dplyr::filter(group == 'Control', Condition == 'Prescribed') |>
+  dplyr::select(-group, -Condition)
+
+corrs_long_ed_SP <- corrs_long |>
+  dplyr::filter(group == 'ED', Condition == 'SelfPaced') |>
+  dplyr::select(-group, -Condition)
+
+corrs_long_ed_P <- corrs_long |>
+  dplyr::filter(group == 'ED', Condition == 'Prescribed') |>
+  dplyr::select(-group, -Condition)
+
+
+# pivot each one wider
+corrs_wide_control_SP <- corrs_long_control_SP |> 
+  tidyr::pivot_wider(names_from = Ex_Response_Variable, values_from = 'Correlation (95% CI)') |> 
+  # add back in the group and condition columns
+  dplyr::mutate(group = 'Control', Condition = 'SelfPaced')
+
+corrs_wide_control_P <- corrs_long_control_P |>
+  tidyr::pivot_wider(names_from = Ex_Response_Variable, values_from = 'Correlation (95% CI)') |>
+  dplyr::mutate(group = 'Control', Condition = 'Prescribed')
+
+corrs_wide_ed_SP <- corrs_long_ed_SP |>
+  tidyr::pivot_wider(names_from = Ex_Response_Variable, values_from = 'Correlation (95% CI)') |>
+  dplyr::mutate(group = 'ED', Condition = 'SelfPaced')
+
+corrs_wide_ed_P <- corrs_long_ed_P |>
+  tidyr::pivot_wider(names_from = Ex_Response_Variable, values_from = 'Correlation (95% CI)') |>
+  dplyr::mutate(group = 'ED', Condition = 'Prescribed')
+
+# bind them all together
+corrs_wide_all <- dplyr::bind_rows(corrs_wide_control_SP, corrs_wide_control_P, corrs_wide_ed_SP, corrs_wide_ed_P)
+
+# put group and condition first
+corrs_wide_all <- corrs_wide_all |>
+  dplyr::select(group, Condition, everything())
+
+knitr::kable(corrs_wide_all)
 ```
 
 ```{r, echo = FALSE}

@@ -1,5 +1,17 @@
 load('data/cors_long.RData')
-# make variables factors
+load('results/cor_ci_sr.RData')
+
+# rename var1 and var2 to match cors_long 'variable1' and 'variable2'
+cor_ci_sr <- cor_ci_sr |>
+  rename(variable1 = var1, variable2 = var2) 
+
+# add ci_lower, ci_upper, and p_value to cors_long
+cors_long <- cors_long |>
+  left_join(cor_ci_sr, by = c("variable1", "variable2", "group")) 
+
+# remove the estimate column
+cors_long <- cors_long |>
+  select(-estimate)
 
 SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'distance')
 
@@ -58,6 +70,9 @@ add_separator_rows <- function(data, unique_based_on, new_variable_values, new_v
         setNames(object = list(unique_values), nm = unique_based_on),
         setNames(object = list(rep(new_value, length(unique_values))), nm = target_var_name),
         correlation = NA,
+        ci_lower = NA,
+        ci_upper = NA,
+        p_value = NA,
         group = group
       )
       # Append the new rows to the original data frame
@@ -154,16 +169,35 @@ exertion <- c('Percieved_Exertion')
 cors_long$variable1 <- factor(cors_long$variable1, levels = c("=== + AFFECT ===", pos_affect_variables, '=== - AFFECT ===', neg_affect_variables, '=== EXERTION ===', exertion, '=== BIOMARKERS ===', key_biomarker_variables, "=== BISS === ", key_BISS_variables))
 
 # at rows indicating that correlations in SelfPaced condition for ED and Control on all Variable2 variables with key biomarker variables are not available
-cors_long <- rbind(cors_long, data.frame(variable1 = 'Leptin', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced"))
-cors_long <- rbind(cors_long, data.frame(variable1 = 'BDNF', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced"))
-cors_long <- rbind(cors_long, data.frame(variable1 = 'Leptin', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced"))
-cors_long <- rbind(cors_long, data.frame(variable1 = 'BDNF', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced"))
-cors_long <- rbind(cors_long, data.frame(variable1 = 'Cortisol', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced"))
-cors_long <- rbind(cors_long, data.frame(variable1 = 'Cortisol', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced"))
+cors_long <- rbind(cors_long, data.frame(variable1 = 'Leptin', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+cors_long <- rbind(cors_long, data.frame(variable1 = 'BDNF', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+cors_long <- rbind(cors_long, data.frame(variable1 = 'Leptin', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+cors_long <- rbind(cors_long, data.frame(variable1 = 'BDNF', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+cors_long <- rbind(cors_long, data.frame(variable1 = 'Cortisol', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+cors_long <- rbind(cors_long, data.frame(variable1 = 'Cortisol', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+
+
+# Define a function to determine significance labels
+get_significance_label <- function(p_value) {
+  if (is.na(p_value)) {
+    return("")
+  } else if 
+  (p_value < 0.05) {
+    return("*")
+  } else {
+    return()
+  }
+}
+
+# Apply the function to create a new column for significance labels
+cors_long <- cors_long %>%
+  mutate(significance = sapply(p_value, get_significance_label))
 
 
 p <- ggplot(cors_long, aes(x = variable1, y = variable2, fill = correlation)) +
   geom_tile() +
+  geom_text(aes(label = significance), color = 'purple', size = 12, vjust = 0.8) +  # Add significance labels
+  
   scale_fill_gradient2(low = embark_colors[1], high = embark_colors[2], mid = "white", midpoint = 0) +
   theme_minimal() +
   facet_grid(vars(group), vars(Condition)) +
@@ -216,4 +250,7 @@ p2 <- ggplot(cors_long |> filter(correlation^2 > 0.05 | is.na(correlation)), aes
 
 p2
 
-ggsave("figs/5.correlations/exercise_response_correlation_matrix_separated.png", width = 10, height = 6, dpi = 300)
+ggsave(p, file = "figs/5.correlations/exercise_response_correlation_matrix_separated.png", width = 10, height = 6, dpi = 300)
+
+# save the new cors_long data frame
+save(cors_long, file = "results/exercise_corrs_cleaned.RData")

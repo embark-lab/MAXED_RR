@@ -6,7 +6,7 @@ library(tibble)
 library(ggplot2)
 library(stringr)
 # Load Exercise response summary data
-load("data/Exercise_Response_Summary_Data.RData")
+load("data/Exercise_Response/Exercise_Response_Summary_Data.RData")
 # load redcap data (Exercise self-report; weight)
 load("data/RedCap/MAXED_redcap_wide.2024-04-21.RData")
 # load self-paced exercise parameter data
@@ -179,3 +179,72 @@ HC_cors_long$group <- "Control"
 cors_long <- rbind(ED_cors_long, HC_cors_long)
 
 save(cors_long, file = "data/cors_long.RData")
+
+
+get_cor_ci <- function(df) {
+  combn(names(df), 2, function(x) {
+    # Check if there are enough non-NA observations for the test
+    if (sum(complete.cases(df[x[1]], df[x[2]])) > 2) {
+      test <- cor.test(df[[x[1]]], df[[x[2]]], use = "pairwise.complete.obs")
+      data.frame(
+        var1 = x[1],
+        var2 = x[2],
+        estimate = test$estimate,
+        ci_lower = test$conf.int[1],
+        ci_upper = test$conf.int[2],
+        p_value = test$p.value
+      )
+    } else {
+      # Return NA or some indicator when there are not enough observations
+      data.frame(
+        var1 = x[1],
+        var2 = x[2],
+        estimate = NA,
+        ci_lower = NA,
+        ci_upper = NA,
+        p_value = NA
+      )
+    }
+  }, simplify = FALSE) %>% bind_rows()
+}
+
+
+# filter data for ED group
+ED_group_variables <- cor_vars2_ED |>
+  select(id, key_affect_variables, key_biomarker_variables, key_BISS_variables, Exercise_vars, Weight_vars, SP_vars, Actigraph_vars) 
+
+cor_ci_sr_ed <- get_cor_ci(cor_vars2_ED %>% select(-id)) |> 
+  filter((var1 %in% key_affect_variables | 
+            var1 %in% key_biomarker_variables | 
+            var1 %in% key_BISS_variables) & 
+           (var2 %in% Exercise_vars | 
+              var2 %in% Weight_vars | 
+              var2 %in% SP_vars | 
+              var2 %in% Actigraph_vars))
+
+# filter data for HC group
+HC_group_variables <- cor_vars2_HC |>
+  select(id, key_affect_variables, key_biomarker_variables, key_BISS_variables, Exercise_vars, Weight_vars, SP_vars, Actigraph_vars)
+
+cor_ci_sr_hc <- get_cor_ci(cor_vars2_HC %>% select(-id)) |>
+  filter((var1 %in% key_affect_variables | 
+            var1 %in% key_biomarker_variables | 
+            var1 %in% key_BISS_variables) & 
+           (var2 %in% Exercise_vars | 
+              var2 %in% Weight_vars | 
+              var2 %in% SP_vars | 
+              var2 %in% Actigraph_vars))
+
+# name the groups and bind the data
+cor_ci_sr_ed$group <- "ED"
+cor_ci_sr_hc$group <- "Control"
+cor_ci_sr <- rbind(cor_ci_sr_ed, cor_ci_sr_hc)
+
+cor_ci_sr$var2 <- gsub("_Day_C", "", cor_ci_sr$var2)
+# remove _Intake from variable names
+cor_ci_sr$var2 <- gsub("_Intake", "", cor_ci_sr$var2)
+# remove _high_current_obj from variable names
+cor_ci_sr$var2 <- gsub("_high_current", "", cor_ci_sr$var2)
+
+save(cor_ci_sr, file = "results/cor_ci_sr.RData")
+
