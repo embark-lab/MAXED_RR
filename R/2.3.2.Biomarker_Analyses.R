@@ -187,7 +187,7 @@ Exercise_results <- Exercise_results |>
   ))
 
 # Make a ggplot that is a forest plot of the results
-ggplot(Exercise_results, aes(x = Estimate, y = factor(Assay), color = Outcome)) +
+Biomarker_ForestPlot <- ggplot(Exercise_results, aes(x = Estimate, y = factor(Assay), color = Outcome)) +
   geom_point(position = position_dodge(width = 0.25), size = 3) +
   geom_errorbarh(aes(xmin = LowerCI.1, xmax = UpperCI.1), height = 0.2, position = position_dodge(width = 0.25), size = 1.5) +
   geom_vline(xintercept = 0, linetype = "dashed") +
@@ -197,6 +197,9 @@ ggplot(Exercise_results, aes(x = Estimate, y = factor(Assay), color = Outcome)) 
        y = "Assay") +
   embarktools::embark_theme_a +
   scale_color_manual(values = embark_palette(6)[c(1:4)])
+
+#save the plot data
+save(Biomarker_ForestPlot, file = 'figs/4.Biomarkers/Exercise_Biomarker_ForestPlot.RData')
 
 ggsave("figs/4.Biomarkers/Exercise_Biomarker_ForestPlot.png", width = 8, height = 7)
 

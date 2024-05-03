@@ -76,7 +76,7 @@ clean_variance <- function(df_list, tasks) {
         
         # add cohen's d
         cohen_d_formula <- as.formula(paste(variable, "~ group_factor"))
-        cohen_d_result <- cohen.d(formula = cohen_d_formula, data = task_data)
+        cohen_d_result <- effsize::cohen.d(formula = cohen_d_formula, data = task_data)
         combined_result$cohen_d <- cohen_d_result$estimate*-1      
         
         # Store the combined result

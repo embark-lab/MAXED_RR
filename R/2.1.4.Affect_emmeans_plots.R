@@ -1,8 +1,5 @@
 
-library(embarktools)
-library(haven)
-library(tidyr)
-library(ggplot2)
+source("R/source/0.Packages.R")
 # Plot emmeans for affect
 
 # Load the data
@@ -21,7 +18,7 @@ emmeans <- emmeans |>
 emmeans$variable <- factor(emmeans$variable, levels = c("Crummy", "Fatigued", "Calm", "Enthusiastic"))
 
 
-ggplot(emmeans |> filter(task == 'Prescribed'), aes(x = time, y = emmean, color = group_factor)) +
+emmeans_prescribed_plot <- ggplot(emmeans |> filter(task == 'Prescribed'), aes(x = time, y = emmean, color = group_factor)) +
   geom_point() +
   geom_line(aes(linetype = as.factor(condition))) +
   facet_wrap(~variable) +
@@ -35,10 +32,12 @@ ggplot(emmeans |> filter(task == 'Prescribed'), aes(x = time, y = emmean, color 
   scale_linetype_manual(values = c("Rest" = "dashed", "Exercise" = "solid")) +
   embark_theme_a
 
+# save the plot
+save(emmeans_prescribed_plot, file = "figs/2.affect/affect_emmeans_prescribed.RData")
 ggsave("figs/2.affect/affect_emmeans_prescribed.png", width = 10, height = 8)
 
 
-ggplot(emmeans |> filter(task == 'SelfPaced'), aes(x = time, y = emmean, color = group_factor)) +
+emmeans_selfpaced_plot <- ggplot(emmeans |> filter(task == 'SelfPaced'), aes(x = time, y = emmean, color = group_factor)) +
   geom_point() +
   geom_line(aes(linetype = condition)) +
   facet_wrap(~variable) +
@@ -50,6 +49,9 @@ ggplot(emmeans |> filter(task == 'SelfPaced'), aes(x = time, y = emmean, color =
        color = "Group") +  scale_color_manual(name = 'Group', values = embark_palette()) +
   scale_linetype_manual(values = c("Rest" = "dashed", "Exercise" = "solid")) +
   embark_theme_a
+
+# save the plot
+save(emmeans_selfpaced_plot, file = "figs/2.affect/affect_emmeans_selfpaced.RData")
 
 # Save the plots
 ggsave("figs/2.affect/affect_emmeans_selfpaced.png", width = 10, height = 8)

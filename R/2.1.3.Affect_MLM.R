@@ -1,16 +1,9 @@
 # Description: This script runs the multilevel models for the affect data.
 
-# Load packages
-library(tidyr)
-library(dplyr)
-library(lme4)
-library(emmeans)
-library(lmerTest)
-library(cgwtools)
-
-
 load("data/Affect/MAXED_Affect.RData")
-source('R/source/0.Process_Model_Summaries.R')
+source('R/source/2.Process_Model_Summaries.R')
+source(file = 'R/source/0.Packages.R')
+
 
 Variables <- c('Crummy', 'Calm', 'Enthusiastic', 'Fatigued')
 Tasks <- c('Prescribed', 'SelfPaced')

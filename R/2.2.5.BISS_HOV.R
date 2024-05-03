@@ -1,11 +1,5 @@
 # Description: This script runs the multilevel models for the affect data.
 
-# Load packages
-library(tidyr)
-library(dplyr)
-library(psych) #for description
-library(ggplot2) #for plotting
-library(nlme) #for multielvel models
 
 load("data/BISS/biss_data.RData")
 biss_Variables <- (unique(BISS$variable))

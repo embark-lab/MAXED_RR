@@ -222,34 +222,10 @@ p <- ggplot(cors_long, aes(x = variable1, y = variable2, fill = correlation)) +
 
 p
 
-# make a second graph that is the same, but suppress correlations < .2
-p2 <- ggplot(cors_long |> filter(correlation^2 > 0.05 | is.na(correlation)), aes(x = variable1, y = variable2, fill = correlation)) +
-  geom_tile() +
-  scale_fill_gradient2(low = embark_colors[1], high = embark_colors[2], mid = "white", midpoint = 0) +
-  theme_minimal() +
-  facet_grid(vars(group), vars(Condition)) +
-  labs(title = "Correlation Matrix of Exercise Response Data with
-      Key Variables of Interest across Control and ED groups", 
-       caption = "Note: Correlation matrix of key variables in exercise response data. \n
-       Variables represent Slopes (Body Image and Affect) and residualized change scores (Biomarkers).") +
-  embark_theme_a +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
-        axis.title = element_blank(),
-        axis.text.y = element_text(size = 6), 
-        legend.position = "right",
-        plot.caption = element_text(size = 9), 
-        legend.title = element_blank(),
-        strip.text = element_text(face = "bold"),
-        panel.grid.major = element_line(colour = "grey70"),
-        panel.grid.minor = element_blank()) + 
-  theme(axis.text.y.left = element_text(size = 6), 
-        axis.text.y.right = element_blank(),
-        axis.ticks.y.left = element_line(),
-        axis.ticks.y.right = element_blank())
+# Save the plot
 
 
-p2
-
+save(p, file = "exercise_response_keyvar_correlation_plot.RData")
 ggsave(p, file = "figs/5.correlations/exercise_response_correlation_matrix_separated.png", width = 10, height = 6, dpi = 300)
 
 # save the new cors_long data frame

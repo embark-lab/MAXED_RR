@@ -1,6 +1,3 @@
-library(dplyr)
-library(ggplot2)
-library(embarktools)
 
 load('data/Exercise_Response/Exercise_Response_Summary_Data.RData')
 

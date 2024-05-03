@@ -76,4 +76,4 @@ biss_model_fit_indices <- biss_model_fit_indicies %>%
 # save model fit indices
 save(biss_model_fit_indices, file = 'results/biss_model_fit_indices.Rdata')
 
-load()
+

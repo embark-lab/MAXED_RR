@@ -206,5 +206,3 @@ corr_data2 <- combined_correlation_data |>
 corr_data2 <- corr_data2 |>
   filter(category1 == category2)
 
-
-load("results/ex_response_correlation_data.RData")

@@ -185,7 +185,7 @@ knitr::include_graphics("figs/4.biomarkers/ED_Biomarker_ForestPlot.png")
 
 ```
 
-## Aim 3: Exercise Response Correlations
+## **Aim 3: Exercise Response Correlations**
 
 *Within the ED group, we will calculate correlations between acute exercise parameters/response and ED-related measures. We will conduct a linear regression to obtain slope estimates for affect and body image shifts for each individual, within exercise condition. We will also conduct a linear regression estimating post-biomarker scores across all individuals with EDs in the exercise condition, saving residuals.*
 

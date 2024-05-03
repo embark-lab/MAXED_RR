@@ -1,18 +1,19 @@
 # Load necessary libraries
-library(dplyr)
-library(car)
-library(broom)
-library(tidyr)
-source('R/source/0.clean_variance.R')
+source('R/source/0.Packages.R')
+source('R/source/2.Clean_Variance.R')
 
-load('data/Affect/affect_data_list.RData')
+load('data/Affect/MAXED_Affect.RData')
 tasks <- c('Prescribed', 'SelfPaced')
+vars <- unique(Affect$variable)
+
+# Prepare the data list
+affect_data_list <- prep_df_list(Affect, vars)
 
 # clean the data list
 combined_results <- clean_variance(affect_data_list, tasks)
 
 # Combine into one single dataframe
-Affect_descriptives <- clean_variance_results(combined_results)
+affect_descriptives <- clean_variance_results(combined_results)
 
 
 # Save the results

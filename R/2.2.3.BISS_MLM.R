@@ -1,14 +1,7 @@
 # Description: This script runs the multilevel models for the BISS data.
 
-# Load packages
-library(tidyr)
-library(dplyr)
-library(lme4)
-library(emmeans)
-library(lmerTest)
-library(cgwtools)
-
-source("R/source/0.Process_Model_Summaries.R")
+source("R/source/0.Packages.R")
+source("R/source/2.Process_Model_Summaries.R")
 load("data/BISS/biss_data.RData")
 
 Variables <- (unique(BISS$variable))
@@ -83,17 +76,17 @@ resave(biss_models_summary, file = "results/biss_models.RData")
 
 # Note - Prescribed Weight Model in ED condition has singular fit -- due to those with low intercepts having no variance in time
 # one fix is to remove those with low intercepts
-problem_data <- ed_df %>%
-  filter(variable == 'Weight') |> 
-  filter(task == 'Prescribed') |> 
-  filter(!(time == 0 & value == 1))
-
-problem_model <- lmer(value ~ 1 + time*condition + bmi*condition + (1+time|condition:id), 
-                      data = problem_data,
-                      control = lmerControl(optimizer = "bobyqa"))
-summary(problem_model)
-
-# replace biss_models_ed$Weight$Prescribed with problem_model
-biss_models_ed$Weight$Prescribed <- problem_model
+# problem_data <- ed_df %>%
+#   filter(variable == 'Weight') |> 
+#   filter(task == 'Prescribed') |> 
+#   filter(!(time == 0 & value == 1))
+# 
+# problem_model <- lmer(value ~ 1 + time*condition + bmi*condition + (1+time|condition:id), 
+#                       data = problem_data,
+#                       control = lmerControl(optimizer = "bobyqa"))
+# summary(problem_model)
+# 
+# # replace biss_models_ed$Weight$Prescribed with problem_model
+# biss_models_ed$Weight$Prescribed <- problem_model
 process_model_summaries(biss_models_ed)
 resave(biss_models_ed_summary, file = "results/biss_models.RData")

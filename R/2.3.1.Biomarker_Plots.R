@@ -14,7 +14,7 @@ Assay_results_long <- Assay_results %>%
   mutate(Time = factor(Time, levels = c('Pre', 'Post'))) 
 
 # Fun little ggplot to compare pre and post treatment levels of the biomarkers across group and visit, individual level daat 
-Assay_results_long %>%
+Group_Assay_Results <- Assay_results_long %>%
   ggplot(aes(x = Time, y = Value, color = group_factor, linetype = Condition)) +
   geom_point() +
   geom_line(aes(group = interaction(group_factor, Condition, ID))) +
@@ -38,6 +38,8 @@ Assay_results_long %>%
   # make vertical gridlines white
   scale_color_manual(name = 'Group', values = embark_palette())
 
+# save the plot data
+save(Group_Assay_Results, file = 'figs/4.Biomarkers/Group_Assay_Results_Plot.RData')
 ggsave('figs/4.Biomarkers/Assay_results.png', width = 10, height = 6, dpi = 300)
 
 assay_summary_data <- Assay_results_long %>%
@@ -104,11 +106,13 @@ annotate.3 <- annotate.2 |>
                          position_factor != group_factor ~ midpoint*0.95)) 
 
 # Annotate Mean Assay Plot with Cohen's d values
-Mean_assay_plot + 
+Mean_assay_plot <- Mean_assay_plot + 
   geom_text(data = annotate.3, aes(label = paste('Ex d =', round(cohens_d, 2)), x = 1.55, y = y_pos), 
             color = ifelse(annotate.3$group_factor == 'Control', embark_palette()[1], embark_palette()[2]),
             size = 3, hjust = 0, vjust = 0)
 
+# save plot data
+save(Mean_assay_plot, file = 'figs/4.Biomarkers/Assay_summary_results_plot.RData')
 ggsave('figs/4.Biomarkers/Assay_summary_results.png', width = 10, height = 6, dpi = 300)
 
 

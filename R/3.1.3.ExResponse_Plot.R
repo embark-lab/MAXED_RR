@@ -120,5 +120,5 @@ Exercise_response_corrplot <- ggplot(cor_ci_results_full, aes(x = as.factor(var1
 ggsave("figs/5.correlations/Exercise_Response_Correlation_Matrix.png", width = 10, height = 10, units = "in", dpi = 300)
 
 # save the ggplot object itself
-save(Exercise_response_corrplot, file = 'results/Exercise_Response_Corrplot.RData')
+save(Exercise_response_corrplot, file = 'figs/5.correlations/Exercise_Response_Corrplot.RData')
 

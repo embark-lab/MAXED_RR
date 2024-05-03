@@ -27,7 +27,7 @@ emmeans <- emmeans |>
 emmeans$variable <- factor(emmeans$variable, levels = c("Appearance", "AvgPerson", "Looks", "PhsAttract", "Shape", "Weight", "Average"))
 
 
-ggplot(emmeans |> filter(task == 'Prescribed'), aes(x = time, y = emmean, color = group_factor)) +
+BISS_emmeans_prescribed <- ggplot(emmeans |> filter(task == 'Prescribed'), aes(x = time, y = emmean, color = group_factor)) +
   geom_point() +
   geom_line(aes(linetype = as.factor(condition))) +
   facet_wrap(~variable) +
@@ -41,10 +41,13 @@ ggplot(emmeans |> filter(task == 'Prescribed'), aes(x = time, y = emmean, color 
   scale_linetype_manual(values = c("Rest" = "dashed", "Exercise" = "solid")) +
   embark_theme_a
 
+# Save the plot data
+save(BISS_emmeans_prescribed, file = "figs/3.body_image/BISS_emmeans_prescribed.RData")
+
 ggsave("figs/3.body_image/biss_emmeans_prescribed.png", width = 10, height = 8)
 
 
-ggplot(emmeans |> filter(task == 'Self-Paced'), aes(x = time, y = emmean, color = group_factor)) +
+BISS_emmeans_selfpaced <- ggplot(emmeans |> filter(task == 'Self-Paced'), aes(x = time, y = emmean, color = group_factor)) +
   geom_point() +
   geom_line(aes(linetype = condition)) +
   facet_wrap(~variable) +
@@ -56,6 +59,9 @@ ggplot(emmeans |> filter(task == 'Self-Paced'), aes(x = time, y = emmean, color 
        color = "Group") +  scale_color_manual(name = 'Group', values = embark_palette()) +
   scale_linetype_manual(values = c("Rest" = "dashed", "Exercise" = "solid")) +
   embark_theme_a
+
+# Save the plot data
+save(BISS_emmeans_selfpaced, file = "figs/3.body_image/BISS_emmeans_selfpaced.RData")
 
 # Save the plots
 ggsave("figs/3.body_image/biss_emmeans_selfpaced.png", width = 10, height = 8)

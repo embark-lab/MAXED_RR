@@ -1,13 +1,9 @@
 # Load necessary libraries
-library(dplyr)
-library(car)
-library(broom)
-source('R/source/0.clean_variance.R')
+source('R/source/0.Packages.R')
+source('R/source/2.clean_variance.R')
 
 load('data/BISS/biss_data.RData')
-
 tasks <- c('Prescribed', 'Self-Paced')
-
 vars <- unique(BISS$variable)
 
 # Prepare the data list

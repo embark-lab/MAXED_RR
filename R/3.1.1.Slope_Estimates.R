@@ -1,7 +1,6 @@
 # load affect data
 load("data/Affect/MAXED_Affect.RData")
 
-
 tasks <- unique(Affect$task)
 variables <- unique(Affect$variable)
 participants <- unique(Affect$id)

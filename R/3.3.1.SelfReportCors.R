@@ -1,14 +1,10 @@
-library(haven)
-library(embarktools)
-library(dplyr)
-library(tidyr)
+
 library(tibble)
-library(ggplot2)
 library(stringr)
 # Load Exercise response summary data
 load("data/Exercise_Response/Exercise_Response_Summary_Data.RData")
 # load redcap data (Exercise self-report; weight)
-load("data/RedCap/MAXED_redcap_wide.2024-04-21.RData")
+load("data/RedCap/MAXED_redcap_wide.2024-05-02.RData")
 # load self-paced exercise parameter data
 load("data/Exercise_Params/Exercise_Session_Data.RData")
 # Create some variables for the exercise session data
@@ -17,7 +13,7 @@ sample_ids <- unique(exercise_response_data$id)
 load("data/Actigraph/Actigraph_Mini.RData")
 
 # Compute MaxHR, Distance, MaxWatts for each participant within each session
-Watts_SP <- ex_data_1 |> 
+Watts_SP <- ex_data|> 
   filter(variable == 'Watts', 
          condition == 'Self-Paced') |> 
   group_by(id) |> 
@@ -27,7 +23,7 @@ Watts_SP <- ex_data_1 |>
   # remove negative values
   filter(watts_max > 0)
 
-HR_SP <- ex_data_1 |> 
+HR_SP <- ex_data |> 
   filter(variable == 'Heart Rate', 
          condition == 'Self-Paced') |> 
   group_by(id) |> 
@@ -37,7 +33,7 @@ HR_SP <- ex_data_1 |>
   select(id, avg_pct_hr, max_pct_hr) |> 
   distinct()
 
-Distance_SP <- ex_data_1 |> 
+Distance_SP <- ex_data |> 
   filter(variable == 'Distance', 
          condition == 'Self-Paced') |> 
   group_by(id) |> 

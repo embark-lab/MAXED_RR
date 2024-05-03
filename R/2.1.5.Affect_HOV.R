@@ -1,13 +1,6 @@
 # Description: This script runs the multilevel models for the affect data.
 
-# Load packages
-library(tidyr)
-library(dplyr)
-library(psych) #for description
-library(ggplot2) #for plotting
-library(nlme) #for multielvel models
-library(brms) #for bayesian multilevel models\
-
+source('R/source/0.Packages.R')
 load("data/Affect/MAXED_Affect.RData")
 Affect_Variables <- c('Crummy', 'Calm', 'Enthusiastic', 'Fatigued')
 Tasks <- c('Prescribed', 'SelfPaced')
