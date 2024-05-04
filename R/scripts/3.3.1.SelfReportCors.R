@@ -1,10 +1,12 @@
-
+source("R/source/0.Packages.R")
 library(tibble)
 library(stringr)
 # Load Exercise response summary data
 load("data/Exercise_Response/Exercise_Response_Summary_Data.RData")
 # load redcap data (Exercise self-report; weight)
-load("data/RedCap/MAXED_redcap_wide.2024-05-02.RData")
+load("data/RedCap/MAXED_redcap_wide.2024-05-03.RData")
+# load redcap raw enrolled to pull resting HR
+load("data/RedCap/redcap_raw_enrolled.RData")
 # load self-paced exercise parameter data
 load("data/Exercise_Params/Exercise_Session_Data.RData")
 # Create some variables for the exercise session data
@@ -33,6 +35,31 @@ HR_SP <- ex_data |>
   select(id, avg_pct_hr, max_pct_hr) |> 
   distinct()
 
+rest_hr <- redcap_raw_enrolled |> 
+  select(record_id, starts_with('rest_hr')) |> 
+  select (-starts_with('rest_hr_c')) |> 
+  # remove rows where all rest_hr values are NA
+  filter (!is.na (rest_hr_5)) |> 
+  # create average resting heart rate which averages across all rest_hr values
+  mutate(rest_hr = rowMeans(across(starts_with('rest_hr')), na.rm = TRUE)) |> 
+  select(record_id, rest_hr) |> 
+  # rename record id to id and make it a character
+  rename(id = record_id) |>
+  mutate(id = as.character(id))
+
+# add restint heart rate to ex_data
+karvonen_hr_SP <- ex_data |> 
+  left_join(rest_hr, by = "id") |> 
+  filter(variable == 'Heart Rate', 
+         condition == 'Self-Paced') |> 
+  mutate (karvonven_hr_pct = (as.numeric(value)- as.numeric(rest_hr))*100
+          /(as.numeric(studya_max_hr) - as.numeric(rest_hr))) |> 
+  group_by(id) |> 
+  mutate(max_karvonen_hr = max(karvonven_hr_pct, na.rm = TRUE)) |> 
+  distinct(id, max_karvonen_hr) |> 
+  # remove rows wtih -Inf
+  filter(max_karvonen_hr > 0)
+
 Distance_SP <- ex_data |> 
   filter(variable == 'Distance', 
          condition == 'Self-Paced') |> 
@@ -44,12 +71,14 @@ Distance_SP <- ex_data |>
 # Combine the variables
 SP_exercise_data <- Watts_SP |> 
   full_join(HR_SP, by = "id") |>
-  full_join(Distance_SP, by = "id")
+  full_join(Distance_SP, by = "id") |> 
+  full_join(karvonen_hr_SP, by = "id")
 
 # Selection of variables from SR data
-SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'distance')
+SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'distance', 'max_karvonen_hr')
 
 # Selection of variables from MAXED RedCap data
+ED_vars <- c('EDE_global_Intake')
 
 Exercise_vars <- c('cet_total_Day_C', 
                    'eds_sum_Day_C', 
@@ -66,7 +95,7 @@ Actigraph_vars <- c('MVPA_bouted', 'LPA_bouted')
 # Filter out pilot ids
 corr_vars <- MAXED_redcap_wide |>
   filter(id %in% sample_ids) |>
-  select(id, all_of(Exercise_vars), all_of(Weight_vars)) |> 
+  select(id, all_of(ED_vars), all_of(Exercise_vars), all_of(Weight_vars)) |> 
   # recode negative weight suppression values to 0 
   mutate(wt_suppress_high_current_Intake = ifelse(wt_suppress_high_current_Intake < 0, 0, wt_suppress_high_current_Intake))
 
@@ -131,7 +160,7 @@ ED_cors_long <- exercise_response_cors_ED |>
 # only include if var1 in key_affect, key_biomarker, or key_BISS and var2 in Exercise_vars or Weight_vars
 ED_cors_long <- ED_cors_long |>
   filter((variable1 %in% key_affect_variables | variable1 %in% key_biomarker_variables | variable1 %in% key_BISS_variables ) & 
-         (variable2 %in% Exercise_vars | variable2 %in% Weight_vars | variable2 %in% SP_vars | variable2 %in% Actigraph_vars))
+         (variable2 %in% Exercise_vars | variable2 %in% ED_vars | variable2 %in% Weight_vars | variable2 %in% SP_vars | variable2 %in% Actigraph_vars))
 # remove _Day_C from variable names
 ED_cors_long$variable2 <- gsub("_Day_C", "", ED_cors_long$variable2)
 # remove _Intake from variable names
@@ -160,7 +189,7 @@ HC_cors_long <- exercise_response_cors_HC |>
 # only include if var1 in key_affect, key_biomarker, or key_BISS and var2 in Exercise_vars or Weight_vars
 HC_cors_long <- HC_cors_long |>
   filter((variable1 %in% key_affect_variables | variable1 %in% key_biomarker_variables | variable1 %in% key_BISS_variables) & 
-         (variable2 %in% Exercise_vars | variable2 %in% Weight_vars | variable2 %in% SP_vars | variable2 %in% Actigraph_vars))
+         (variable2 %in% Exercise_vars | variable2 %in% ED_vars | variable2 %in% Weight_vars | variable2 %in% SP_vars | variable2 %in% Actigraph_vars))
 # remove _Day_C from variable names
 HC_cors_long$variable2 <- gsub("_Day_C", "", HC_cors_long$variable2)
 # remove _Intake from variable names
@@ -207,13 +236,14 @@ get_cor_ci <- function(df) {
 
 # filter data for ED group
 ED_group_variables <- cor_vars2_ED |>
-  select(id, key_affect_variables, key_biomarker_variables, key_BISS_variables, Exercise_vars, Weight_vars, SP_vars, Actigraph_vars) 
+  select(id, key_affect_variables, key_biomarker_variables, key_BISS_variables, Exercise_vars, ED_vars, Weight_vars, SP_vars, Actigraph_vars) 
 
 cor_ci_sr_ed <- get_cor_ci(cor_vars2_ED %>% select(-id)) |> 
   filter((var1 %in% key_affect_variables | 
             var1 %in% key_biomarker_variables | 
             var1 %in% key_BISS_variables) & 
            (var2 %in% Exercise_vars | 
+              var2 %in% ED_vars |
               var2 %in% Weight_vars | 
               var2 %in% SP_vars | 
               var2 %in% Actigraph_vars))
@@ -227,6 +257,7 @@ cor_ci_sr_hc <- get_cor_ci(cor_vars2_HC %>% select(-id)) |>
             var1 %in% key_biomarker_variables | 
             var1 %in% key_BISS_variables) & 
            (var2 %in% Exercise_vars | 
+              var2 %in% ED_vars |
               var2 %in% Weight_vars | 
               var2 %in% SP_vars | 
               var2 %in% Actigraph_vars))

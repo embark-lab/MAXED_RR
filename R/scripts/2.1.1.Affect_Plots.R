@@ -12,9 +12,12 @@ affect_plot_ex_df <- Affect %>%
   filter(task %in% c('Prescribed', 'SelfPaced') 
          & variable != 'Percieved Exertion' 
          & condition == 'Exercise' 
-         & !id %in% pilot_ids) |> 
+         & !id %in% pilot_ids) 
+
   # recode 'SelfPaced' to 'Self-Paced'
-  mutate(task = recode(task, 'SelfPaced' = 'Self-Paced')) 
+affect_plot_ex_df <- affect_plot_ex_df %>%
+  mutate(task = dplyr::recode(task, "SelfPaced" = "Self-Paced"))
+
 affect_plot_ex_df$variable <- factor(affect_plot_ex_df$variable, levels = c("Enthusiastic", "Calm", "Crummy", "Fatigued"))
 
 
@@ -38,13 +41,15 @@ ggsave(affect_ribbon_plot, file = 'figs/2.affect/affect_plot_ex.png',height = 6,
 affect <- Affect %>%
   filter(!id %in% pilot_ids) %>%
   filter(variable != 'Percieved Exertion') |> 
-  mutate(task = recode(task, 'SelfPaced' = 'Self-Paced')) 
+  mutate(task = dplyr::recode(task, 'SelfPaced' = 'Self-Paced')) 
 
 Affect_plot_data <- process_dplot_data(df = affect, 
                    vars = unique(affect$variable),
                    file_path = 'data/Affect/Affect_data_list.RData')
 
 load(file = 'data/Affect/Affect_data_list.RData')
+
+vars <- unique(affect$variable)
 
 # Initialize list to hold data frames for each variable
 annotation_df <- list()

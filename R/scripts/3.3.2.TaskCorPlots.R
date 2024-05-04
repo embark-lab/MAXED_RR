@@ -13,9 +13,11 @@ cors_long <- cors_long |>
 cors_long <- cors_long |>
   select(-estimate)
 
-SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'distance')
+SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'distance', 'max_karvonen_hr')
 
 # Selection of variables from MAXED RedCap data
+
+ED_vars <- c('EDE_global_Intake')
 
 Exercise_vars <- c('cet_total_Day_C', 
                    'eds_sum_Day_C', 
@@ -96,7 +98,8 @@ cors_long <- add_separator_rows(cors_long, "variable2", c("=== + AFFECT ===_P",
                                                           "=== EXERTION ===_SP", 
                                                           '=== BIOMARKERS ===_SP'), "variable1", c("ED", "Control"))
 
-cors_long <- add_separator_rows(cors_long, "variable1", c("=== WEIGHT ===", 
+cors_long <- add_separator_rows(cors_long, "variable1", c("=== WEIGHT ===",
+                                                          "=== EAT DISORDER ===",
                                                           "=== EX FUNCTIONS ===", 
                                                           "=== SP EXERCISE ===", 
                                                           "=== ACTIGRAPH ==="), 
@@ -106,6 +109,7 @@ cors_long <- add_separator_rows(cors_long, "variable1", c("=== WEIGHT ===",
 # Now, order or arrange your dataframe so the separators are in the correct position
 
 # rename variables
+cors_long$variable2 <- gsub("EDE_global", "EDE Global", cors_long$variable2)
 cors_long$variable2 <- gsub("fomb_SNR_mean", "FAMB SNR", cors_long$variable2)
 cors_long$variable2 <- gsub("fomb_SPR_mean", "FAMB SPR", cors_long$variable2)
 cors_long$variable2 <- gsub("fomb_ANR_mean", "FAMB ANR", cors_long$variable2)
@@ -130,7 +134,7 @@ cors_long$Condition <- ifelse(grepl("_P", cors_long$variable1), "Prescribed", "S
 cors_long$variable1 <- gsub("_P", "", cors_long$variable1)
 cors_long$variable1 <- gsub("_SP", "", cors_long$variable1)
 
-
+ED_vars <- c('EDE Global')
 Exercise_vars <- c('CET', 
                    'EDS', 
                    'FAMB ANR',
@@ -147,7 +151,7 @@ Activity_vars <- c('MVPA',
 
 
 # Ensure 'variable2' is a factor and set the levels including separators
-cors_long$variable2 <- factor(cors_long$variable2, levels = c(Weight_vars,"=== WEIGHT ===", Exercise_vars, "=== EX FUNCTIONS ===", SP_vars, "=== SP EXERCISE ===", Activity_vars, "=== ACTIGRAPH ==="))
+cors_long$variable2 <- factor(cors_long$variable2, levels = c(Weight_vars,"=== WEIGHT ===", ED_vars, "=== EAT DISORDER ===", Exercise_vars, "=== EX FUNCTIONS ===", SP_vars, "=== SP EXERCISE ===", Activity_vars, "=== ACTIGRAPH ==="))
 
 
 key_BISS_variables <- c('Average', 
