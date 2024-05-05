@@ -1,8 +1,7 @@
 data/ folder masked from github. 
 
-Data folder strucutre for reporducibility: 
+Data folder strucutre for reproducibility: 
 
-  /data
   
     /Actigraph
       /GGIR_output   
