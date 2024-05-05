@@ -153,7 +153,7 @@ A visual depiction of biomarker response -- at both individual and group-aggrega
 #|   - "Group Aggregates" 
 #|   - "Forest Plots - Control vs. ED"
 #|   - "Forest Plots - ED Group"
-#| layout-ncol: 2
+#| layout-ncol: 1
 knitr::include_graphics("figs/4.biomarkers/Assay_results.png")
 knitr::include_graphics("figs/4.biomarkers/Assay_summary_results.png")
 knitr::include_graphics("figs/4.biomarkers/Exercise_Biomarker_ForestPlot.png")
