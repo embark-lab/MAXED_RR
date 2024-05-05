@@ -3,6 +3,7 @@ data/ folder masked from github.
 Data folder strucutre for reporducibility: 
 
   /data
+  
     /Actigraph
       /GGIR_output   
         /output_RAW
