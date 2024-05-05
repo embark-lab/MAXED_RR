@@ -2,19 +2,19 @@ data/ folder masked from github.
 
 Data folder strucutre for reporducibility: 
 
-/data
+  /data
 
-  /Actigraph
+    /Actigraph
   
-    /GGIR_output
+      /GGIR_output
     
-      /output_RAW
+        /output_RAW
       
-        /meta
+          /meta
         
-        /results
-          part5_daysummary_MM_L44.8M100.6V428.8_T5A5.csv
-          part5_personsummary_MM_L44.8M100.6V428.8_T5A5.csv
+          /results
+            part5_daysummary_MM_L44.8M100.6V428.8_T5A5.csv
+            part5_personsummary_MM_L44.8M100.6V428.8_T5A5.csv
   /Affect
     MAXED_Affect.RData
   /Assays
