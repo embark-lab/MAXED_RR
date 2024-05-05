@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -44,13 +44,7 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -59,44 +53,17 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
+
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -171,9 +138,7 @@ window.Quarto = {
   </div>
   
 
-
 </header>
-
 
 <section id="results" class="level1">
 <h1>Results</h1>
@@ -188,14 +153,10 @@ window.Quarto = {
 <section id="aim-2-variability-in-exercise-response" class="level2">
 <h2 class="anchored" data-anchor-id="aim-2-variability-in-exercise-response"><strong>Aim 2: Variability in Exercise Response</strong></h2>
 <p><em>We will characterize changes during exercise in state body image, mood, and biological markers in both ED and HC groups; we will specifically characterize mean levels of, and variability in, biobehavioral response to exercise across the ED and HC groups. We will evaluate exercise-induced changes in DA, 5-HT, BDNF, leptin, and eCB biomarkers for the Prescribed Exercise Task. Shifts in affect, body image, and biomarkers will be evaluated descriptively with measures of central tendency, skew, and variance. We will further characterize shifts in affect and body image through linear mixed effect models.</em></p>
-<p>Specific models tested are noted in <a href="#tbl-params" class="quarto-xref">Table&nbsp;1</a>.</p>
-<div id="tbl-params" class="quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: General Models and Parameters
-</figcaption>
-<div aria-describedby="tbl-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p>Specific models tested are noted in <a href="#tbl-params">Table&nbsp;1</a>.</p>
+<div id="tbl-params" class="anchored">
 <table class="table">
+<caption>Table&nbsp;1: General Models and Parameters</caption>
 <colgroup>
 <col style="width: 32%">
 <col style="width: 67%">
@@ -233,263 +194,187 @@ Table&nbsp;1: General Models and Parameters
 </tbody>
 </table>
 </div>
-</figure>
-</div>
 <p>We estimated change over time using descriptives, and also ran overall and within ED models using the <code>lme4</code> package. To evaluate heterogeneity of variance, we incorporated a random effect of group into a model with age, time, group, and group x time fixed effects. We then compared model fit of this model to the model without a random effect of group. To examine potential heterogeneity of within person, a level-1 random effect was then incorporated into the model and compared against a model with between-person (level 2) random effects only.</p>
 <section id="affect" class="level3">
 <h3 class="anchored" data-anchor-id="affect">Affect</h3>
 <section id="descriptives" class="level4">
 <h4 class="anchored" data-anchor-id="descriptives">Descriptives</h4>
-<p>Visual depiction of raw changes in affect measurements during exercise across groups is presented in <a href="#fig-AffectLoessPlot" class="quarto-xref">Figure&nbsp;1</a>. Average levels of change from 0 to 30 minutes along with variance in affect across group and condition are presented in <a href="#fig-AffectChange" class="quarto-xref">Figure&nbsp;2</a>, and all specific values for average levels of change across groups (30 min vs.&nbsp;BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental <a href="#tbl-affectChange" class="quarto-xref">Table&nbsp;2</a>. Patterns of results indicate that individuals in the ED group consistently feel more positive and less negative emotion increases across the 30 mins of exercise. Change indicators suggest (ED vs.&nbsp;HC Cohen’s d &gt; .2) that individuals with EDs may feel less ‘crummy’ and more ‘calm’, relative to controls, during exercise. Fatigue increases in the ED group also appear delayed, relative to HC.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="fig-AffectLoessPlot" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-AffectLoessPlot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/2.affect/affect_plot_ex.png" class="img-fluid figure-img" width="1200">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-AffectLoessPlot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Affect Change over Exercise - Raw Values
-</figcaption>
+<p>Visual depiction of raw changes in affect measurements during exercise across groups is presented in <strong>?@fig-AffectChangePlot</strong> (Panel A), along with levels of change from 0 to 30 minutes along with variance in affect across group and condition (Panels B and C). Specific values for average levels of change across groups (30 min vs.&nbsp;BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental <a href="#tbl-affectChange">Table&nbsp;2</a>. Patterns of results indicate that individuals in the ED group consistently feel more positive and less negative emotion increases across the 30 mins of exercise. Fatigue increases in the ED group may be delayed, relative to HC (see Panel A).</p>
+<div id="fig-AffectChange" class="cell quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-AffectChange-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/2.affect/affect_plot_ex.png" class="img-fluid figure-img" data-ref-parent="fig-AffectChange" width="1200"></p>
+<figcaption class="figure-caption">(a) Affect Change over Exercise - Raw Values</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div id="fig-AffectChange" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-AffectChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-AffectChange" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-AffectChange-1" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-AffectChange-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/2.affect/affect_change_plot.png" class="img-fluid figure-img" data-ref-parent="fig-AffectChange" width="2250">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-AffectChange-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Affective Change during Exercise (30min vs BL)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-AffectChange" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-AffectChange-2" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-AffectChange-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/2.affect/affect_variance_plot.png" class="img-fluid figure-img" data-ref-parent="fig-AffectChange" width="2250">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-AffectChange-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Affective Variance during Exercise
-</figcaption>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-AffectChange-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/2.affect/affect_change_plot.png" class="img-fluid figure-img" data-ref-parent="fig-AffectChange" width="2250"></p>
+<figcaption class="figure-caption">(b) Affective Change during Exercise (30min vs BL)</figcaption>
 </figure>
 </div>
 </div>
 </div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-AffectChange-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/2.affect/affect_variance_plot.png" class="img-fluid figure-img" data-ref-parent="fig-AffectChange" width="2250"></p>
+<figcaption class="figure-caption">(c) Affective Variance during Exercise</figcaption>
+</figure>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-AffectChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Description of Affective Changes During Exercise
-</figcaption>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Description of Affective Changes During Exercise</figcaption><p></p>
 </figure>
 </div>
 </section>
 <section id="overall-model" class="level4">
 <h4 class="anchored" data-anchor-id="overall-model">Overall Model</h4>
-<p>Model fit indices for each variable and task are presented in Supplmental <a href="#tbl-AffectModFit" class="quarto-xref">Table&nbsp;4</a>.</p>
-<p>Marginal <span class="math inline">\(R^2\)</span> values indicate that fixed effects specified in the current models are, together, accounting for 4-19% of variance in affect during the course of the task, depending on task and variable. Results from each variable in the overall model (see <a href="#tbl-params" class="quarto-xref">Table&nbsp;1</a>) are presented in Supplemental <a href="#tbl-affect" class="quarto-xref">Table&nbsp;3</a> with estimated marginal means for each timepoint presented in Supplemental <a href="#fig-affectemm" class="quarto-xref">Figure&nbsp;9</a>. Significant Time x Condition interactions indicate that, across both ED and Control groups, participants tended to feel increased fatigue and crumminess, along with reduced calmness during exercise, relative to rest.</p>
-<p>From an interpretation of the estimated marginal means, there are initial indications of ED and Control Groups responding differently to tasks. For instance, the ED group exhibited higher negative affect (feeling crummy) in the rest condition of the self-paced task (i.e.&nbsp;when asked to ingest a milkshake and then rest), which may to be mitigated by the opportunity to exercise. The ED group also showed a slower increase in fatigue, relative to the Control group, in both Prescribed and Self-paced Exercise, and a trend toward increased enthusiasm during Prescribed Exercise, relative to a decrease in Enthusiasm in the control group. These potential trends are suggested by graphical depictions; however, the current pilot trial was not sufficiently powered to detect three-way interactions, and no significant Group x Time x Condition interactions emerged in the multi-level model, suggesting that these are likely to be small-to-moderate (rather than large) effects, if they do exist.</p>
-<p>Evaluations of the between and within subject variance across groups via introducing additional random effects and comparing nested models indicated potentially higher within subject variance in fatigue and calmenss during prescribed exercise and fatigue and crumminess during self-paced exercise among the ED group, relative to the HC group (see Supplemental <a href="#tbl-affectHOV" class="quarto-xref">Table&nbsp;5</a>).</p>
+<p>Model fit indices for each variable and task are presented in Supplemental <a href="#tbl-AffectModFit">Table&nbsp;4</a>.</p>
+<p>Marginal <span class="math inline">\(R^2\)</span> values indicate that fixed effects specified in the current models are, together, accounting for 4-19% of variance in affect during the course of the task, depending on task and variable. Results from each variable in the overall model (see <a href="#tbl-params">Table&nbsp;1</a>) are presented in Supplemental <a href="#tbl-affect">Table&nbsp;3</a> with estimated marginal means for each timepoint presented in Supplemental <a href="#fig-affectemm">Figure&nbsp;6</a>. Significant Time x Condition interactions indicate that, across both ED and Control groups, participants tended to feel increased fatigue and reduced calmness during exercise, relative to rest.</p>
+<p>As noted, the current pilot trial was not sufficiently powered to detect small-to-moderate three-way interactions. One Group x Time x Condition emerged at nominal level of significance (<em>p</em> &lt; 0.05) - feeling Crummy in the Self-Paced Task. The ED group exhibited higher negative affect (feeling crummy) in the Rest condition of the Self-Paced Task (i.e.&nbsp;when asked to ingest a milkshake and then rest), which may to be mitigated by the opportunity to exercise (see <a href="#fig-affectemm">Figure&nbsp;6</a>). While not detected in this pilot sample, there is aalso possible trend toward increased enthusiasm in the ED group in the Prescribed Task, relative to a decrease in enthusiasm in the control group.</p>
+<p>Evaluations of the between and within subject variance across groups via introducing additional random effects and comparing nested models indicated potentially higher within subject variance in fatigue and calmenss during the Prescribed Task and enthusiasm and crumminess during the Self-Paced Task among the ED group, relative to the HC group (see Supplemental <a href="#tbl-affectHOV">Table&nbsp;5</a>).</p>
 </section>
 <section id="within-ed-group-model" class="level4">
 <h4 class="anchored" data-anchor-id="within-ed-group-model">Within ED Group Model</h4>
-<p>Model fit indices for each variable and task are presented in Supplmental <a href="#tbl-AffectModFit" class="quarto-xref">Table&nbsp;4</a>. Marginal <span class="math inline">\(R^2\)</span> values indicate that fixed effects specified in the current models are, together, accounting for 5-22% of variance in affect during the course of the task, depending on task and variable. Results within the ED group are presented in Supplemental <a href="#tbl-affectED" class="quarto-xref">Table&nbsp;6</a>. A Time x Condition effect emerged for calmness during the Prescribed exercise task and fatigue during the Self-Paced exercise task. Individuals with EDs reported feeling less calm and more fatigued over time during exercise vs.&nbsp;rest. Futher, older age was associated with feeling less crummy during the Self-Paced task and less Fatigued during the Prescribed task. There were no BMI or BMI x Condition effects, indicating limited impact of BMI on affect during exercise among the ED group.</p>
+<p>Model fit indices for each variable and task are presented in Supplmental <a href="#tbl-AffectModFit">Table&nbsp;4</a>. Marginal <span class="math inline">\(R^2\)</span> values indicate that fixed effects specified in the current models are, together, accounting for 5-22% of variance in affect during the course of the task, depending on task and variable. Results within the ED group are presented in Supplemental <a href="#tbl-affectED">Table&nbsp;6</a>. A Time x Condition effect emerged for calmness during the Prescribed Task and fatigue during the Self-Paced Task. Individuals with EDs reported feeling less calm and more fatigued over time during exercise vs.&nbsp;rest. Further, older age was associated with feeling less crummy during both tasks and less Fatigued during the Prescribed task. There were no BMI or BMI x Condition effects, indicating limited impact of BMI on affect during exercise among the ED group.</p>
 </section>
 </section>
 <section id="body-image" class="level3">
 <h3 class="anchored" data-anchor-id="body-image">Body Image</h3>
 <section id="descriptives-1" class="level4">
 <h4 class="anchored" data-anchor-id="descriptives-1">Descriptives</h4>
-<p>Visual depiction of raw changes in body image changes during exercise across groups is presented in <a href="#fig-BissLoessPlot" class="quarto-xref">Figure&nbsp;3</a>. Average levels of change from 0 to 30 minutes and variance in body image across groups are presented in <a href="#fig-BISSChange" class="quarto-xref">Figure&nbsp;4</a>. All specific values for average levels of change across groups (30 min vs.&nbsp;BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental <a href="#tbl-BISSChange" class="quarto-xref">Table&nbsp;7</a>. Patterns of results indicate that individuals in the ED group consistently feel worse about their bodies, although exercise does have some impact on body image. In all measures, individuals with EDs had greater improvements in body image during exericse, as compared to controls. Change indicators suggest (ED vs.&nbsp;HC Cohen’s d &gt; .2) that individuals with EDs specifically feel better about their weight, looks, and appearance, as well as feeling better on average and feeling better than the average person after self-paced exercise and better about their weight after prescribed exercise.</p>
-<div>
-
-</div>
-<div class="cell quarto-layout-panel" data-layout-ncol="1">
-<div class="quarto-layout-row">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-BissLoessPlot" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-BissLoessPlot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/3.body_image/biss_plot_exercise.png" class="img-fluid figure-img" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BissLoessPlot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Body Image Changes During Exercise
-</figcaption>
+<p>Visual depiction of raw changes in body image changes during exercise across groups is presented in <a href="#fig-BISSChange">Figure&nbsp;2</a> (Panel A), with average levels of change from 0 to 30 minutes and variance in body image across groups are presented in Panels B and C. All specific values for average levels of change across groups (30 min vs.&nbsp;BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental <a href="#tbl-BISSChange">Table&nbsp;7</a>. Patterns of results indicate that individuals in the ED group consistently feel worse about their bodies, although exercise does have some impact on body image. In all measures, the ED group had greater improvements in body image during exercise, as compared to controls. Change indicators suggest (ED vs.&nbsp;HC Cohen’s d &gt; .2) that individuals with EDs specifically feel better about their weight, looks, and appearance, as well as feeling better on average and feeling better than the average person after self-paced exercise and better about their weight after prescribed exercise.</p>
+<div id="fig-BISSChange" class="cell quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-BISSChange-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/3.body_image/biss_plot_exercise.png" class="img-fluid figure-img" data-ref-parent="fig-BISSChange" width="1500"></p>
+<figcaption class="figure-caption">(a) Body Image Change during Exercise</figcaption>
 </figure>
 </div>
 </div>
 </div>
-</div>
-<div id="fig-BISSChange" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-BISSChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-BISSChange" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-BISSChange-1" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-BISSChange-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/3.body_image/biss_change_30_exercise.png" class="img-fluid figure-img" data-ref-parent="fig-BISSChange" width="2250">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-BISSChange-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Body Image Change during Exercise (30min vs BL)
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-BISSChange" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-BISSChange-2" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-BISSChange-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/3.body_image/biss_variance_exercise.png" class="img-fluid figure-img" data-ref-parent="fig-BISSChange" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-BISSChange-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Body Image Variance during Exercise
-</figcaption>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-BISSChange-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/3.body_image/biss_change_30_exercise.png" class="img-fluid figure-img" data-ref-parent="fig-BISSChange" width="2250"></p>
+<figcaption class="figure-caption">(b) Body Image Change during Exercise (30min vs BL)</figcaption>
 </figure>
 </div>
 </div>
 </div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-BISSChange-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/3.body_image/biss_change_variance.png" class="img-fluid figure-img" data-ref-parent="fig-BISSChange" width="2250"></p>
+<figcaption class="figure-caption">(c) Body Image Variance during Exercise</figcaption>
+</figure>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BISSChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Description of Body Image Changes During Exercise
-</figcaption>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Description of Body Image Changes During Exercise</figcaption><p></p>
 </figure>
 </div>
 </section>
 <section id="overall-model-1" class="level4">
 <h4 class="anchored" data-anchor-id="overall-model-1">Overall Model</h4>
-<p>Model fit indices for each variable and task are presented in Supplmental <a href="#tbl-BISSModFit" class="quarto-xref">Table&nbsp;10</a>. Marginal <span class="math inline">\(R^2\)</span> values indicate that fixed effects specified in the current models are, together, accounting for 6-39% of variance in body image during exercise across variable and task. Results from each variable in the overall model (see <a href="#tbl-params" class="quarto-xref">Table&nbsp;1</a>) are presented in Supplemental <a href="#tbl-bodyimage" class="quarto-xref">Table&nbsp;8</a> with estimated marginal means for each timepoint presented in <a href="#fig-bissemm" class="quarto-xref">Figure&nbsp;5</a>. Group was a significant predictor of all body image items – with the HC group feeling better about their body, relative to the ED group. Higher BMI was assocaited with feeling less attractive than the average person, but there were no significant BMIxCondition effects, indicating that exercise did not influence this effect. There was an overall time effect several items during the Self-Paced condition, with individuals generally feeling better over time. There was also a Group x Time interaction for the BISS average during prescribed exercise, such that individuals in the ED group had greater increases in average BISS scores relative to controls across both exercise and rest. Two Time x Condition x Group interactions emerged. Coupled with an interpretation of marginal means, these interactions indicate that the ED group had more positive increases in feelings about their weight and overall body image during self-paced exercise, relative to the HC group. Evaluations of variance across the two groups also indicates more within person variance in the ED group, as compared to the HC group, on most BISS measurements during exercise (see Supplemental <a href="#tbl-bissHOV" class="quarto-xref">Table&nbsp;11</a>).</p>
-<div id="fig-bissemm" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-bissemm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-bissemm" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-bissemm-1" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-bissemm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/3.body_image/biss_emmeans_prescribed.png" class="img-fluid figure-img" data-ref-parent="fig-bissemm" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-bissemm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Prescribed
-</figcaption>
+<p>Model fit indices for each variable and task are presented in Supplmental <a href="#tbl-BISSModFit">Table&nbsp;10</a>. Marginal <span class="math inline">\(R^2\)</span> values indicate that fixed effects specified in the current models are, together, accounting for 6-39% of variance in body image during exercise across variable and task. Results from each variable in the overall model (see <a href="#tbl-params">Table&nbsp;1</a>) are presented in Supplemental <a href="#tbl-bodyimage">Table&nbsp;8</a> with estimated marginal means for each timepoint presented in <a href="#fig-bissemm">Figure&nbsp;3</a>. Group was a significant predictor of all body image items – with the HC group feeling better about their body, relative to the ED group. Higher BMI was associated with feeling less attractive than the average person, but there were no significant BMI x Condition effects, indicating that exercise did not influence this effect. There was an overall time effect several items during the Self-Paced Task, with individuals generally feeling better over time. There was also a Group x Time interaction for the BISS average and Weight during the Prescribe Task, such that individuals in the ED group had greater increases in average BISS scores along with feelings about their Weight relative to controls. Two Time x Condition x Group interactions emerged. Coupled with an interpretation of marginal means (<a href="#fig-bissemm">Figure&nbsp;3</a>) , these interactions indicate that the ED group had more positive increases in feelings about their weight and overall body image during self-paced exercise, relative to the HC group. Evaluations of variance across the two groups also indicates more within person variance in the ED group, as compared to the HC group, on most BISS measurements during exercise (see Supplemental <a href="#tbl-bissHOV">Table&nbsp;11</a>).</p>
+<div id="fig-bissemm" class="cell quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-bissemm-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/3.body_image/biss_emmeans_prescribed.png" class="img-fluid figure-img" data-ref-parent="fig-bissemm" width="1500"></p>
+<figcaption class="figure-caption">(a) Prescribed</figcaption>
 </figure>
 </div>
 </div>
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-bissemm" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-bissemm-2" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-bissemm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/3.body_image/biss_emmeans_selfpaced.png" class="img-fluid figure-img" data-ref-parent="fig-bissemm" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-bissemm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Self-Paced
-</figcaption>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-bissemm-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/3.body_image/biss_emmeans_selfpaced.png" class="img-fluid figure-img" data-ref-parent="fig-bissemm" width="1500"></p>
+<figcaption class="figure-caption">(b) Self-Paced</figcaption>
 </figure>
 </div>
 </div>
 </div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bissemm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: BISS Estimated Marginal Means During Exercise
-</figcaption>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3: BISS Estimated Marginal Means During Exercise</figcaption><p></p>
 </figure>
 </div>
 </section>
 <section id="within-ed-group-model-1" class="level4">
 <h4 class="anchored" data-anchor-id="within-ed-group-model-1">Within ED Group Model</h4>
-<p>Model fit indices for each variable and task within the ED group are presented in Supplmental <a href="#tbl-BISSModFit" class="quarto-xref">Table&nbsp;10</a>. Marginal <span class="math inline">\(R^2\)</span> values indicate that fixed effects specified in the current models are, together, accounting for 4-15% of variance in body image during exercise across variable and task. Results for each model within the ED group are presented in Supplemental <a href="#tbl-biss-ed" class="quarto-xref">Table&nbsp;9</a>. A Time effect emerged for Weight, Appearance, and Average score in the Prescribed Task – individuals felt better about these aspects of body image as the task progressed, regardless of condition (Exercise vs.&nbsp;Rest).</p>
+<p>Model fit indices for each variable and task within the ED group are presented in Supplmental <a href="#tbl-BISSModFit">Table&nbsp;10</a>. Marginal <span class="math inline">\(R^2\)</span> values indicate that fixed effects specified in the current models are, together, accounting for 4-15% of variance in body image during exercise across variable and task. Results for each model within the ED group are presented in Supplemental <a href="#tbl-biss-ed">Table&nbsp;9</a>. A Time effect emerged for Weight and Appearance in the Prescribed Task – individuals felt better about these aspects of body image as the task progressed, regardless of condition (Exercise vs.&nbsp;Rest).</p>
 </section>
 </section>
 <section id="biomarker-response" class="level3">
 <h3 class="anchored" data-anchor-id="biomarker-response">Biomarker Response</h3>
 <section id="descriptives-2" class="level4">
 <h4 class="anchored" data-anchor-id="descriptives-2">Descriptives</h4>
-<p>A visual depiction of biomarker response – at both individual and group-aggregate levels – is presented in <a href="#fig-biomarker" class="quarto-xref">Figure&nbsp;6</a>.</p>
-<div id="fig-biomarker" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-biomarker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-biomarker" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-biomarker-1" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-biomarker-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/4.biomarkers/Assay_results.png" class="img-fluid figure-img" data-ref-parent="fig-biomarker" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-biomarker-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Individual-Level
-</figcaption>
+<p>A visual depiction of biomarker response – at both individual and group-aggregate levels – is presented in <a href="#fig-biomarker">Figure&nbsp;4</a> (Panels A-B), along with differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise (Panels C-D).</p>
+<div id="fig-biomarker" class="cell quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-biomarker-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/4.biomarkers/Assay_results.png" class="img-fluid figure-img" data-ref-parent="fig-biomarker" width="1500"></p>
+<figcaption class="figure-caption">(a) Individual-Level</figcaption>
 </figure>
 </div>
 </div>
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-biomarker" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-biomarker-2" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-biomarker-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/4.biomarkers/Assay_summary_results.png" class="img-fluid figure-img" data-ref-parent="fig-biomarker" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-biomarker-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Group Aggregates
-</figcaption>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-biomarker-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/4.biomarkers/Assay_summary_results.png" class="img-fluid figure-img" data-ref-parent="fig-biomarker" width="1500"></p>
+<figcaption class="figure-caption">(b) Group Aggregates</figcaption>
 </figure>
 </div>
 </div>
 </div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-biomarker-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/4.biomarkers/Exercise_Biomarker_ForestPlot.png" class="img-fluid figure-img" data-ref-parent="fig-biomarker" width="1200"></p>
+<figcaption class="figure-caption">(c) Forest Plots - Control vs.&nbsp;ED</figcaption>
+</figure>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-biomarker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Biomarker Measurements Before and After Exercise and Rest
-</figcaption>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-biomarker-4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/4.biomarkers/ED_Biomarker_ForestPlot.png" class="img-fluid figure-img" data-ref-parent="fig-biomarker" width="1200"></p>
+<figcaption class="figure-caption">(d) Forest Plots - ED Group</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4: Biomarker Measurements Before and After Exercise and Rest</figcaption><p></p>
 </figure>
 </div>
 </section>
 <section id="overall-model-2" class="level4">
 <h4 class="anchored" data-anchor-id="overall-model-2">Overall Model</h4>
-<p>Differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise are presented in <a href="#fig-forest" class="quarto-xref">Figure&nbsp;7</a>. Full t-test results across both exercise and rest conditions along with tests of heterogeneity of variance in exercise condition response across the ED and Control group using each outcome approach are presented in Supplementary <a href="#tbl-BiomarkerChange" class="quarto-xref">Table&nbsp;12</a>.</p>
+<p>Full t-test results across both exercise and rest conditions along with tests of heterogeneity of variance in exercise condition response across the ED and Control group using each outcome approach are presented in Supplementary <a href="#tbl-BiomarkerChange">Table&nbsp;12</a>.</p>
 </section>
 <section id="within-ed-group-model-2" class="level4">
 <h4 class="anchored" data-anchor-id="within-ed-group-model-2">Within ED Group Model</h4>
-<p>Differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise are presented in <a href="#fig-forest" class="quarto-xref">Figure&nbsp;7</a>, and full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary <a href="#tbl-BiomarkerChangeED" class="quarto-xref">Table&nbsp;13</a>. # KS NOTE: Not putting any text here yet to explain graphs since we’ll have more biomarker data incoming ##</p>
-<div id="fig-forest" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-forest" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-forest-1" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-forest-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/4.biomarkers/Exercise_Biomarker_ForestPlot.png" class="img-fluid figure-img" data-ref-parent="fig-forest" width="1200">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-forest-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Overall
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-forest" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-forest-2" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-forest-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/4.biomarkers/ED_Biomarker_ForestPlot.png" class="img-fluid figure-img" data-ref-parent="fig-forest" width="1200">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-forest-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) ED Group
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Pre-, Post- , Raw Change, and Residualized Change Scores in biomarkers across ED vs.Control Groups
-</figcaption>
-</figure>
-</div>
+<p>Full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary <a href="#tbl-BiomarkerChangeED">Table&nbsp;13</a>. # KS NOTE: Not putting any text here yet to explain graphs since we’ll have more biomarker data incoming ##</p>
 </section>
 </section>
 </section>
@@ -499,21 +384,17 @@ Figure&nbsp;7: Pre-, Post- , Raw Change, and Residualized Change Scores in bioma
 <p><em>We will quantify Pearson correlations with 95% confidence intervals between these slope estimates, biomarker residuals, Self-Paced Task exercise parameters (e.g., average bike speed, HR), functions of exercise subscales, self-report of compulsive exercise, and EDE global scores. We will estimate Pearson correlations and 95% confidence intervals for these correlations.</em></p>
 <section id="exercise-response" class="level3">
 <h3 class="anchored" data-anchor-id="exercise-response">Exercise Response</h3>
-<p>Correlations between acute exercise response variables are presented in Supplemental <a href="#fig-exresponse" class="quarto-xref">Figure&nbsp;10</a>, and full correlation data with 95% CIs is presented in <a href="#tbl-exresponsecorrs" class="quarto-xref">Table&nbsp;14</a>. Average zero-order <span class="math inline">\(r^2\)</span> between exercise response variables in the control group is 0.14 and in the ED group is 0.19, indicating slightly stronger association between exercise response variables in the ED group, relative to the control group, with little evidence of collinearity across exercise response measures – indicating relative independence of exercise response measures across the three domains of assessment.</p>
+<p>Correlations between acute exercise response variables are presented in Supplemental <a href="#fig-exresponse">Figure&nbsp;7</a>, and full correlation data with 95% CIs is presented in <a href="#tbl-exresponsecorrs">Table&nbsp;14</a>. Average zero-order <span class="math inline">\(r^2\)</span> between exercise response variables in the control group is 0.14 and in the ED group is 0.19, indicating slightly stronger association between exercise response variables in the ED group, relative to the control group, with little evidence of collinearity across exercise response measures – indicating an independence and potential unique utility of exercise response measures across the three domains of assessment.</p>
 </section>
 <section id="correlations-with-additional-variables" class="level3">
 <h3 class="anchored" data-anchor-id="correlations-with-additional-variables">Correlations with Additional Variables</h3>
-<p>Correlations between exercise response variables with key variables of interest are presented in <a href="#fig-exresponse2" class="quarto-xref">Figure&nbsp;8</a>. Full correlation data with 95% CIs is presented in <a href="#tbl-exresponsecorrs2" class="quarto-xref">Table&nbsp;15</a>. Average zero-order <span class="math inline">\(r^2\)</span> between acute exercise response and key variables of interest in the control group is 0.08 and in the ED group is 0.1. For only those in the ED group only, greater body image response to acute exercise was associated with key variables, including higher self-reported drive for muscularity, higher social negative reinforcement, lower social positive reinforcement, lower body mass index, and lower weight suppression. Increases in feeling crummy during Prescribed exercise were associated with higher BMI and lower MVPA in the control group only, and higher social positive reinforcement for exercise in both groups. Perceived Exertion during prescribed exercise was associated with higher drive for muscularity only for the ED group, and feeling crummy during self-paced exercise was associated with lower exertion during exercise across groups. For the control group, but not the ED group, feeling crummy during self paced exercise was associated with higher BMI and lower weight suppression.</p>
+<p>Correlations between exercise response variables with key variables of interest are presented in <a href="#fig-exresponse2">Figure&nbsp;5</a>. Full correlation data with 95% CIs is presented in <a href="#tbl-exresponsecorrs2">Table&nbsp;15</a>. Average zero-order <span class="math inline">\(r^2\)</span> between acute exercise response and key variables of interest in the control group is 0.08 and in the ED group is 0.1. For only those in the ED group only, greater body image response to acute exercise was associated with key variables, including higher self-reported drive for muscularity, higher social negative reinforcement, lower social positive reinforcement, lower body mass index, and lower weight suppression. More improvement in feelings about Shape during exercise were <em>negatively</em> associated with EDE global scores for controls. Increases in feeling crummy during Prescribed exercise were associated with higher BMI and lower MVPA in the control group only, and higher social positive reinforcement for exercise in both groups. Increases in feeling Crummy during self paced exercise were negatively associated with exercise intensity and accelerometer-measured LPA for both groups, while feeling enthusiastic during Self-Paced exercise was positively associated with exercise intensity for only the ED group. For the control group, but not the ED group, feeling crummy during self paced exercise was associated with higher BMI and lower weight suppression. Perceived Exertion during prescribed exercise was associated with higher drive for muscularity only for the ED group.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-exresponse2" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-exresponse2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/5.correlations/exercise_response_correlation_matrix_separated.png" class="img-fluid figure-img" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exresponse2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Correlations between Exercise Response and Individual Difference Variables
-</figcaption>
+<div id="fig-exresponse2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/5.correlations/exercise_response_correlation_matrix_separated.png" class="img-fluid figure-img" width="1500"></p>
+<figcaption class="figure-caption">Figure&nbsp;5: Correlations between Exercise Response and Individual Difference Variables</figcaption>
 </figure>
 </div>
 </div>
@@ -527,15 +408,10 @@ Figure&nbsp;8: Correlations between Exercise Response and Individual Difference 
 <section id="affect-1" class="level3">
 <h3 class="anchored" data-anchor-id="affect-1">Affect</h3>
 <div class="cell">
-<div id="tbl-affectChange" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-affectChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Variability in Affect Changes Across Groups
-</figcaption>
-<div aria-describedby="tbl-affectChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-affectChange" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;2: Variability in Affect Changes Across Groups</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Variable</th>
@@ -1074,25 +950,17 @@ Table&nbsp;2: Variability in Affect Changes Across Groups
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <p><strong>Note</strong>. Rows with Cohen’s d &gt; .2 (or &lt; -.2) bolded to indicate potential differences between ED and HC on measures of exercise response variability.</p>
 <div class="cell">
-<div id="tbl-affect" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-affect-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Overall Model - Affect over time
-</figcaption>
-<div aria-describedby="tbl-affect-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-affect" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;3: Overall Model - Affect over time</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">variable</th>
@@ -1988,25 +1856,17 @@ Table&nbsp;3: Overall Model - Affect over time
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <p><strong>Note</strong>. Rest Condition and Control Group set as reference, ED and Exercise set as Comparison. Positive effects represent higher scores for ED Group and Exercise Condition.</p>
 <div class="cell">
-<div id="tbl-AffectModFit" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-AffectModFit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Model Fit Indicies for Affect Variables
-</figcaption>
-<div aria-describedby="tbl-AffectModFit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-AffectModFit" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;4: Model Fit Indicies for Affect Variables</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -2165,61 +2025,41 @@ Table&nbsp;4: Model Fit Indicies for Affect Variables
 </tr>
 </tbody>
 </table>
+</div>
 
 
 </div>
 </div>
-</div>
-</figure>
-</div>
-</div>
-<div id="fig-affectemm" class="quarto-layout-panel">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-affectemm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-affectemm" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-affectemm-1" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-affectemm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/2.affect/affect_emmeans_prescribed.png" class="img-fluid figure-img" data-ref-parent="fig-affectemm" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-affectemm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Prescribed
-</figcaption>
+<div id="fig-affectemm" class="cell quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-affectemm-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/2.affect/affect_emmeans_prescribed.png" class="img-fluid figure-img" data-ref-parent="fig-affectemm" width="1500"></p>
+<figcaption class="figure-caption">(a) Prescribed</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="quarto-layout-row">
-<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-affectemm" style="flex-basis: 100.0%;justify-content: flex-start;">
-<div id="fig-affectemm-2" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-affectemm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/2.affect/affect_emmeans_SelfPaced.png" class="img-fluid figure-img" data-ref-parent="fig-affectemm" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-affectemm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Self-Paced
-</figcaption>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 100.0%;justify-content: center;">
+<div id="fig-affectemm-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/2.affect/affect_emmeans_SelfPaced.png" class="img-fluid figure-img" data-ref-parent="fig-affectemm" width="1500"></p>
+<figcaption class="figure-caption">(b) Self-Paced</figcaption>
 </figure>
 </div>
 </div>
 </div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-affectemm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Estimated Marginal Means of Affect During Exercise
-</figcaption>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6: Estimated Marginal Means of Affect During Exercise</figcaption><p></p>
 </figure>
 </div>
 <div class="cell">
-<div id="tbl-affectHOV" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-affectHOV-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Heterogeneity of Variance in Affect Measurements During Exercise across Groups
-</figcaption>
-<div aria-describedby="tbl-affectHOV-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-affectHOV" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;5: Heterogeneity of Variance in Affect Measurements During Exercise across Groups</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Task</th>
@@ -2625,24 +2465,16 @@ Table&nbsp;5: Heterogeneity of Variance in Affect Measurements During Exercise a
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <div class="cell">
-<div id="tbl-affectED" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-affectED-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6: ED - Affect over time
-</figcaption>
-<div aria-describedby="tbl-affectED-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-affectED" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;6: ED - Affect over time</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">variable</th>
@@ -3218,12 +3050,9 @@ Table&nbsp;6: ED - Affect over time
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <p><strong>Note</strong>. Rest Condition and Control Group set as reference, ED and Exercise set as Comparison. Positive effects represent higher scores for ED Group and Exercise Condition</p>
@@ -3231,15 +3060,10 @@ Table&nbsp;6: ED - Affect over time
 <section id="body-image-1" class="level3">
 <h3 class="anchored" data-anchor-id="body-image-1">Body Image</h3>
 <div class="cell">
-<div id="tbl-BISSChange" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-BISSChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;7: Variability in BISS Changes Across Groups
-</figcaption>
-<div aria-describedby="tbl-BISSChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-BISSChange" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;7: Variability in BISS Changes Across Groups</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Variable</th>
@@ -3986,25 +3810,17 @@ Table&nbsp;7: Variability in BISS Changes Across Groups
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <p><strong>Note</strong>. Rows with Cohen’s d &gt; .2 (or &lt; -.2) bolded to indicate potential differences between ED and HC on measures of exercise response variability.</p>
 <div class="cell">
-<div id="tbl-bodyimage" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bodyimage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8: Overall Model - BISS over time
-</figcaption>
-<div aria-describedby="tbl-bodyimage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-bodyimage" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;8: Overall Model - BISS over time</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">variable</th>
@@ -5560,25 +5376,17 @@ Table&nbsp;8: Overall Model - BISS over time
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <p><strong>Note</strong>. Rest Condition and Control Group set as reference, ED and Exercise set as Comparison. Positive effects represent higher scores for ED Group and Exercise Condition</p>
 <div class="cell">
-<div id="tbl-biss-ed" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-biss-ed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9: ED - BISS over time
-</figcaption>
-<div aria-describedby="tbl-biss-ed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-biss-ed" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;9: ED - BISS over time</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">variable</th>
@@ -6574,25 +6382,17 @@ Table&nbsp;9: ED - BISS over time
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <p><strong>Note</strong>. Rest Condition set as reference. Positive effects represent higher scores for Exercise Condition. For Prescribed condition and ‘Weight’ outcome, model did not converge originally due to 3 individuals producing floor effects (Low initial scores with no variance). After removing these three individuals, model converged and these results are presented.</p>
 <div class="cell">
-<div id="tbl-BISSModFit" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-BISSModFit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;10: Fit Indices for BISS Models
-</figcaption>
-<div aria-describedby="tbl-BISSModFit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-BISSModFit" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;10: Fit Indices for BISS Models</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Model</th>
@@ -6859,24 +6659,16 @@ Table&nbsp;10: Fit Indices for BISS Models
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <div class="cell">
-<div id="tbl-bissHOV" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bissHOV-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;11: Heterogeneity of Variance in BISS Measurements During Exercise across Groups
-</figcaption>
-<div aria-describedby="tbl-bissHOV-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-bissHOV" class="anchored">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table&nbsp;11: Heterogeneity of Variance in BISS Measurements During Exercise across Groups</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Task</th>
@@ -7570,27 +7362,19 @@ Table&nbsp;11: Heterogeneity of Variance in BISS Measurements During Exercise ac
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 </section>
 <section id="biomarkers" class="level3">
 <h3 class="anchored" data-anchor-id="biomarkers">Biomarkers</h3>
 <div class="cell">
-<div id="tbl-BiomarkerChange" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-BiomarkerChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;12: Differences in Biomarker Measurements Across ED and HC Groups
-</figcaption>
-<div aria-describedby="tbl-BiomarkerChange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-BiomarkerChange" class="anchored">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Table&nbsp;12: Differences in Biomarker Measurements Across ED and HC Groups</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Assay</th>
@@ -8021,24 +7805,16 @@ Table&nbsp;12: Differences in Biomarker Measurements Across ED and HC Groups
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <div class="cell">
-<div id="tbl-BiomarkerChangeED" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-BiomarkerChangeED-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;13: Paired-sample t-tests for differences between Pre- and Post- Exercise Biomarkers in the ED group
-</figcaption>
-<div aria-describedby="tbl-BiomarkerChangeED-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-BiomarkerChangeED" class="anchored">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Table&nbsp;13: Paired-sample t-tests for differences between Pre- and Post- Exercise Biomarkers in the ED group</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Assay</th>
@@ -8121,12 +7897,9 @@ Table&nbsp;13: Paired-sample t-tests for differences between Pre- and Post- Exer
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 </section>
@@ -8134,28 +7907,19 @@ Table&nbsp;13: Paired-sample t-tests for differences between Pre- and Post- Exer
 <h3 class="anchored" data-anchor-id="exercise-response-correlations">Exercise Response Correlations</h3>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-exresponse" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-exresponse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/5.correlations/exercise_response_correlation_matrix.png" class="img-fluid figure-img" width="1500">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exresponse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Exercise Response Correlations among Control and ED groups
-</figcaption>
+<div id="fig-exresponse" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="figs/5.correlations/exercise_response_correlation_matrix.png" class="img-fluid figure-img" width="1500"></p>
+<figcaption class="figure-caption">Figure&nbsp;7: Exercise Response Correlations among Control and ED groups</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div id="tbl-exresponsecorrs" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-exresponsecorrs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;14: Correlations (and 95% CI) Between Exercise Response Variables
-</figcaption>
-<div aria-describedby="tbl-exresponsecorrs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-exresponsecorrs" class="anchored">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Table&nbsp;14: Correlations (and 95% CI) Between Exercise Response Variables</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th"></th>
@@ -8601,25 +8365,17 @@ Table&nbsp;14: Correlations (and 95% CI) Between Exercise Response Variables
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 <p>Note. Correlations are presented with 95% confidence intervals. ED Group below the diagiagonal, HC Group above the diagonal.</p>
 <div class="cell">
-<div id="tbl-exresponsecorrs2" class="cell quarto-float anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-exresponsecorrs2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and Key Variables
-</figcaption>
-<div aria-describedby="tbl-exresponsecorrs2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div>
-<table class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<div id="tbl-exresponsecorrs2" class="anchored">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and Key Variables</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">group</th>
@@ -8898,7 +8654,7 @@ Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and
 <tr class="even">
 <td style="text-align: left;">Control</td>
 <td style="text-align: left;">SelfPaced</td>
-<td style="text-align: left;">max_karvonen_hr</td>
+<td style="text-align: left;">karvonen_max_intense</td>
 <td style="text-align: left;">NULL</td>
 <td style="text-align: left;">0.28 (-0.20, 0.65)</td>
 <td style="text-align: left;">0.19 (-0.29, 0.59)</td>
@@ -9034,7 +8790,7 @@ Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and
 <tr class="even">
 <td style="text-align: left;">Control</td>
 <td style="text-align: left;">SelfPaced</td>
-<td style="text-align: left;">max_karvonen_hr</td>
+<td style="text-align: left;">karvonen_max_intense</td>
 <td style="text-align: left;">*</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>
@@ -9306,7 +9062,7 @@ Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and
 <tr class="even">
 <td style="text-align: left;">Control</td>
 <td style="text-align: left;">Prescribed</td>
-<td style="text-align: left;">max_karvonen_hr</td>
+<td style="text-align: left;">karvonen_max_intense</td>
 <td style="text-align: left;">NULL</td>
 <td style="text-align: left;">-0.19 (-0.59, 0.29)</td>
 <td style="text-align: left;">-0.07 (-0.51, 0.40)</td>
@@ -9680,7 +9436,7 @@ Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and
 <tr class="even">
 <td style="text-align: left;">ED</td>
 <td style="text-align: left;">SelfPaced</td>
-<td style="text-align: left;">max_karvonen_hr</td>
+<td style="text-align: left;">karvonen_max_intense</td>
 <td style="text-align: left;">*</td>
 <td style="text-align: left;">0.57 (0.10, 0.83)</td>
 <td style="text-align: left;">0.51 (0.03, 0.81)</td>
@@ -9748,7 +9504,7 @@ Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and
 <tr class="even">
 <td style="text-align: left;">ED</td>
 <td style="text-align: left;">SelfPaced</td>
-<td style="text-align: left;">max_karvonen_hr</td>
+<td style="text-align: left;">karvonen_max_intense</td>
 <td style="text-align: left;">NULL</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>
@@ -10071,7 +9827,7 @@ Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and
 <tr class="odd">
 <td style="text-align: left;">ED</td>
 <td style="text-align: left;">Prescribed</td>
-<td style="text-align: left;">max_karvonen_hr</td>
+<td style="text-align: left;">karvonen_max_intense</td>
 <td style="text-align: left;">NULL</td>
 <td style="text-align: left;">0.23 (-0.30, 0.65)</td>
 <td style="text-align: left;">0.11 (-0.41, 0.57)</td>
@@ -10155,12 +9911,9 @@ Table&nbsp;15: Correlations (and 95% CI) Between Exercise Response Variables and
 </tr>
 </tbody>
 </table>
+</div>
 
 
-</div>
-</div>
-</div>
-</figure>
 </div>
 </div>
 
@@ -10248,27 +10001,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -10278,17 +10014,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -10300,130 +10027,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -10467,7 +10071,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -10493,32 +10096,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -10579,7 +10156,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 

@@ -55,10 +55,10 @@ karvonen_hr_SP <- ex_data |>
   mutate (karvonven_hr_pct = (as.numeric(value)- as.numeric(rest_hr))*100
           /(as.numeric(studya_max_hr) - as.numeric(rest_hr))) |> 
   group_by(id) |> 
-  mutate(max_karvonen_hr = max(karvonven_hr_pct, na.rm = TRUE)) |> 
-  distinct(id, max_karvonen_hr) |> 
+  mutate(karvonen_max_intense = max(karvonven_hr_pct, na.rm = TRUE)) |> 
+  distinct(id, karvonen_max_intense) |> 
   # remove rows wtih -Inf
-  filter(max_karvonen_hr > 0)
+  filter(karvonen_max_intense > 0)
 
 Distance_SP <- ex_data |> 
   filter(variable == 'Distance', 
@@ -75,7 +75,7 @@ SP_exercise_data <- Watts_SP |>
   full_join(karvonen_hr_SP, by = "id")
 
 # Selection of variables from SR data
-SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'distance', 'max_karvonen_hr')
+SP_vars <- c( 'avg_pct_hr', 'max_pct_hr', 'karvonen_max_intense', 'distance')
 
 # Selection of variables from MAXED RedCap data
 ED_vars <- c('EDE_global_Intake')

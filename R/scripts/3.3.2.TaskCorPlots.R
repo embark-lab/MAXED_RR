@@ -13,7 +13,7 @@ cors_long <- cors_long |>
 cors_long <- cors_long |>
   select(-estimate)
 
-SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'distance', 'max_karvonen_hr')
+SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'karvonen_max_intense', 'distance')
 
 # Selection of variables from MAXED RedCap data
 
@@ -229,7 +229,7 @@ p
 # Save the plot
 
 
-save(p, file = "exercise_response_keyvar_correlation_plot.RData")
+save(p, file = "figs/5.correlations/exercise_response_keyvar_correlation_plot.RData")
 ggsave(p, file = "figs/5.correlations/exercise_response_correlation_matrix_separated.png", width = 10, height = 6, dpi = 300)
 
 # save the new cors_long data frame
