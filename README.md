@@ -3,10 +3,15 @@ data/ folder masked from github.
 Data folder strucutre for reporducibility: 
 
 /data
+
   /Actigraph
+  
     /GGIR_output
+    
       /output_RAW
+      
         /meta
+        
         /results
           part5_daysummary_MM_L44.8M100.6V428.8_T5A5.csv
           part5_personsummary_MM_L44.8M100.6V428.8_T5A5.csv
