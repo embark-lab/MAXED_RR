@@ -1,6 +1,6 @@
 data/ folder masked from github. 
 
-Data folder strucutre for reproducibility: 
+Data folder structure for reproducibility: 
 
   
     /Actigraph
