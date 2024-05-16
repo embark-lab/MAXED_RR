@@ -1,1 +1,2 @@
 load("/Users/kschaumberg/Library/CloudStorage/Dropbox/MAXED/Registered_Report/results/affect_models.RData")
+load("/Volumes/kschaumberg/MAXED/Registered_Report/results/cor_ci_sr.RData")
