@@ -55,7 +55,7 @@ Affective change across group and condition are presented in @fig-ChangePlots (P
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #| label: fig-ChangePlots
-#| fig-cap: "Description of Body Image Changes During Exercise" 
+#| fig-cap: "Description of Body Image and Affect Changes During Exercise" 
 #| fig-subcap:
 #|   - "Affective Change during Exercise (30min vs BL)"
 #|   - "Body Image Change during Exercise (30min vs BL)"
