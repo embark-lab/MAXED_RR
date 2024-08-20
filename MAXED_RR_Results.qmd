@@ -13,7 +13,26 @@ library(kableExtra)
 
 ## Preliminary Analysis
 
-*We will provide sample descriptive statistics for both ED and HC groups on variables of interest (e.g., age, ED diagnosis, BMI, compulsive exercise, Eating Disorder Examination* subscales). Comparison of affect ratings before and after milkshake ingestion will also serve as a manipulation check to clarify the degree to which negative affect (specifically anxiety) increased as a result of this challenge.
+*We will provide sample descriptive statistics for both ED and HC groups on variables of interest (e.g., age, ED diagnosis, BMI, compulsive exercise, Eating Disorder Examination subscales).*
+
+Descriptive statistics for the sample are presented in @tbl-descriptives-1 and @tbl-descriptives-2.
+
+```{r tbl-descriptives}
+#| label: tbl-descriptives
+#| tbl-cap: Differences in Biomarker Measurements Across ED and HC Groups
+#| tbl-subcap:
+#| - "Demographic and Key Baseline Variables Across Group"
+
+load("results/demo_table.RData")
+load("results/preaim_table.RData")
+
+# join tables by binding rows to preaim table -- make NA if column doesn't exist
+demo_table <- demo_table |>
+  full_join(preaim_table, by = "Variable")
+
+```
+
+We also compared affect ratings and disordered eating urges before and after milkshake ingestion on Day A to clarify the degree to which these variables were impacted my milkshake ingestion. Results are presented in Supplemental @tbl-milkshake. Individuals with EDs reported feeling increased enthusiasm and decreases in fatigue after milkshake ingestion, along with increased urges to restrict, vomit, and exercise.
 
 ## **Aim 1: Feasiblity**
 
@@ -51,7 +70,7 @@ We estimated change over time using descriptives, and also ran overall and withi
 
 #### Descriptives
 
-Affective change across group and condition are presented in @fig-ChangePlots (Panel A). Visual depiction of raw changes in affect measurements during exercise across groups is presented in Supplemental @fig-AffectChange along with variance in affect across group and condition. Specific values for average levels of change across groups (30 min vs. BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental @tbl-affectChange. Patterns of results indicate that individuals in the ED group consistently feel more positive and less negative emotion increases across the 30 mins of exercise. Fatigue increases in the ED group may be delayed, relative to HC (see Panel A).
+Affective change across group and condition are presented in @fig-ChangePlots-1. Visual depiction of raw changes in affect measurements during exercise across groups is presented in Supplemental @fig-AffectChange along with variance in affect across group and condition. Specific values for average levels of change across groups (30 min vs. BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental @tbl-affectChange. Patterns of results indicate that individuals in the ED group consistently feel more positive and less negative emotion increases across the 30 mins of exercise. Fatigue increases in the ED group may be delayed, relative to HC (see Panel A).
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #| label: fig-ChangePlots
@@ -93,7 +112,7 @@ Model fit indices for each variable and task are presented in Supplmental @tbl-A
 
 #### Descriptives
 
-Average levels of change from 0 to 30 minutes is presented in @fig-ChangePlots (Panel B). Visual depiction of raw changes in body image changes during exercise across groups is presented in Supplemental @fig-BISSChange, along with variance in body image across groups are presented. All specific values for average levels of change across groups (30 min vs. BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental @tbl-BISSChange. Patterns of results indicate that individuals in the ED group consistently feel worse about their bodies, although exercise does have some impact on body image. In all measures, the ED group had greater improvements in body image during exercise, as compared to controls. Change indicators suggest (ED vs. HC Cohen's d \> .2) that individuals with EDs specifically feel better about their weight, looks, and appearance, as well as feeling better on average and feeling better than the average person after self-paced exercise and better about their weight after prescribed exercise.
+Average levels of change from 0 to 30 minutes is presented in @fig-ChangePlots-2. Visual depiction of raw changes in body image changes during exercise across groups is presented in Supplemental @fig-BISSChange, along with variance in body image across groups are presented. All specific values for average levels of change across groups (30 min vs. BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental @tbl-BISSChange. Patterns of results indicate that individuals in the ED group consistently feel worse about their bodies, although exercise does have some impact on body image. In all measures, the ED group had greater improvements in body image during exercise, as compared to controls. Change indicators suggest (ED vs. HC Cohen's d \> .2) that individuals with EDs specifically feel better about their weight, looks, and appearance, as well as feeling better on average and feeling better than the average person after self-paced exercise and better about their weight after prescribed exercise.
 
 #### Overall Model
 
@@ -215,6 +234,17 @@ knitr::include_graphics("figs/5.correlations/3.3.4.Corr_Plot_Mini.png")
 # Supplement
 
 All supplemental tables are available in the [Supplemental Tables Excel Workbook](Supplemental_Tables.xlsx). Supplemental tables and figures are also presented below
+
+### Preliminary Analysis
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-milkshake
+#| tbl-cap: "PAAS, FCQ, and BISS Ratings Before and After Milkshake Ingestion"
+
+load("results/milkshake_table.RData")
+
+knitr::kable(milkshake_results_a)
+```
 
 ### Affect
 
@@ -626,12 +656,16 @@ corrs_wide_all <- corrs_wide_all |>
 knitr::kable(corrs_wide_all)
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
 
 # Save all of the supplemental tables into an excel sheet called supplement
 library(openxlsx)
 
 wb <- createWorkbook()
+
+addWorksheet(wb, "ST1-postshake_ttable")
+writeData(wb, "ST1-postshake_ttable", milkshake_results_a, rowNames = FALSE)
+
 addWorksheet(wb, "ST1-Affect_Descriptives")
 writeData(wb, "ST1-Affect_Descriptives", affect_descriptives, rowNames = FALSE)
 
