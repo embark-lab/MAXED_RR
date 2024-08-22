@@ -3,7 +3,7 @@ title: "MAXED Registered Report Results"
 format: html
 ---
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(dplyr)
 library(knitr)
 library(kableExtra)
@@ -15,20 +15,67 @@ library(kableExtra)
 
 *We will provide sample descriptive statistics for both ED and HC groups on variables of interest (e.g., age, ED diagnosis, BMI, compulsive exercise, Eating Disorder Examination subscales).*
 
-Descriptive statistics for the sample are presented in @tbl-descriptives-1 and @tbl-descriptives-2.
+Descriptive statistics for the sample are presented in @tbl-descriptives. Overall, the ED and HC group were well matched on key demographic variables as well as free-living activity levels. The ED group had higher levels of disordered eating symptoms and higher CET Total, CET Weight Control, and CET Avoidance scores compared to the HC group.
 
-```{r tbl-descriptives}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #| label: tbl-descriptives
-#| tbl-cap: Differences in Biomarker Measurements Across ED and HC Groups
-#| tbl-subcap:
-#| - "Demographic and Key Baseline Variables Across Group"
+#| tbl-cap: Descriptive Statistics Across Eating Disorder (ED) and Healthy Control (HC) Groups
 
-load("results/demo_table.RData")
-load("results/preaim_table.RData")
+load("results/demo_vars.RData")
+rows_to_bold <- which(demo_vars_1$p < 0.05) 
 
-# join tables by binding rows to preaim table -- make NA if column doesn't exist
-demo_table <- demo_table |>
-  full_join(preaim_table, by = "Variable")
+# make p-value in scientific notation, with 2 decimals
+demo_vars_1$p <- formatC(demo_vars_1$p, format = "e", digits = 2)
+
+
+knitr::kable(demo_vars_1) |> 
+   row_spec(rows_to_bold, bold = TRUE) %>%  # Make specific rows bold
+ # kable(table.attr = 'data-quarto-disable-processing="true"') %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "striped") |>
+  group_rows(
+    group_label = "SEXUAL IDENTITY (N)",
+    start_row = 1,
+    end_row = 5
+  ) |>
+  group_rows(
+    group_label = "GENDER IDENTITY (N)",
+    start_row = 6,
+    end_row = 9
+  ) |>
+  group_rows(
+    group_label = "ETHNICITY (N)",
+    start_row = 10,
+    end_row = 16) |>
+  group_rows(
+    group_label = "AGE - Mean (SD)",
+    start_row = 17,
+    end_row = 17
+  ) |>
+group_rows(
+  group_label = "WEIGHT - Mean (SD)",
+  start_row = 18,
+  end_row = 19
+) |>
+  group_rows(
+    group_label = "ED SYMPTOMS - Mean(SD)",
+    start_row = 20,
+    end_row = 24
+  ) |>
+  group_rows(
+    group_label = "ACTIGRAPH - Mean (SD)",
+    start_row = 25,
+    end_row = 26
+  ) |>
+    group_rows(
+      group_label = "SP Exercise - Mean (SD)",
+      start_row = 27,
+      end_row = 30
+    ) |>
+  group_rows(
+    group_label = "EX FUNCTIONS",
+    start_row = 31,
+    end_row = 42)
+
 
 ```
 
@@ -37,6 +84,12 @@ We also compared affect ratings and disordered eating urges before and after mil
 ## **Aim 1: Feasiblity**
 
 *We will confirm feasibility of our exercise-based tasks via a) study dropout at all timepoints, b) adverse events, c) completion rates of exercise task on Day B, d) completion rates of milkshake task across ED and HC participants. Over the course of the study, we expect both ED and HC groups to meet thresholds of \< 20% dropout, zero adverse events, and \> 80% task completion.*
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+load("results/Aim_1_results.RData")
+```
+
+Full study flow is outlined in Supplemental @tbl-aim1. There were `r total_screenings` total screenings completed. Of these, `r ineligible_screens` were ineligible and `r intake_total` went on to complete intakes. Of those who were eligible after intake, `r sum(intake_drop)` chose not to enroll, and the most common reason for not enrolling was cited as time constraints. Ultimately, `r attendance_table[[4]]`/40 individuals who enrolled in the study completed all study visits. There were no serious adverse events during the study. One participant became lightheaded after blood draw, but this resolved quickly with rest. `r day_b_ex_complete`% of participants who engaged in the Day B exercise task completed the task. On Day both days A and C, `r round(milk_complete_a, 0)`% participants completed drinking the milkshake, with one participant not completing the shake on each day. This was a different participant on Day A vs. Day C. In once instance, the participant finished 31% of the milkshake, in the other instance, the participant finished 63% of the milkshake.
 
 ## **Aim 2: Variability in Exercise Response**
 
@@ -61,7 +114,6 @@ Specific models tested are noted in @tbl-params.
 |                                                              |                                                                                                                                |
 |                                                              | weights = varIdent(form = \~ 1 \| Group)                                                                                       |
 +--------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------+
-
 : General Models and Parameters {#tbl-params}
 
 We estimated change over time using descriptives, and also ran overall and within ED models using the `lme4` package. To evaluate heterogeneity of variance, we incorporated a random effect of group into a model with age, time, group, and group x time fixed effects. We then compared model fit of this model to the model without a random effect of group. To examine potential heterogeneity of within person, a level-1 random effect was then incorporated into the model and compared against a model with between-person (level 2) random effects only.
@@ -70,7 +122,7 @@ We estimated change over time using descriptives, and also ran overall and withi
 
 #### Descriptives
 
-Affective change across group and condition are presented in @fig-ChangePlots-1. Visual depiction of raw changes in affect measurements during exercise across groups is presented in Supplemental @fig-AffectChange along with variance in affect across group and condition. Specific values for average levels of change across groups (30 min vs. BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental @tbl-affectChange. Patterns of results indicate that individuals in the ED group consistently feel more positive and less negative emotion increases across the 30 mins of exercise. Fatigue increases in the ED group may be delayed, relative to HC (see Panel A).
+Affective change across group and condition are presented in @fig-ChangePlots-1. Visual depiction of raw changes in affect measurements during exercise across groups is presented in Supplemental @fig-AffectChange along with variance in affect across group and condition. Specific values for average levels of change across groups (30 min vs. BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental @tbl-affectChange. Patterns of results indicate that individuals in the ED group consistently feel more positive and less negative emotion increases across the 30 mins of exercise. Fatigue increases in the ED group may be delayed, relative to HC.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #| label: fig-ChangePlots
@@ -78,7 +130,7 @@ Affective change across group and condition are presented in @fig-ChangePlots-1.
 #| fig-subcap:
 #|   - "Affective Change during Exercise (30min vs BL)"
 #|   - "Body Image Change during Exercise (30min vs BL)"
-#| layout-ncol: 2
+#| layout-ncol: 1
 #| 
 knitr::include_graphics("figs/2.affect/affect_change_plot.png")
 knitr::include_graphics("figs/3.body_image/biss_change_30_exercise.png")
@@ -233,18 +285,36 @@ knitr::include_graphics("figs/5.correlations/3.3.4.Corr_Plot_Mini.png")
 
 # Supplement
 
-All supplemental tables are available in the [Supplemental Tables Excel Workbook](Supplemental_Tables.xlsx). Supplemental tables and figures are also presented below
+Supplemental tables are available in the [Supplemental Tables Excel Workbook](Supplemental_Tables.xlsx). Supplemental tables and figures are also presented below
 
 ### Preliminary Analysis
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 #| label: tbl-milkshake
-#| tbl-cap: "PAAS, FCQ, and BISS Ratings Before and After Milkshake Ingestion"
+#| tbl-cap: "PAAS Urges, FCQ, and BISS Ratings Before and After Milkshake Ingestion"
 
 load("results/milkshake_table.RData")
+rows_to_bold <- which(milkshake_results_a$`p-value` < 0.05) 
 
-knitr::kable(milkshake_results_a)
+knitr::kable(milkshake_results_a) |> 
+  row_spec(rows_to_bold, bold = TRUE) 
+
 ```
+
+### Study Flow 
+
+| **Inflow/Retention**                            | Outflow                                  | Reason                                       |
+|-------------------------------------------------|------------------------------------------|----------------------------------------------|
+| **Eligibility Screenings (n = `r total_screenings`)** | Ineligible screenings (n = `r ineligible_screens + 8`) | Duplicates (n = 8)<br> Outside of age range (n = `r ineligible_reasons[[1]]`)<br> Binge eating reported (n = `r ineligible_reasons[[2]]`)<br> Unable to attend in-person visits (n = `r ineligible_reasons[[3]]`)<br> Medical Exclusion (n = `r ineligible_reasons[[4]]`)<br> Blood Draw (n = `r ineligible_reasons[[5]]`)<br> Other (n = `r ineligible_reasons[[6]]`) |
+| **Intake (n = `r sum(intake_dx)`)**             | Did not schedule Intake (n = `r 230-sum(ineligible_reasons)-sum(intake_dx)`) | &nbsp;                                        |
+| &nbsp;                                          | Ineligible intakes (n = `r sum(intake_ineligible_reasons)`) | Binge Eating Disorder (n = `r intake_ineligible_reasons[[1]]`)<br> ARFID (n = `r intake_ineligible_reasons[[2]]`)<br> Bipolar 1 Disorder (n = `r intake_ineligible_reasons[[3]]`)<br> Other (n = `r intake_ineligible_reasons[[4]]`) |
+| &nbsp;                                          | Did not enroll (n = `r sum(intake_drop)` - HC: `r dropout_table[[1]]`, ED: `r sum(dropout_table[[2]], dropout_table[[3]], dropout_table[[4]])`) | No reason provided (n = `r intake_drop[[1]]`)<br> Time constraint (n = `r intake_drop[[2]]`)<br> Unforeseen circumstances (n = `r intake_drop[[3]]`) |
+| **Day A (n = `r attendance_table[[1]]`)**       |                                          | &nbsp;                                        |
+| **Day B (n = `r attendance_table[[2]]`)**       |                                          | &nbsp;                                        |
+| **Day C (n = `r attendance_table[[3]]`)**       | Visit dropout (n = `r 40-attendance_table[[3]]`) | No reason provided (n = 1)                    |
+| **Completed Study (n = `r attendance_table[[4]]` - HC: 20, ED: 19)** |                                          | &nbsp;                                        |
+: **Study Flow** {#tbl-aim1}
+
 
 ### Affect
 
@@ -666,42 +736,42 @@ wb <- createWorkbook()
 addWorksheet(wb, "ST1-postshake_ttable")
 writeData(wb, "ST1-postshake_ttable", milkshake_results_a, rowNames = FALSE)
 
-addWorksheet(wb, "ST1-Affect_Descriptives")
-writeData(wb, "ST1-Affect_Descriptives", affect_descriptives, rowNames = FALSE)
+addWorksheet(wb, "ST3-Affect_Descriptives")
+writeData(wb, "ST3-Affect_Descriptives", affect_descriptives, rowNames = FALSE)
 
 # Add more sheets for other dataframes
-addWorksheet(wb, "ST2-Affect_Models")
-writeData(wb, "ST2-Affect_Models", affect_models_summary, rowNames = FALSE)
+addWorksheet(wb, "ST4-Affect_Models")
+writeData(wb, "ST4-Affect_Models", affect_models_summary, rowNames = FALSE)
 
-addWorksheet(wb, "ST3-Affect_ModelFit_Indices")
-writeData(wb, "ST3-Affect_ModelFit_Indices", AMFI, rowNames = FALSE)
+addWorksheet(wb, "ST5-Affect_ModelFit_Indices")
+writeData(wb, "ST5-Affect_ModelFit_Indices", AMFI, rowNames = FALSE)
 
-addWorksheet(wb, "ST4-Affect_HOV")
-writeData(wb, "ST4-Affect_HOV", affect_hov_results, rowNames = FALSE)
+addWorksheet(wb, "ST6-Affect_HOV")
+writeData(wb, "ST6-Affect_HOV", affect_hov_results, rowNames = FALSE)
 
-addWorksheet(wb, "ST5-Affect_Models_ED")
-writeData(wb, "ST5-Affect_Models_ED", affect_models_ed_summary, rowNames = FALSE)
+addWorksheet(wb, "ST7-Affect_Models_ED")
+writeData(wb, "ST7-Affect_Models_ED", affect_models_ed_summary, rowNames = FALSE)
 
-addWorksheet(wb, "ST6-BISS_Models")
-writeData(wb, "ST6-BISS_Models", biss_models_summary, rowNames = FALSE)
+addWorksheet(wb, "ST8-BISS_Models")
+writeData(wb, "ST8-BISS_Models", biss_models_summary, rowNames = FALSE)
 
-addWorksheet(wb, "ST7-BISS_ModelFit_Indices")
-writeData(wb, "ST7-BISS_ModelFit_Indices", BMFI, rowNames = FALSE)
+addWorksheet(wb, "ST9-BISS_ModelFit_Indices")
+writeData(wb, "ST9-BISS_ModelFit_Indices", BMFI, rowNames = FALSE)
 
-addWorksheet(wb, "ST8-BISS_HOV")
-writeData(wb, "ST8-BISS_HOV", biss_hov_results, rowNames = FALSE)
+addWorksheet(wb, "ST10-BISS_HOV")
+writeData(wb, "ST10-BISS_HOV", biss_hov_results, rowNames = FALSE)
 
-addWorksheet(wb, "ST9-BISS_Models_ED")
-writeData(wb, "ST9-BISS_Models_ED", biss_models_ed_summary, rowNames = FALSE)
+addWorksheet(wb, "ST11-BISS_Models_ED")
+writeData(wb, "ST11-BISS_Models_ED", biss_models_ed_summary, rowNames = FALSE)
 
-addWorksheet(wb, "ST10-BiomarkerChange")
-writeData(wb, "ST10-BiomarkerChange", supplement_ttable, rowNames = FALSE)
+addWorksheet(wb, "ST12-BiomarkerChange")
+writeData(wb, "ST12-BiomarkerChange", supplement_ttable, rowNames = FALSE)
 
-addWorksheet(wb, "ST11-BiomarkerChange_ED")
-writeData(wb, "ST11-BiomarkerChange_ED", ed_biomarkers, rowNames = FALSE)
+addWorksheet(wb, "ST13-BiomarkerChange_ED")
+writeData(wb, "ST13-BiomarkerChange_ED", ed_biomarkers, rowNames = FALSE)
 
-addWorksheet(wb, "ST12-ExResponseCorrelations")
-writeData(wb, "ST12-ExResponseCorrelations", cor_ci_results_wide, rowNames = FALSE)
+addWorksheet(wb, "ST14-ExResponseCorrelations")
+writeData(wb, "ST14-ExResponseCorrelations", cor_ci_results_wide, rowNames = FALSE)
 
 
 # Save the workbook

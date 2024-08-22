@@ -166,9 +166,7 @@ results_df <- do.call(rbind, results)
 
 # round t value and p value to two decimal places
 results_df <- results_df |>
-  mutate(T_value = round(T_value, 2),
-         P_value = round(P_value, 2))
-
+  mutate(T_value = sprintf("%.2f", T_value))
 # renaming variables 
 results_df$Variable[results_df$Variable== 'EDE_global_Intake'] <- 'EDE Global'
 results_df$Variable[results_df$Variable== 'EDE_restraint_mean_Intake'] <- 'EDE Restraint Subscale'
@@ -305,7 +303,10 @@ preaim_table <- preaim_table |>
 preaim_table <- preaim_table %>%
   pivot_longer(cols = -group, names_to = "variable", 
                values_to = "value") %>%
-  pivot_wider(names_from = group, values_from = value)
+  pivot_wider(names_from = group, values_from = value) |> 
+  # round 'ED' and 'HC' columns to 2 decimal points
+  mutate(across(starts_with("ED"), ~round(., 2)),
+         across(starts_with("HC"), ~round(., 2))) 
 
 preaim_table <- preaim_table %>%
   mutate(Measure = case_when(str_detect(variable, "Mean") ~ "Mean",
@@ -352,121 +353,136 @@ preaim_table <- preaim_table |>
   rename ('Cohen\'s d' = Cohen_d) |> 
   rename (p = P_value) |>
   #italicize t value
-  rename('t value' = T_value) 
-
-library(kableExtra)
-# save preaim_table
-table <- kable(preaim_table, "html") |> 
-  kable_styling(full_width = FALSE, bootstrap_options = "striped") |>
-  group_rows(
-    group_label = "ACTIGRAPH", 
-    start_row = 1, 
-    end_row = 2
-  ) |>
-  group_rows(
-    group_label = "SP EXERCISE", 
-    start_row = 3, 
-    end_row = 6
-  ) |> 
-  group_rows(
-    group_label = "EX FUNCTIONS", 
-    start_row = 7, 
-    end_row = 18
-  ) |>
-  group_rows(
-    group_label = "EAT DISORDER", 
-    start_row = 19, 
-    end_row = 23
-  ) |>
-  group_rows(
-    group_label = "WEIGHT", 
-    start_row = 24, 
-    end_row = 25
-  )
-
-save(preaim_table, file = "results/preaim_table.RData")
-save_kable(table, "results/preaim_table.html")
+  rename('t value' = T_value)  
 
 
-demo_vars <- redcap_raw_enrolled |>
-  select(record_id,study_visit, group,dcf_research_sexual_identity, dcf_research_gender, dcf_race___1, dcf_race___2, dcf_race___3, dcf_race___4, dcf_race___5, dcf_race___6, dcf_race___8, dcf_race___9, dcf_race___10, dcf_race___11) |>
+
+
+#Create age variable based on birthdate and intake date 
+age_vars_2 <- redcap_raw_enrolled |>
+  select(record_id, group, dcf_age,dcf_date,study_visit) |>
   filter(study_visit == 'Intake') |>
-  rename(id = record_id) |> 
-  group_by(group) |>
-  mutate("Asexual" = sum(case_when(
-    dcf_research_sexual_identity == 4 ~ 1,TRUE ~ 0))) |> 
-  mutate ("Bisexual/Pansexual" = sum(case_when(dcf_research_sexual_identity == 2 ~ 1,TRUE ~ 0))) |> 
-  mutate ("Lesbian/Gay" = sum(case_when(dcf_research_sexual_identity == 1 ~ 1,TRUE ~ 0))) |>
-  mutate("Heterosexual" = sum(case_when(dcf_research_sexual_identity == 3 ~ 1,TRUE ~ 0))) |> 
-  mutate("Woman"= sum(case_when(dcf_research_gender ==1 ~1, TRUE ~ 0))) |>
-  mutate("Nonbinary" = sum(case_when(dcf_research_gender ==3 ~1, TRUE ~ 0))) |>
-  mutate("Unsure" = sum(case_when(dcf_research_gender == 4 ~1, TRUE ~ 0))) |>
-  mutate("White" = sum(case_when(dcf_race___1 == 1~1, TRUE ~ 0))) |>
-  mutate("Black/African American" = sum(case_when(dcf_race___2 == 1~1, TRUE ~ 0))) |>
-  mutate("Asian" = sum(case_when(dcf_race___3 == 1~1, TRUE ~ 0))) |>
-  mutate("Indigenous" = sum(case_when(dcf_race___4 == 1~1, TRUE ~ 0))) |>
-  mutate("Hispanic" = sum(case_when(dcf_race___5 == 1~1, TRUE ~ 0))) |>
-  mutate("Pacific Islander" = sum(case_when(dcf_race___6 == 1~1, TRUE ~ 0))) |>
-  mutate("Carribean" = sum(case_when(dcf_race___8 == 1~1, TRUE ~ 0))) |>
-  mutate("Middle Eastern" = sum(case_when(dcf_race___9 == 1~1, TRUE ~ 0))) |>
-  mutate("South Asian" = sum(case_when(dcf_race___10 == 1~1, TRUE ~ 0))) |>
-  mutate("Southeast Asian" = sum(case_when(dcf_race___11 == 1~1, TRUE ~ 0))) |> 
+  rename(id = record_id) |>
+  mutate('Age'= floor(as.numeric(difftime(dcf_date, dcf_age, units = "days") / 365.25))) |> 
+  mutate(id = as.character(id)) |> 
+  select(id, Age, group) |> 
+  # recode group to be ED (1) and HC (0)
   mutate(group = case_when(group == 1 ~ 'ED', 
-                           group == 0 ~ 'HC')) |> 
-  select(-dcf_research_sexual_identity, -dcf_research_gender, -dcf_race___1, -dcf_race___2, -dcf_race___3, -dcf_race___4, -dcf_race___5, -dcf_race___6, -dcf_race___8, -dcf_race___9, -dcf_race___10, -dcf_race___11, -"Pacific Islander", -"Carribean", -"Indigenous", "Southeast Asian",-study_visit)
+                           group == 0 ~ 'HC'))
 
-demo_vars <- demo_vars |>
-  mutate(id = as.character(id)) 
+# Loop through each variable in the dataset
+  # Call the conduct_t_test function for each variable
+  age_t <- conduct_t_test(age_vars_2, "Age")
+  age_d <- cohen_d(age_vars_2, "Age")
+  
+# join age_t and age_d
+  age_t <- age_t |> full_join(age_d, by = "Variable")
 
-#join age_vars to demo_vars by id
+  
+  age_mean_sd <- age_vars_2 |>
+    select(group, Age) |>
+    drop_na() |>
+    filter(is.finite(Age)) |>
+    mutate(Age = as.numeric(Age)) |>
+    group_by(group) |>
+    summarise(mean = mean(Age), 
+              sd = sd(Age))
+  # pull mean and SD together and make it M (SD)
+  age_mean_sd <- age_mean_sd |>
+    mutate(mean_sd = paste0(round(mean, 2), " (", round(sd, 2), ")")) |>
+    select(-mean, -sd) |>
+    mutate(Variable = "Age")  
+    # pivot to wide format
+    
+    age_mean_sd_wide <- age_mean_sd |>
+    select(group, mean_sd)  |> 
+    pivot_wider(names_from = group, values_from = `mean_sd`, names_prefix = "", names_sep = " ") |>
+    rename(`ED Mean (SD)` = `ED`, `HC Mean (SD)` = `HC`) |> 
+    mutate(Variable = "Age")
+  
+    # join age_mean_sd_wide with age_t
+    age_t <- age_t |>
+    full_join(age_mean_sd_wide, by = "Variable") |> 
+      mutate(Cohen_d = round(Cohen_d, 2)) |> 
+      rename ('Cohen\'s d' = Cohen_d) |> 
+      rename (p = P_value) |>
+      #italicize t value
+      mutate(T_value = sprintf("%.2f", T_value)) |> 
+      rename('t value' = T_value) |> 
+      select("Variable", "ED Mean (SD)", "HC Mean (SD)", "t value", "p", "Cohen's d")
 
-demo_vars <- demo_vars |> 
-  left_join(age_vars, by = "id") 
+# bind age_t to preaim_table
+  preaim_table <- preaim_table |>
+    bind_rows(age_t) |> 
+    # rename ED Mean (SD) to ED and HC Mean (SD) to HC
+    rename('ED' = 'ED Mean (SD)', 'HC' = 'HC Mean (SD)') 
+ 
+  # Summarize the data
+  demo_data <- redcap_raw_enrolled |>
+    filter(record_id %in% sample_ids) |>
+    select(record_id, study_visit, group, dcf_research_sexual_identity, dcf_research_gender, 
+           dcf_race___1, dcf_race___2, dcf_race___3, dcf_race___4, dcf_race___5, 
+           dcf_race___6, dcf_race___8, dcf_race___9, dcf_race___10, dcf_race___11) |>
+    filter(study_visit == 'Intake') |>
+    mutate(group = case_when(group == 1 ~ 'ED', group == 0 ~ 'HC')) |> 
+    group_by(group) |>
+    summarise(
+      Asexual = sum(dcf_research_sexual_identity == 4, na.rm = TRUE),
+      Bisexual_Pansexual = sum(dcf_research_sexual_identity == 2, na.rm = TRUE),
+      Lesbian_Gay = sum(dcf_research_sexual_identity == 1, na.rm = TRUE),
+      Heterosexual = sum(dcf_research_sexual_identity == 3, na.rm = TRUE),
+      Sex_Orientation_NR = sum(is.na(dcf_research_sexual_identity)), 
+      Woman = sum(dcf_research_gender == 1, na.rm = TRUE),
+      Nonbinary = sum(dcf_research_gender == 3, na.rm = TRUE),
+      Unsure = sum(dcf_research_gender == 4, na.rm = TRUE),
+      Gender_NR = sum(is.na(dcf_research_gender)),
+      White = sum(dcf_race___1 == 1, na.rm = TRUE),
+      Black_African_American = sum(dcf_race___2 == 1, na.rm = TRUE),
+      Asian = sum(dcf_race___3 == 1, na.rm = TRUE),
+      Hispanic = sum(dcf_race___5 == 1, na.rm = TRUE),
+      Middle_Eastern = sum(dcf_race___9 == 1, na.rm = TRUE),
+      South_Asian = sum(dcf_race___10 == 1, na.rm = TRUE),
+      Southeast_Asian = sum(dcf_race___11 == 1, na.rm = TRUE)
+    ) |>
+    pivot_longer(
+      cols = -group,
+      names_to = "Variable",
+      values_to = "N"
+    ) |>
+    pivot_wider(
+      names_from = group,
+      values_from = N,
+      names_prefix = "",
+      names_sep = " "
+    ) |> 
+    # make ED and HC character variables
+    mutate(ED = as.character(as.integer(ED)), HC = as.character(as.integer(HC))) 
+  
+  
+  # join demo_data with preaim_table by Variable, ED, and HC
+  demo_vars <- demo_data |>
+    full_join(preaim_table, by = c("Variable", "ED", "HC"))
+  
+# recode Variable to take out underscores and replace with spaces
+  demo_vars$Variable <- gsub("_", " ", demo_vars$Variable)
+  demo_vars$Variable <- gsub("Lesbian Gay", "Lesbian/Gay", demo_vars$Variable)
+  demo_vars$Variable <- gsub("Bisexual Pansexual", "Bisexual/Pansexual", demo_vars$Variable)
+  demo_vars$Variable <- gsub("Black African American", "Black/African American", demo_vars$Variable)
+  demo_vars$Variable <- gsub("CET Enjoyment", "CET Lack of Enjoyment", demo_vars$Variable)
+  demo_vars$Variable <- gsub("EDE Restraint Subscale", "EDE Restraint", demo_vars$Variable)
+  demo_vars$Variable <- gsub("EDE Eating Concern Subscale", "EDE Eating Concern", demo_vars$Variable)
+  demo_vars$Variable <- gsub("EDE Shape Concern Subscale", "EDE Shape Concern", demo_vars$Variable)
+  demo_vars$Variable <- gsub("EDE Weight Concern Subscale", "EDE Weight Concern", demo_vars$Variable)
+  demo_vars$Variable <- gsub("Sex Orientation NR", "Sex Orientation Not Reported", demo_vars$Variable)
+  demo_vars$Variable <- gsub("Gender NR","Gender Not Reported",  demo_vars$Variable)
+  
+  
+demo_vars$Variable <- factor(demo_vars$Variable, levels = c("Asexual", "Bisexual/Pansexual", "Lesbian/Gay", "Heterosexual", "Sex Orientation Not Reported", "Woman", "Nonbinary", "Unsure", "Gender Not Reported", "White", "Black/African American", "Asian", "Hispanic", "Middle Eastern", "South Asian", "Southeast Asian", "Age", "BMI", "Weight Suppression", "EDE Global", "EDE Restraint", "EDE Eating Concern", "EDE Shape Concern", "EDE Weight Concern", "LPA", "MVPA", "Distance", "Karvonen Max Intensity", "Max % HR", "Average % HR", "DFM", "FAMB ANR", "FAMB APR", "FAMB SPR", "FAMB SNR", "EDS", "CET", "CET Avoidance", "CET Weight Control", "CET Mood", "CET Lack of Enjoyment", "CET Rigid"))
 
-
-demo_vars <- demo_vars |>
-  select(-id) |>
-  drop_na() |>
-  group_by(group) |>
-  summarise(across(everything(), list(avg = mean)))  
-
-#Remove avg from Variable names in demo_vars
-names(demo_vars) <- gsub("_avg$", "", names(demo_vars))
-
-
-demo_vars <- demo_vars |> 
-  pivot_longer(cols = -group, names_to = "variable", 
-               values_to = "value") %>%
-  pivot_wider(names_from = group, values_from = value)
-
-demo_vars <- demo_vars |> 
-  mutate(
-    HC = round(HC, 2))
-
-demo_vars <- demo_vars |>
-  rename('Variable' = 'variable') |> 
-  filter(Variable != 'Unsure') 
-
-demo_vars$Variable[demo_vars$Variable== 'Age'] <- 'Age (Mean)'
-
-save(demo_vars, file = "results/demo_table.RData")
-
-
-demo_table <- kable(demo_vars, "html") |> 
-  kable_styling(full_width = FALSE, bootstrap_options = "striped") |>
-  group_rows(
-    group_label = "SEXUAL IDENTITY",  
-    start_row = 1, 
-    end_row = 4
-  ) |>
-  group_rows(
-    group_label = "GENDER IDENTITY", 
-    start_row = 5, 
-    end_row = 6
-  ) |> 
-  group_rows(
-    group_label = "ETHNICITY", 
-    start_row = 7,
-    end_row = 13)
-
-save_kable(demo_table, "results/demo_table.html")
+# sort descending by Variable
+  demo_vars_1 <- demo_vars |>
+    arrange(Variable)
+  
+  
+  save(demo_vars_1, file = "results/demo_vars.RData")
+  
