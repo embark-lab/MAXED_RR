@@ -34,9 +34,9 @@ corrs_cleaned <- corrs_cleaned %>%
   mutate(significance = sapply(p_value, get_significance_label))
 
 # recode 'Average' and 'Weight' to be 'Avg' and 'Wt' 
-corrs_cleaned$variable1 <- recode(corrs_cleaned$variable1, 'Average' = 'Avg', 'Weight' = 'Wt')
+corrs_cleaned$variable1 <- dplyr::recode(corrs_cleaned$variable1, 'Average' = 'Avg', 'Weight' = 'Wt')
 # recode karvonen_max_intense, max_pct_hr, and max_hr to be 'Max Intense', 'Max % HR', and 'Max HR'
-corrs_cleaned$variable2 <- recode(corrs_cleaned$variable2, 'karvonen_max_intense' = 'Max Intense', 'max_pct_hr' = 'Max % HR', 'avg_pct_hr' = 'Avg HR', 'distance' = 'Distance')
+corrs_cleaned$variable2 <- dplyr::recode(corrs_cleaned$variable2, 'karvonen_max_intense' = 'Max Intense', 'max_pct_hr' = 'Max % HR', 'avg_pct_hr' = 'Avg HR', 'distance' = 'Distance')
 
 p <- ggplot(corrs_cleaned, aes(x = variable1, y = variable2, fill = correlation)) +
   geom_tile() +

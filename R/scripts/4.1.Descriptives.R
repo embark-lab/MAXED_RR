@@ -5,7 +5,7 @@ library(purrr)
 # Load Exercise response summary data
 load("data/Exercise_Response/Exercise_Response_Summary_Data.RData")
 # load redcap data (Exercise self-report; weight)
-load("data/RedCap/MAXED_redcap_wide.2024-05-03.RData")
+load("data/RedCap/MAXED_redcap_wide.2024-08-22.RData")
 # load redcap raw enrolled to pull resting HR
 load("data/RedCap/redcap_raw_enrolled.RData")
 # load self-paced exercise parameter data

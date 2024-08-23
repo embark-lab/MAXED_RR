@@ -1,7 +1,15 @@
-# read all of the scripts in the scripts/folder
 scripts <- list.files("R/scripts", full.names = TRUE)
 
-# Run each script
+# Run each script with error catching
 for (script in scripts) {
-  source(script)
+  tryCatch(
+    {
+      source(script)
+      message(paste("Successfully sourced:", script))
+    },
+    error = function(e) {
+      message(paste("Error in script:", script))
+      message("Error message:", e$message)
+    }
+  )
 }

@@ -1,3 +1,5 @@
+source(file = 'R/source/0.Packages.R')
+
 load("data/Exercise_Params/Exercise_Session_Data.RData")
 # filter only watts data on day b and only first 5 columns
 watts_data <- ex_data |>

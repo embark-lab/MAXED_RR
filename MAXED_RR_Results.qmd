@@ -97,24 +97,15 @@ Full study flow is outlined in Supplemental @tbl-aim1. There were `r total_scree
 
 Specific models tested are noted in @tbl-params.
 
-+--------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------+
-| Model Name                                                   | Parameters                                                                                                                     |
-+==============================================================+================================================================================================================================+
-| Overall Model: Affect and Body Image Variables               | DV \~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + Time\*Group\*Condition +  (1+Time \| Condition: Participant) |
-+--------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------+
-| Within ED: Affect and Body Image Variables                   | DV \~ 1 + Age + Time + BMI\*Condition + Time\*Condition + Time\*Condition +  (1+Time \| Condition: Participant)                |
-+--------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------+
-| Overall Biomarker Model                                      | Biomarker \~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + (1 + Time \| Condition: Participant)                  |
-+--------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------+
-| Within ED: Biomarkers                                        | Biomarker \~ 1 + Age  + Time + BMI\*Condition + Time\*Condition + (1 + Time \| Condition: Participant)                         |
-+--------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------+
-| Heterogeneity of Variance across Groups in Exercise Response | DV \~ 1 + Age + Group + Time + Time x Group,                                                                                   |
-|                                                              |                                                                                                                                |
-| (using `nlme`)                                               | random = list(id = pdDiag(form = \~ Group)),                                                                                   |
-|                                                              |                                                                                                                                |
-|                                                              | weights = varIdent(form = \~ 1 \| Group)                                                                                       |
-+--------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------+
+| Model Name | Parameters |
+|------------|------------|
+| **Overall Model: Affect and Body Image Variables** | DV ~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + Time\*Group\*Condition + (1+Time | Condition: Participant) |
+| **Within ED: Affect and Body Image Variables** | DV ~ 1 + Age + Time + BMI\*Condition + Time\*Condition + Time\*Condition + (1+Time | Condition: Participant) |
+| **Overall Biomarker Model** | Biomarker ~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + (1 + Time | Condition: Participant) |
+| **Within ED: Biomarkers** | Biomarker ~ 1 + Age + Time + BMI\*Condition + Time\*Condition + (1 + Time | Condition: Participant) |
+| **Heterogeneity of Variance across Groups in Exercise Response** | DV ~ 1 + Age + Group + Time + Time x Group, random = list(id = pdDiag(form = ~ Group)), weights = varIdent(form = ~ 1 | Group) |
 : General Models and Parameters {#tbl-params}
+
 
 We estimated change over time using descriptives, and also ran overall and within ED models using the `lme4` package. To evaluate heterogeneity of variance, we incorporated a random effect of group into a model with age, time, group, and group x time fixed effects. We then compared model fit of this model to the model without a random effect of group. To examine potential heterogeneity of within person, a level-1 random effect was then incorporated into the model and compared against a model with between-person (level 2) random effects only.
 
@@ -261,7 +252,7 @@ colnames(cor_ci_results_wide) <-columns_to_reverse
 
 ```
 
-Correlations between acute exercise response variables are presented in Supplemental @fig-exresponse, and full correlation data with 95% CIs is presented in Supplemental @tbl-exresponsecorrs. Average zero-order $r^2$ between exercise response variables in the control group is `r round(mean(cor_ci_results_control$estimate^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(cor_ci_results_ed$estimate^2, na.rm = TRUE), 2)`, indicating slightly stronger association between exercise response variables in the ED group, relative to the control group, with little evidence of collinearity across exercise response measures -- indicating an independence and potential unique utility of exercise response measures across the three domains of assessment.
+Correlations between acute exercise response variables are presented in Supplemental @fig-exresponse, and full correlation data with 95% CIs is presented in Supplemental @tbl-exresponsecorrs. Average zero-order $r^2$ between exercise response variables in the control group is `r round(mean(cor_ci_results_control$estimate^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(cor_ci_results_ed$estimate^2, na.rm = TRUE), 2)`, indicating slightly stronger association between exercise response variables in the ED group, relative to the control group, with little evidence of collinearity across exercise response measures -- indicating an independence and potential unique utility of exercise response measures across the three domains of assessment. Of the number of correlations tested, 6% reached p < 0.05 significance for controls (close to this alpha), while 14% reached p < 0.05 significance for the ED group, further supporting greater coherence of exercise response measures in the ED group.
 
 ### Correlations with Additional Variables
 
@@ -274,7 +265,7 @@ corrs_long_control = cors_long |>
 
 ```
 
-Correlations between body image response to exercise with key variables of interest are presented in @fig-exresponse2. Full correlation data with 95% CIs is presented in @tbl-exresponsecorrs2. Average zero-order $r^2$ between acute exercise response and key variables of interest in the control group is `r round(mean(corrs_long_control$correlation^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(corrs_long_ed$correlation^2, na.rm = TRUE), 2)`. For only those in the ED group only, greater body image response to acute exercise was associated with key variables, including higher self-reported drive for muscularity, higher social negative reinforcement, lower social positive reinforcement, lower body mass index, and lower weight suppression. More improvement in feelings about Shape during exercise were *negatively* associated with EDE global scores for controls. Increases in feeling crummy during Prescribed exercise were associated with higher BMI and lower MVPA in the control group only, and higher social positive reinforcement for exercise in both groups. Increases in feeling Crummy during self paced exercise were negatively associated with exercise intensity and accelerometer-measured LPA for both groups, while feeling enthusiastic during Self-Paced exercise was positively associated with exercise intensity for only the ED group. For the control group, but not the ED group, feeling crummy during self paced exercise was associated with higher BMI and lower weight suppression. Perceived Exertion during prescribed exercise was associated with higher drive for muscularity only for the ED group. While not reaching statistical significance in this pilot sample, there is also an indication of more positive body image change in both the Prescribed and Self-Paced tasks correlating with higher chosen intensity of self-paced exercise in the ED, but not control group.
+Correlations between body image response to exercise with key variables of interest are presented in @fig-exresponse2. Full correlation data with 95% CIs is presented in @tbl-exresponsecorrs2. Average zero-order $r^2$ between acute exercise response and key variables of interest in the control group is `r round(mean(corrs_long_control$correlation^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(corrs_long_ed$correlation^2, na.rm = TRUE), 2)`. For only those in the ED group only, greater body image response to acute exercise was associated with key variables, including higher self-reported drive for muscularity, lower social positive reinforcement of exercise, and lower body mass index. More improvement in feelings about Shape during exercise were *negatively* associated with EDE global scores for controls. 
 
 ```{r, echo=FALSE}
 #| label: fig-exresponse2
@@ -301,20 +292,20 @@ knitr::kable(milkshake_results_a) |>
 
 ```
 
-### Study Flow 
+### Study Flow
 
-| **Inflow/Retention**                            | Outflow                                  | Reason                                       |
-|-------------------------------------------------|------------------------------------------|----------------------------------------------|
-| **Eligibility Screenings (n = `r total_screenings`)** | Ineligible screenings (n = `r ineligible_screens + 8`) | Duplicates (n = 8)<br> Outside of age range (n = `r ineligible_reasons[[1]]`)<br> Binge eating reported (n = `r ineligible_reasons[[2]]`)<br> Unable to attend in-person visits (n = `r ineligible_reasons[[3]]`)<br> Medical Exclusion (n = `r ineligible_reasons[[4]]`)<br> Blood Draw (n = `r ineligible_reasons[[5]]`)<br> Other (n = `r ineligible_reasons[[6]]`) |
-| **Intake (n = `r sum(intake_dx)`)**             | Did not schedule Intake (n = `r 230-sum(ineligible_reasons)-sum(intake_dx)`) | &nbsp;                                        |
-| &nbsp;                                          | Ineligible intakes (n = `r sum(intake_ineligible_reasons)`) | Binge Eating Disorder (n = `r intake_ineligible_reasons[[1]]`)<br> ARFID (n = `r intake_ineligible_reasons[[2]]`)<br> Bipolar 1 Disorder (n = `r intake_ineligible_reasons[[3]]`)<br> Other (n = `r intake_ineligible_reasons[[4]]`) |
-| &nbsp;                                          | Did not enroll (n = `r sum(intake_drop)` - HC: `r dropout_table[[1]]`, ED: `r sum(dropout_table[[2]], dropout_table[[3]], dropout_table[[4]])`) | No reason provided (n = `r intake_drop[[1]]`)<br> Time constraint (n = `r intake_drop[[2]]`)<br> Unforeseen circumstances (n = `r intake_drop[[3]]`) |
-| **Day A (n = `r attendance_table[[1]]`)**       |                                          | &nbsp;                                        |
-| **Day B (n = `r attendance_table[[2]]`)**       |                                          | &nbsp;                                        |
-| **Day C (n = `r attendance_table[[3]]`)**       | Visit dropout (n = `r 40-attendance_table[[3]]`) | No reason provided (n = 1)                    |
-| **Completed Study (n = `r attendance_table[[4]]` - HC: 20, ED: 19)** |                                          | &nbsp;                                        |
+| **Inflow/Retention**                                                 | Outflow                                                                                                                                         | Reason                                                                                                                                                                                                                                                                                                                                                                 |
+|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Eligibility Screenings (n = `r total_screenings`)**                | Ineligible screenings (n = `r ineligible_screens + 8`)                                                                                          | Duplicates (n = 8)<br> Outside of age range (n = `r ineligible_reasons[[1]]`)<br> Binge eating reported (n = `r ineligible_reasons[[2]]`)<br> Unable to attend in-person visits (n = `r ineligible_reasons[[3]]`)<br> Medical Exclusion (n = `r ineligible_reasons[[4]]`)<br> Blood Draw (n = `r ineligible_reasons[[5]]`)<br> Other (n = `r ineligible_reasons[[6]]`) |
+| **Intake (n = `r sum(intake_dx)`)**                                  | Did not schedule Intake (n = `r 230-sum(ineligible_reasons)-sum(intake_dx)`)                                                                    |                                                                                                                                                                                                                                                                                                                                                                        |
+|                                                                      | Ineligible intakes (n = `r sum(intake_ineligible_reasons)`)                                                                                     | Binge Eating Disorder (n = `r intake_ineligible_reasons[[1]]`)<br> ARFID (n = `r intake_ineligible_reasons[[2]]`)<br> Bipolar 1 Disorder (n = `r intake_ineligible_reasons[[3]]`)<br> Other (n = `r intake_ineligible_reasons[[4]]`)                                                                                                                                   |
+|                                                                      | Did not enroll (n = `r sum(intake_drop)` - HC: `r dropout_table[[1]]`, ED: `r sum(dropout_table[[2]], dropout_table[[3]], dropout_table[[4]])`) | No reason provided (n = `r intake_drop[[1]]`)<br> Time constraint (n = `r intake_drop[[2]]`)<br> Unforeseen circumstances (n = `r intake_drop[[3]]`)                                                                                                                                                                                                                   |
+| **Day A (n = `r attendance_table[[1]]`)**                            |                                                                                                                                                 |                                                                                                                                                                                                                                                                                                                                                                        |
+| **Day B (n = `r attendance_table[[2]]`)**                            |                                                                                                                                                 |                                                                                                                                                                                                                                                                                                                                                                        |
+| **Day C (n = `r attendance_table[[3]]`)**                            | Visit dropout (n = `r 40-attendance_table[[3]]`)                                                                                                | No reason provided (n = 1)                                                                                                                                                                                                                                                                                                                                             |
+| **Completed Study (n = `r attendance_table[[4]]` - HC: 20, ED: 19)** |                                                                                                                                                 |                                                                                                                                                                                                                                                                                                                                                                        |
+
 : **Study Flow** {#tbl-aim1}
-
 
 ### Affect
 
@@ -668,7 +659,7 @@ Note. Correlations are presented with 95% confidence intervals. ED Group below t
 corrs_long <- cors_long |> 
   dplyr::filter(!is.na(correlation)) |> 
   # drop p-values
-  dplyr::select(-p_value) |> 
+  dplyr::select(-c(p_value, significance)) |> 
   # round to 2 decimal places using sprintf
   dplyr::mutate(across(c(correlation, ci_lower, ci_upper), ~sprintf("%.2f", .))) |> 
 # put estimate and ci(95%) in the same column
@@ -772,6 +763,9 @@ writeData(wb, "ST13-BiomarkerChange_ED", ed_biomarkers, rowNames = FALSE)
 
 addWorksheet(wb, "ST14-ExResponseCorrelations")
 writeData(wb, "ST14-ExResponseCorrelations", cor_ci_results_wide, rowNames = FALSE)
+
+addWorksheet(wb, "ST15-FullResponseCorrelations")
+writeData(wb, "ST15-FullResponseCorrelations", corrs_wide_all, rowNames = FALSE)
 
 
 # Save the workbook

@@ -1,5 +1,7 @@
+source(file = 'R/source/0.Packages.R')
+
 #load wd and pull data
-load("data/RedCap/MAXED_redcap_long.2024-05-03.RData")
+load("data/RedCap/MAXED_redcap_long.2024-08-22.RData")
 # save maxed_screening_data
 load("data/RedCap/MAXED_screening_data.RData")
 
@@ -93,4 +95,5 @@ save(total_screenings,
      milk_complete_a, 
      milk_complete_c, 
      file = "results/Aim_1_Results.RData")
+
 

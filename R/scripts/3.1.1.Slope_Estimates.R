@@ -1,4 +1,5 @@
 # load affect data
+source("R/source/0.packages.R")
 load("data/Affect/MAXED_Affect.RData")
 
 tasks <- unique(Affect$task)
@@ -37,7 +38,9 @@ save(affect_slope_estimates, file = "Data/Affect/Affect_Slope_Estimates.RData")
 
 # Load BISS data
 load("data/BISS/biss_data.RData")
-
+tasks <- unique(BISS$task)
+variables <- unique(BISS$variable)
+participants <- unique(BISS$id)
 # Correct filtering for NA values
 BISS <- BISS %>%
   filter(condition== 'Exercise', !is.na(value), !is.na(time))
