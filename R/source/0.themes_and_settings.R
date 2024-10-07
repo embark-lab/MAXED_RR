@@ -19,6 +19,8 @@ theme_1 <-
 
 
 custom_colors <- c("ED" ="#fc6d46", "Control" =  "#1a4e66")
+custom_colors_2 <- c("Control" ="#fc6d46", "ED" =  "#1a4e66")
+
 
 custom_linetypes <- c("Self-Paced" = "dotted", "Prescribed" = "dashed")
 pilot_ids <- c('MAXED_1001', 'MAXED_1003', 'MAXED_1010', "MAXED_1011", "MAXED_1012")

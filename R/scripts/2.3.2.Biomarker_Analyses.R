@@ -9,6 +9,12 @@ library(car)
 
 load('data/Assays/Assay_results.RData')
 
+Assay_results <- Assay_results |> 
+  filter(str_starts(Sample_Number, "S")) |>
+  # remove sample number
+  select(-Sample_Number) 
+  
+  
 Assay_results.1 <- Assay_results %>%
   select(-c('Estradiol')) |> 
   unique() |> 
@@ -207,6 +213,10 @@ ggsave("figs/4.Biomarkers/Exercise_Biomarker_ForestPlot.png", width = 8, height 
 
 rm(list = ls())
 load('data/Assays/Assay_results.RData')
+Assay_results <- Assay_results |> 
+  filter(str_starts(Sample_Number, "S")) |>
+  # remove sample number
+  select(-Sample_Number) 
 
 Assay_results_ED <- Assay_results |> 
   filter(group_factor == 'ED') |> 

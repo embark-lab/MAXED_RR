@@ -179,7 +179,7 @@ Model fit indices for each variable and task within the ED group are presented i
 
 #### Descriptives
 
-A visual depiction of biomarker response -- at both individual and group-aggregate levels -- is presented in @fig-biomarker (Panels A-B), along with differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise (Panels C-D).
+iomakers were obtained for only a portion of the sample as this study served as a pilot trial and included ongoing phlebotemy training for study team members. Blood was therefore obtained only when a phlebotomist was available, and precautions were taken to ensure that participants were not overly distressed by the procedure. As such, the sample size for biomarker data (N = 58 succesful blood draws with assays that passed initial quality control measures across pre- and post-exercise and pre- and post-rest; with complete data from 9 ED and 7 control participants) is smaller than the overall sample size. A visual depiction of biomarker response -- at both individual and group-aggregate levels -- is presented in @fig-biomarker (Panels A-B), along with differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise (Panels C-D). B
 
 ```{r, echo = FALSE, warning = FALSE}
 #| label: fig-biomarker
@@ -203,7 +203,7 @@ Full t-test results across both exercise and rest conditions along with tests of
 
 #### Within ED Group Model
 
-Full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary @tbl-BiomarkerChangeED. \# KS NOTE: Not putting any text here yet to explain graphs since we'll have more biomarker data incoming \##
+Full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary @tbl-BiomarkerChangeED. Although there were no significant differences between the ED and Control group in the overall model, effect sizes indicate that BNDF may show specific increases in the ED group post-exercise, relative to the Control group. 
 
 ## **Aim 3: Exercise Response Correlations**
 

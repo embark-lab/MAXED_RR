@@ -4,7 +4,8 @@ library(tidyr)
 library(embarktools)
 library(effsize)
 load('data/Assays/Assay_results.RData')
-
+Assay_results <- Assay_results |> 
+  filter(str_starts(Sample_Number, "S"))
 # Make a graph comparing pre and post treatment levels of the biomarkers across group and visit
 
 # Make Assay results longer for ggplot by pivoting BDNF and Leptin to 'Assay'
