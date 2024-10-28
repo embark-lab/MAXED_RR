@@ -3,6 +3,7 @@ library(ggplot2)
 library(tidyr)
 library(embarktools)
 library(effsize)
+library(stringr)
 load('data/Assays/Assay_results.RData')
 Assay_results <- Assay_results |> 
   filter(str_starts(Sample_Number, "S"))
@@ -115,6 +116,44 @@ Mean_assay_plot <- Mean_assay_plot +
 # save plot data
 save(Mean_assay_plot, file = 'figs/4.Biomarkers/Assay_summary_results_plot.RData')
 ggsave('figs/4.Biomarkers/Assay_summary_results.png', width = 10, height = 6, dpi = 300)
+
+# add plot with mean assays that does not include rest condition
+ex_only <- assay_summary_data |> 
+  filter(Condition == 'Exercise')
+Mean_assay_plot_exonly <- ggplot(ex_only, 
+                          aes(x = Time, group = group_factor)) +
+  geom_point(aes(y = mean_value, color = group_factor), shape = 19) +
+  geom_line(aes(y = mean_value, color = group_factor)) +  # Lines connecting means
+  geom_errorbar(aes(ymin = lower_mean, ymax = upper_mean, color = group_factor), width = 0.2) +  # Error bars for means
+  facet_wrap(~Assay, scales = 'free_y', labeller = labeller( 
+    Assay = c("Cortisol" = "Cortisol (ng/ml)", 
+              "Leptin" = "Leptin (pg/ml)", 
+              "BDNF" = "BDNF (pg/ml)")
+  )) +
+  labs(color = "Group")  +
+  embarktools::embark_theme_a +
+  scale_color_manual(values = embark_palette()) +
+  theme(legend.position = 'right', 
+        legend.text = element_text(size = 12), 
+        legend.title = element_text(size = 12)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  # make y axis test smaller
+  theme(axis.text.y = element_text(size = 8)) +
+  theme(axis.text.x = element_text (size = 12)) +
+  labs(title = 'Circulating Biomarkers Pre- and Post- \n Exercise: Means by Group and Condition', 
+       y = '',
+       x = element_blank()) 
+
+# Annotate Mean Assay Plot with Cohen's d values
+Mean_assay_plot_exonly <- Mean_assay_plot_exonly + 
+  geom_text(data = annotate.3, aes(label = paste('d =', round(cohens_d, 2)), x = 1.55, y = y_pos), 
+            color = ifelse(annotate.3$group_factor == 'Control', embark_palette()[1], embark_palette()[2]),
+            size = 5, hjust = 1, vjust = 0)
+
+# save plot data
+
+ggsave('figs/4.Biomarkers/Assay_summary_results_exonly.png', width = 10, height = 6, dpi = 300)
+
 
 
 

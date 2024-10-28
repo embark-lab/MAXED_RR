@@ -97,15 +97,15 @@ Full study flow is outlined in Supplemental @tbl-aim1. There were `r total_scree
 
 Specific models tested are noted in @tbl-params.
 
-| Model Name | Parameters |
-|------------|------------|
-| **Overall Model: Affect and Body Image Variables** | DV ~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + Time\*Group\*Condition + (1+Time | Condition: Participant) |
-| **Within ED: Affect and Body Image Variables** | DV ~ 1 + Age + Time + BMI\*Condition + Time\*Condition + Time\*Condition + (1+Time | Condition: Participant) |
-| **Overall Biomarker Model** | Biomarker ~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + (1 + Time | Condition: Participant) |
-| **Within ED: Biomarkers** | Biomarker ~ 1 + Age + Time + BMI\*Condition + Time\*Condition + (1 + Time | Condition: Participant) |
-| **Heterogeneity of Variance across Groups in Exercise Response** | DV ~ 1 + Age + Group + Time + Time x Group, random = list(id = pdDiag(form = ~ Group)), weights = varIdent(form = ~ 1 | Group) |
-: General Models and Parameters {#tbl-params}
+| Model Name                                                       | Parameters                                                                                                               |
+|------------------------------------|------------------------------------|
+| **Overall Model: Affect and Body Image Variables**               | DV \~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + Time\*Group\*Condition + (1+Time                       |
+| **Within ED: Affect and Body Image Variables**                   | DV \~ 1 + Age + Time + BMI\*Condition + Time\*Condition + Time\*Condition + (1+Time                                      |
+| **Overall Biomarker Model**                                      | Biomarker \~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + (1 + Time                                       |
+| **Within ED: Biomarkers**                                        | Biomarker \~ 1 + Age + Time + BMI\*Condition + Time\*Condition + (1 + Time                                               |
+| **Heterogeneity of Variance across Groups in Exercise Response** | DV \~ 1 + Age + Group + Time + Time x Group, random = list(id = pdDiag(form = \~ Group)), weights = varIdent(form = \~ 1 |
 
+: General Models and Parameters {#tbl-params}
 
 We estimated change over time using descriptives, and also ran overall and within ED models using the `lme4` package. To evaluate heterogeneity of variance, we incorporated a random effect of group into a model with age, time, group, and group x time fixed effects. We then compared model fit of this model to the model without a random effect of group. To examine potential heterogeneity of within person, a level-1 random effect was then incorporated into the model and compared against a model with between-person (level 2) random effects only.
 
@@ -157,7 +157,6 @@ Model fit indices for each variable and task are presented in Supplmental @tbl-A
 
 Average levels of change from 0 to 30 minutes is presented in @fig-ChangePlots-2. Visual depiction of raw changes in body image changes during exercise across groups is presented in Supplemental @fig-BISSChange, along with variance in body image across groups are presented. All specific values for average levels of change across groups (30 min vs. BL), maximum increases and maximum decreases from baseline, and variance are presented in Supplemental @tbl-BISSChange. Patterns of results indicate that individuals in the ED group consistently feel worse about their bodies, although exercise does have some impact on body image. In all measures, the ED group had greater improvements in body image during exercise, as compared to controls. Change indicators suggest (ED vs. HC Cohen's d \> .2) that individuals with EDs specifically feel better about their weight, looks, and appearance, as well as feeling better on average and feeling better than the average person after self-paced exercise and better on average after prescribed exercise. Effect sizes favored self-paced vs. prescribed exercise -- particularly for feeling better about weight and average scores -- in the ED group.
 
-
 #### Overall Model
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
@@ -179,21 +178,13 @@ Model fit indices for each variable and task within the ED group are presented i
 
 #### Descriptives
 
-iomakers were obtained for only a portion of the sample as this study served as a pilot trial and included ongoing phlebotemy training for study team members. Blood was therefore obtained only when a phlebotomist was available, and precautions were taken to ensure that participants were not overly distressed by the procedure. As such, the sample size for biomarker data (N = 58 succesful blood draws with assays that passed initial quality control measures across pre- and post-exercise and pre- and post-rest; with complete data from 9 ED and 7 control participants) is smaller than the overall sample size. A visual depiction of biomarker response -- at both individual and group-aggregate levels -- is presented in @fig-biomarker (Panels A-B), along with differences between ED and Control on Pre, Post- Raw Change (Post-Pre) and residualized change scores in biomarkers post-exercise (Panels C-D). B
+Biomakers were obtained for only a portion of the sample as this study served as a pilot trial and included ongoing phlebotemy training for study team members. Blood was therefore obtained only when a phlebotomist was available, and precautions were taken to ensure that participants were not overly distressed by the procedure. As such, the sample size for biomarker data (N = 58 successful blood draws with assays that passed initial quality control measures across pre- and post-exercise and pre- and post-rest; with complete data from 9 ED and 7 control participants) is smaller than the overall sample size. A visual depiction of biomarker response is presented in @fig-biomarker. Detailed responses are presented in @fig-biomarker1.
 
 ```{r, echo = FALSE, warning = FALSE}
 #| label: fig-biomarker
-#| fig-cap: Biomarker Measurements Before and After Exercise and Rest
-#| fig-subcap:
-#|   - "Individual-Level"
-#|   - "Group Aggregates" 
-#|   - "Forest Plots - Control vs. ED"
-#|   - "Forest Plots - ED Group"
-#| layout-ncol: 1
-knitr::include_graphics("figs/4.biomarkers/Assay_results.png")
-knitr::include_graphics("figs/4.biomarkers/Assay_summary_results.png")
-knitr::include_graphics("figs/4.biomarkers/Exercise_Biomarker_ForestPlot.png")
-knitr::include_graphics("figs/4.biomarkers/ED_Biomarker_ForestPlot.png")
+#| fig-cap: "Biomarker Measurements Before and After Exercise"
+
+knitr::include_graphics("figs/4.biomarkers/Assay_summary_results_exonly.png")
 
 ```
 
@@ -203,7 +194,7 @@ Full t-test results across both exercise and rest conditions along with tests of
 
 #### Within ED Group Model
 
-Full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary @tbl-BiomarkerChangeED. Although there were no significant differences between the ED and Control group in the overall model, effect sizes indicate that BNDF may show specific increases in the ED group post-exercise, relative to the Control group. 
+Full t-test results across both exercise and rest conditions using each outcome approach are presented in Supplementary @tbl-BiomarkerChangeED. Although there were no significant differences between the ED and Control group in the overall model, effect sizes indicate that BNDF may show specific increases in the ED group post-exercise, relative to the Control group.
 
 ## **Aim 3: Exercise Response Correlations**
 
@@ -253,7 +244,7 @@ colnames(cor_ci_results_wide) <-columns_to_reverse
 
 ```
 
-Correlations between acute exercise response variables are presented in Supplemental @fig-exresponse, and full correlation data with 95% CIs is presented in Supplemental @tbl-exresponsecorrs. Average zero-order $r^2$ between exercise response variables in the control group is `r round(mean(cor_ci_results_control$estimate^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(cor_ci_results_ed$estimate^2, na.rm = TRUE), 2)`, indicating slightly stronger association between exercise response variables in the ED group, relative to the control group, with little evidence of collinearity across exercise response measures -- indicating an independence and potential unique utility of exercise response measures across the three domains of assessment. Of the number of correlations tested, 6% reached p < 0.05 significance for controls (close to this alpha), while 14% reached p < 0.05 significance for the ED group, further supporting greater coherence of exercise response measures in the ED group.
+Correlations between acute exercise response variables are presented in Supplemental @fig-exresponse, and full correlation data with 95% CIs is presented in Supplemental @tbl-exresponsecorrs. Average zero-order $r^2$ between exercise response variables in the control group is `r round(mean(cor_ci_results_control$estimate^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(cor_ci_results_ed$estimate^2, na.rm = TRUE), 2)`, indicating slightly stronger association between exercise response variables in the ED group, relative to the control group, with little evidence of collinearity across exercise response measures -- indicating an independence and potential unique utility of exercise response measures across the three domains of assessment. Of the number of correlations tested, 6% reached p \< 0.05 significance for controls (close to this alpha), while 14% reached p \< 0.05 significance for the ED group, further supporting greater coherence of exercise response measures in the ED group.
 
 ### Correlations with Additional Variables
 
@@ -266,7 +257,7 @@ corrs_long_control = cors_long |>
 
 ```
 
-Correlations between body image response to exercise with key variables of interest are presented in @fig-exresponse2. Full correlation data with 95% CIs is presented in @tbl-exresponsecorrs2. Average zero-order $r^2$ between acute exercise response and key variables of interest in the control group is `r round(mean(corrs_long_control$correlation^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(corrs_long_ed$correlation^2, na.rm = TRUE), 2)`. For only those in the ED group only, greater body image response to acute exercise was associated with key variables, including higher self-reported drive for muscularity, lower social positive reinforcement of exercise, and lower body mass index. More improvement in feelings about Shape during exercise were *negatively* associated with EDE global scores for controls. 
+Correlations between body image response to exercise with key variables of interest are presented in @fig-exresponse2. Full correlation data with 95% CIs is presented in @tbl-exresponsecorrs2. Average zero-order $r^2$ between acute exercise response and key variables of interest in the control group is `r round(mean(corrs_long_control$correlation^2, na.rm = TRUE), 2)` and in the ED group is `r round(mean(corrs_long_ed$correlation^2, na.rm = TRUE), 2)`. For only those in the ED group only, greater body image response to acute exercise was associated with key variables, including higher self-reported drive for muscularity, lower social positive reinforcement of exercise, and lower body mass index. More improvement in feelings about Shape during exercise were *negatively* associated with EDE global scores for controls.
 
 ```{r, echo=FALSE}
 #| label: fig-exresponse2
@@ -296,7 +287,7 @@ knitr::kable(milkshake_results_a) |>
 ### Study Flow
 
 | **Inflow/Retention**                                                 | Outflow                                                                                                                                         | Reason                                                                                                                                                                                                                                                                                                                                                                 |
-|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|-----------------|-----------------|--------------------------------------|
 | **Eligibility Screenings (n = `r total_screenings`)**                | Ineligible screenings (n = `r ineligible_screens + 8`)                                                                                          | Duplicates (n = 8)<br> Outside of age range (n = `r ineligible_reasons[[1]]`)<br> Binge eating reported (n = `r ineligible_reasons[[2]]`)<br> Unable to attend in-person visits (n = `r ineligible_reasons[[3]]`)<br> Medical Exclusion (n = `r ineligible_reasons[[4]]`)<br> Blood Draw (n = `r ineligible_reasons[[5]]`)<br> Other (n = `r ineligible_reasons[[6]]`) |
 | **Intake (n = `r sum(intake_dx)`)**                                  | Did not schedule Intake (n = `r 230-sum(ineligible_reasons)-sum(intake_dx)`)                                                                    |                                                                                                                                                                                                                                                                                                                                                                        |
 |                                                                      | Ineligible intakes (n = `r sum(intake_ineligible_reasons)`)                                                                                     | Binge Eating Disorder (n = `r intake_ineligible_reasons[[1]]`)<br> ARFID (n = `r intake_ineligible_reasons[[2]]`)<br> Bipolar 1 Disorder (n = `r intake_ineligible_reasons[[3]]`)<br> Other (n = `r intake_ineligible_reasons[[4]]`)                                                                                                                                   |
@@ -601,6 +592,22 @@ knitr::include_graphics("figs/3.body_image/biss_emmeans_selfpaced.png")
 ```
 
 ### Biomarkers
+
+```{r, echo = FALSE, warning = FALSE}
+#| label: fig-biomarker1 
+#| fig-cap: "Biomarker Measurements Before and After Exercise and Rest"
+#| fig-subcap:
+#| - "Individual-Level" #|
+#| - "Group Aggregates" #|
+#| - "Forest Plots - Control vs. ED" #|
+#|- "Forest Plots - ED Group" 
+#| layout-ncol: 1 
+
+knitr::include_graphics("figs/4.biomarkers/Assay_results.png") 
+knitr::include_graphics("figs/4.biomarkers/Assay_summary_results.png") 
+knitr::include_graphics("figs/4.biomarkers/Exercise_Biomarker_ForestPlot.png") 
+knitr::include_graphics("figs/4.biomarkers/ED_Biomarker_ForestPlot.png")
+```
 
 ```{r, echo = FALSE}
 #| label: tbl-BiomarkerChange
