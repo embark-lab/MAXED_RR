@@ -98,7 +98,7 @@ Full study flow is outlined in Supplemental @tbl-aim1. There were `r total_scree
 Specific models tested are noted in @tbl-params.
 
 | Model Name | Parameters |
-|------------------------------------|------------------------------------|
+|----|----|
 | **Overall Model: Affect and Body Image Variables** | DV \~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + Time\*Group\*Condition + (1+Time |
 | **Within ED: Affect and Body Image Variables** | DV \~ 1 + Age + Time + BMI\*Condition + Time\*Condition + Time\*Condition + (1+Time |
 | **Overall Biomarker Model** | Biomarker \~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + (1 + Time |
@@ -287,7 +287,7 @@ knitr::kable(milkshake_results_a) |>
 ### Study Flow
 
 | **Inflow/Retention** | Outflow | Reason |
-|------------------|------------------|-------------------------------------|
+|----|----|----|
 | **Eligibility Screenings (n = `r total_screenings`)** | Ineligible screenings (n = `r ineligible_screens + 8`) | Duplicates (n = 8)<br> Outside of age range (n = `r ineligible_reasons[[1]]`)<br> Binge eating reported (n = `r ineligible_reasons[[2]]`)<br> Unable to attend in-person visits (n = `r ineligible_reasons[[3]]`)<br> Medical Exclusion (n = `r ineligible_reasons[[4]]`)<br> Blood Draw (n = `r ineligible_reasons[[5]]`)<br> Other (n = `r ineligible_reasons[[6]]`) |
 | **Intake (n = `r sum(intake_dx)`)** | Did not schedule Intake (n = `r 230-sum(ineligible_reasons)-sum(intake_dx)`) |   |
 |   | Ineligible intakes (n = `r sum(intake_ineligible_reasons)`) | Binge Eating Disorder (n = `r intake_ineligible_reasons[[1]]`)<br> ARFID (n = `r intake_ineligible_reasons[[2]]`)<br> Bipolar 1 Disorder (n = `r intake_ineligible_reasons[[3]]`)<br> Other (n = `r intake_ineligible_reasons[[4]]`) |
