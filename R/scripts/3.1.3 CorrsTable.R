@@ -67,7 +67,9 @@ cor_ci_results <- rbind(cor_ci_results_ed, cor_ci_results_control)
 # select key variables
 key_biomarker_variables <- c('Leptin_ResidChange', 
                              'BDNF_ResidChange', 
-                             'Cortisol_ResidChange')
+                             'Cortisol_ResidChange', 
+                             'AEA_ResidChange',
+                             'AG_ResidChange')
 key_BISS_variables <- c('Average_P', 
                         'Average_SP',
                         'Weight_P', 

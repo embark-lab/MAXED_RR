@@ -4,6 +4,7 @@ library(tidyr)
 library(embarktools)
 library(effsize)
 library(stringr)
+
 load('data/Assays/Assay_results.RData')
 Assay_results <- Assay_results |> 
   filter(str_starts(Sample_Number, "S"))
@@ -11,8 +12,8 @@ Assay_results <- Assay_results |>
 
 # Make Assay results longer for ggplot by pivoting BDNF and Leptin to 'Assay'
 Assay_results_long <- Assay_results %>%
-  pivot_longer(cols = c(BDNF, Leptin, Cortisol), names_to = 'Assay', values_to = 'Value') %>%
-  mutate(Assay = factor(Assay, levels = c('BDNF', 'Leptin', 'Cortisol'))) |> 
+  pivot_longer(cols = c(BDNF, Leptin, Cortisol, AEA, `2-AG`), names_to = 'Assay', values_to = 'Value') %>%
+  mutate(Assay = factor(Assay, levels = c('BDNF', 'Leptin', 'Cortisol', 'AEA', '2-AG'))) |> 
   mutate(Time = factor(Time, levels = c('Pre', 'Post'))) 
 
 # Fun little ggplot to compare pre and post treatment levels of the biomarkers across group and visit, individual level daat 
@@ -22,6 +23,8 @@ Group_Assay_Results <- Assay_results_long %>%
   geom_line(aes(group = interaction(group_factor, Condition, ID))) +
   facet_wrap(~Assay, scales = 'free_y', labeller = labeller( 
     Assay = c("Cortisol" = "Cortisol (ng/ml)", 
+              "AEA" = "AEA (ng/ml)",
+              "2-AG" = "2-AG (ng/ml)",
               "Leptin" = "Leptin (pg/ml)", 
               "BDNF" = "BDNF (pg/ml)")
   )) +
@@ -39,6 +42,8 @@ Group_Assay_Results <- Assay_results_long %>%
   theme(panel.grid.major = element_line(colour = "grey", size = 0.5)) +
   # make vertical gridlines white
   scale_color_manual(name = 'Group', values = embark_palette())
+
+Group_Assay_Results
 
 # save the plot data
 save(Group_Assay_Results, file = 'figs/4.Biomarkers/Group_Assay_Results_Plot.RData')
@@ -64,7 +69,9 @@ Mean_assay_plot <- ggplot(assay_summary_data,
   facet_wrap(~Assay, scales = 'free_y', labeller = labeller( 
     Assay = c("Cortisol" = "Cortisol (ng/ml)", 
               "Leptin" = "Leptin (pg/ml)", 
-              "BDNF" = "BDNF (pg/ml)")
+              "BDNF" = "BDNF (pg/ml)", 
+              "AEA" = "AEA (ng/ml)",
+              "2-AG" = "2-AG (ng/ml)")
   )) +
   labs(color = "Group", linetype = "Condition")  +
   embarktools::embark_theme_a +
@@ -128,7 +135,9 @@ Mean_assay_plot_exonly <- ggplot(ex_only,
   facet_wrap(~Assay, scales = 'free_y', labeller = labeller( 
     Assay = c("Cortisol" = "Cortisol (ng/ml)", 
               "Leptin" = "Leptin (pg/ml)", 
-              "BDNF" = "BDNF (pg/ml)")
+              "BDNF" = "BDNF (pg/ml)", 
+              "AEA" = "AEA (ng/ml)",
+              "2-AG" = "2-AG (ng/ml)")
   )) +
   labs(color = "Group")  +
   embarktools::embark_theme_a +

@@ -14,6 +14,7 @@ cors_long <- cors_long |>
 cors_long <- cors_long |>
   select(-estimate)
 
+
 SP_vars <- c('avg_pct_hr', 'max_pct_hr', 'karvonen_max_intense', 'distance')
 
 # Selection of variables from MAXED RedCap data
@@ -34,7 +35,9 @@ Actigraph_vars <- c('MVPA_bouted', 'LPA_bouted')
 
 key_biomarker_variables <- c('Leptin_ResidChange', 
                              'BDNF_ResidChange', 
-                             'Cortisol_ResidChange')
+                             'Cortisol_ResidChange', 
+                             'AEA_ResidChange', 
+                             'AG_ResidChange')
 
 key_BISS_variables <- c('Average_P', 
                         'Average_SP',
@@ -128,6 +131,8 @@ cors_long$variable2 <- gsub("LPA_bouted", "LPA", cors_long$variable2)
 cors_long$variable1 <- gsub("Leptin_ResidChange", "Leptin_P", cors_long$variable1)
 cors_long$variable1 <- gsub("BDNF_ResidChange", "BDNF_P", cors_long$variable1)
 cors_long$variable1 <- gsub("Cortisol_ResidChange", "Cortisol_P", cors_long$variable1)
+cors_long$variable1 <- gsub("AEA_ResidChange", "AEA_P", cors_long$variable1)
+cors_long$variable1 <- gsub("AG_ResidChange", "AG_P", cors_long$variable1)
 
 
 # Separate _P and _SP from variable names into a column called 'Condition'
@@ -154,6 +159,10 @@ Activity_vars <- c('MVPA',
 # Ensure 'variable2' is a factor and set the levels including separators
 cors_long$variable2 <- factor(cors_long$variable2, levels = c(Weight_vars,"=== WEIGHT ===", ED_vars, "=== EAT DISORDER ===", Exercise_vars, "=== EX FUNCTIONS ===", SP_vars, "=== SP EXERCISE ===", Activity_vars, "=== ACTIGRAPH ==="))
 
+# Recode 'AG' to "2-AG' in variable 1
+cors_long$variable1 <- gsub("AG", "2-AG", cors_long$variable1)
+
+
 
 key_BISS_variables <- c('Average', 
                         'Weight', 
@@ -167,7 +176,9 @@ pos_affect_variables <- c('Calm',
 
 key_biomarker_variables <- c('Leptin', 
                              'BDNF', 
-                             'Cortisol')
+                             'Cortisol', 
+                             'AEA', 
+                             '2-AG')
 
 exertion <- c('Percieved_Exertion')
 
@@ -180,7 +191,10 @@ cors_long <- rbind(cors_long, data.frame(variable1 = 'Leptin', variable2 = uniqu
 cors_long <- rbind(cors_long, data.frame(variable1 = 'BDNF', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
 cors_long <- rbind(cors_long, data.frame(variable1 = 'Cortisol', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
 cors_long <- rbind(cors_long, data.frame(variable1 = 'Cortisol', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
-
+cors_long <- rbind(cors_long, data.frame(variable1 = 'AEA', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+cors_long <- rbind(cors_long, data.frame(variable1 = 'AEA', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+cors_long <- rbind(cors_long, data.frame(variable1 = '2-AG', variable2 = unique(cors_long$variable2), correlation = NA, group = "ED", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
+cors_long <- rbind(cors_long, data.frame(variable1 = '2-AG', variable2 = unique(cors_long$variable2), correlation = NA, group = "Control", Condition = "SelfPaced", p_value = NA, ci_lower = NA, ci_upper = NA))
 
 # Define a function to determine significance labels
 get_significance_label <- function(p_value) {

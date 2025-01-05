@@ -75,7 +75,9 @@ exercise_response_cors <- cor(exercise_response_data |>
 
 key_biomarker_variables <- c('Leptin_ResidChange', 
                              'BDNF_ResidChange', 
-                             'Cortisol_ResidChange')
+                             'Cortisol_ResidChange', 
+                             'AEA_ResidChange', 
+                             'AG_ResidChange')
 
 key_BISS_variables <- c('Average_P', 
                         'Average_SP',

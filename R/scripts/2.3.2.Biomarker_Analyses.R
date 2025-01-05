@@ -13,20 +13,26 @@ Assay_results <- Assay_results |>
   filter(str_starts(Sample_Number, "S")) |>
   # remove sample number
   select(-Sample_Number) 
+
+# Rename `2-AG` to 'AG' for easier reference
+Assay_results <- Assay_results |> 
+  rename(AG = `2-AG`)
   
   
 Assay_results.1 <- Assay_results %>%
   select(-c('Estradiol')) |> 
   unique() |> 
   # First, pivot wider to make separate columns for Pre and Post for each variable
-  pivot_wider(names_from = Time, values_from = c(BDNF, Leptin, Cortisol)) |> 
+  pivot_wider(names_from = Time, values_from = c(BDNF, Leptin, Cortisol, AEA, AG)) |> 
   # Calculate change scores
   mutate(BDNF_RawChange = BDNF_Post - BDNF_Pre,
          Leptin_RawChange = Leptin_Post - Leptin_Pre, 
-         Cortisol_RawChange = Cortisol_Post - Cortisol_Pre) 
+         Cortisol_RawChange = Cortisol_Post - Cortisol_Pre, 
+         AEA_RawChange = AEA_Post - AEA_Pre, 
+         AG_RawChange = AG_Post - AG_Pre) 
 
 conditions <- c('Exercise', 'Rest')
-biomarkers <- c('BDNF', 'Leptin', 'Cortisol')
+biomarkers <- c('BDNF', 'Leptin', 'Cortisol', 'AEA', 'AG')
 models <- list()
 
 for (condition in conditions) {
@@ -86,7 +92,11 @@ predictions_list <- predictions_list |>
          BDNF_PrePred = PrePred_BDNF,
          Leptin_PrePred = PrePred_Leptin,
          Cortisol_AncovaPred = AncovaPred_Cortisol,
-         Cortisol_PrePred = PrePred_Cortisol)
+         Cortisol_PrePred = PrePred_Cortisol, 
+         AEA_AncovaPred = AncovaPred_AEA,
+         AEA_PrePred = PrePred_AEA,
+         AG_AncovaPred = AncovaPred_AG, 
+         AG_PrePred = PrePred_AG)
 
 # Step 2: Merge this predictions dataframe back into your original dataset
 
@@ -98,6 +108,10 @@ Assay_results.2 <- left_join(Assay_results.1, predictions_list, by = c("ID", "Co
   Assay_results.2$Leptin_ResidChange <- with(Assay_results.2, Leptin_Post - Leptin_PrePred)
   Assay_results.2$Cortisol_ANCOVAresid <- with(Assay_results.2, Cortisol_Post - Cortisol_AncovaPred)
   Assay_results.2$Cortisol_ResidChange <- with(Assay_results.2, Cortisol_Post - Cortisol_PrePred)
+  Assay_results.2$AEA_ANCOVAresid <- with(Assay_results.2, AEA_Post - AEA_AncovaPred)
+  Assay_results.2$AEA_ResidChange <- with(Assay_results.2, AEA_Post - AEA_PrePred)
+  Assay_results.2$AG_ANCOVAresid <- with(Assay_results.2, AG_Post - AG_AncovaPred)
+  Assay_results.2$AG_ResidChange <- with(Assay_results.2, AG_Post - AG_PrePred)
   
   Biomarker_residuals <- Assay_results.2 
   
@@ -110,10 +124,15 @@ Assay_results.2 <- left_join(Assay_results.1, predictions_list, by = c("ID", "Co
   ResidChange.Leptin_model1_rest <- lm(Leptin_ResidChange ~ group_factor, data = Assay_results.2 |> filter(Condition == 'Rest'))
   ResidChange.Cortisol_model1_ex <- lm(Cortisol_ResidChange ~ group_factor, data = Assay_results.2 |> filter(Condition == 'Exercise'))
   ResidChange.Cortisol_model1_rest <- lm(Cortisol_ResidChange ~ group_factor, data = Assay_results.2 |> filter(Condition == 'Rest'))
+  ResidChange.AEA_model1_ex <- lm(AEA_ResidChange ~ group_factor, data = Assay_results.2 |> filter(Condition == 'Exercise'))
+  ResidChange.AG_model1_ex <- lm(AG_ResidChange ~ group_factor, data = Assay_results.2 |> filter(Condition == 'Exercise'))
+  ResidChange.AEA_model1_rest <- lm(AEA_ResidChange ~ group_factor, data = Assay_results.2 |> filter(Condition == 'Rest'))
+  ResidChange.AG_model1_rest <- lm(AG_ResidChange ~ group_factor, data = Assay_results.2 |> filter(Condition == 'Rest'))
+  
 
 
 Assay_results.3 <- Assay_results.2 |> 
-  pivot_longer(cols = c(starts_with("BDNF"), starts_with("Leptin"), starts_with("Cortisol")),
+  pivot_longer(cols = c(starts_with("BDNF"), starts_with("Leptin"), starts_with("Cortisol"), starts_with("AEA"), starts_with("AG")),
              names_to = "Measure_Type", values_to = "Value") |> 
   separate(Measure_Type, into = c("Assay", "Outcome"), sep = "_") |> 
   filter(!is.na(Value))
@@ -189,20 +208,27 @@ Exercise_results <- Exercise_results |>
   mutate(Unit = case_when(
     Assay == "BDNF" ~ "pg/ml",
     Assay == "Leptin" ~ "pg/ml",
-    Assay == "Cortisol" ~ "ng/mL"
+    Assay == "Cortisol" ~ "ng/mL",
+    Assay == "AEA" ~ "ng/mL",
+    Assay == "AG" ~ "ng/mL"
   ))
+
+# recoede Exercise_results$Assay to be '2-AG' if it is 'AG'
+Exercise_results$Assay <- dplyr::recode(Exercise_results$Assay, "AG" = "2-AG")
 
 # Make a ggplot that is a forest plot of the results
 Biomarker_ForestPlot <- ggplot(Exercise_results, aes(x = Estimate, y = factor(Assay), color = Outcome)) +
   geom_point(position = position_dodge(width = 0.25), size = 3) +
   geom_errorbarh(aes(xmin = LowerCI.1, xmax = UpperCI.1), height = 0.2, position = position_dodge(width = 0.25), size = 1.5) +
   geom_vline(xintercept = 0, linetype = "dashed") +
-  facet_wrap(~Unit, scales = "free", ncol = 1) +
+  facet_wrap(~Assay, scales = "free", ncol = 2) +
   labs(title = "ED vs. Control Group Difference Scores in \n Biomarker Measurements by Assay during Exercise",
-       x = "Group Difference (ED-Control)",
-       y = "Assay") +
+       x = "Group Difference (ED-Control)") +
+  # remove y axis labels
   embarktools::embark_theme_a +
-  scale_color_manual(values = embark_palette(6)[c(1:4)])
+  theme(axis.text.y = element_blank(),
+        axis.title.y = element_blank()) +
+  scale_color_manual(values = embark_palette(6)[c(1:4)]) 
 
 #save the plot data
 save(Biomarker_ForestPlot, file = 'figs/4.Biomarkers/Exercise_Biomarker_ForestPlot.RData')
@@ -225,7 +251,7 @@ Assay_results_ED <- Assay_results |>
 Assay_results_ED
 
 # compute pre-post dependent t-tests for each assay and condition
-Assays <- c('BDNF', 'Leptin', 'Cortisol')
+Assays <- c('BDNF', 'Leptin', 'Cortisol', 'AEA', '2-AG')
 Conditions <- c('Exercise', 'Rest')
 
 # Pivot the data to long format
@@ -275,7 +301,9 @@ ed_biomarkers <- ed_biomarkers |>
   mutate(Unit = case_when(
     Assay == "BDNF" ~ "pg/ml",
     Assay == "Leptin" ~ "pg/ml",
-    Assay == "Cortisol" ~ "ng/mL"
+    Assay == "Cortisol" ~ "ng/mL", 
+    Assay == "AEA" ~ "ng/mL",
+    Assay == "2-AG" ~ "ng/mL"
   ))
 # Save the results
 save(ed_biomarkers, file = "results/ed_biomarkers.RData")
@@ -284,21 +312,22 @@ save(ed_biomarkers, file = "results/ed_biomarkers.RData")
 ggplot(ed_biomarkers, aes(x = Estimate, y = Assay, color = Condition)) +
   geom_point(position = position_dodge(width = 0.25), size = 3) +
   geom_errorbarh(aes(xmin = LowerCI, xmax = UpperCI), height = 0.2, position = position_dodge(width = 0.25), size = 1.5) +
-  facet_wrap(~Unit, scales = "free", ncol = 1) +
+  facet_wrap(~Assay, scales = "free", ncol = 1) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(title = "Pre-Post Biomarker Differences by Assay \n within the ED Group",
        x = "Mean Difference (Post-Pre pg/mL)",
        y = "Assay") +
   embarktools::embark_theme_a +
+  theme(strip.text = element_blank()) +
   scale_color_manual(values = embark_palette(6)[c(2,1)])
 
-ggsave("figs/4.Biomarkers/ED_Biomarker_ForestPlot.png", width = 8, height = 7)
+ggsave("figs/4.Biomarkers/ED_Biomarker_ForestPlot.png", width = 6, height = 10)
 
 
 # Evaluate Homogeneity of Variance for Assays across ED and Control Groups at Pre and Post
 Assay_results_long <- Assay_results |> 
   select(-group, -Estradiol) |> 
-  pivot_longer(cols = c(BDNF, Leptin, Cortisol), names_to = "Assay", values_to = "Value") |> 
+  pivot_longer(cols = c(BDNF, Leptin, Cortisol, AEA, `2-AG`), names_to = "Assay", values_to = "Value") |> 
   filter(!is.na(Value))
 
 # Compute Levene's test for homogeneity of variance for each assay, condition, and Time

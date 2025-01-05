@@ -11,7 +11,9 @@ pos_affect_variables <- c('Calm',
 
 key_biomarker_variables <- c('Leptin', 
                              'BDNF', 
-                             'Cortisol')
+                             'Cortisol',
+                             'AEA',
+                             '2-AG')
 
 exertion <- c('Percieved_Exertion')
 

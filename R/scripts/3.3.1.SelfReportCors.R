@@ -88,8 +88,10 @@ Exercise_vars <- c('cet_total_Day_C',
                    'fomb_SPR_mean_Day_C', 
                    'fomb_SNR_mean_Day_C', 
                    'muscularity_sum_Day_C')
+
 Weight_vars <- c('bmi_at_intake_Intake', 
                  'wt_suppress_high_current_Intake')
+
 Actigraph_vars <- c('MVPA_bouted', 'LPA_bouted')
 
 
@@ -120,7 +122,9 @@ cor_vars2 <- exercise_response_data |>
 
 key_biomarker_variables <- c('Leptin_ResidChange', 
                              'BDNF_ResidChange', 
-                             'Cortisol_ResidChange')
+                             'Cortisol_ResidChange', 
+                             'AEA_ResidChange',
+                             'AG_ResidChange')
 
 key_BISS_variables <- c('Average_P', 
                         'Average_SP',
@@ -149,7 +153,7 @@ cor_vars2_ED <- cor_vars2 |>
   
 # make a correlation matrix, excluding ID and removing pairwise NA values -- also add standard deviation
 exercise_response_cors_ED <- cor(cor_vars2_ED |>
-                             select(-id), use = "pairwise.complete.obs")
+                             select(-id, group, group_factor), use = "pairwise.complete.obs")
 
 # pivot correlation matrix to long Format
 ED_cors_long <- exercise_response_cors_ED |> 
@@ -178,7 +182,7 @@ cor_vars2_HC <- cor_vars2 |>
 
 # make a correlation matrix, excluding ID and removing pairwise NA values
 exercise_response_cors_HC <- cor(cor_vars2_HC |>
-                             select(-id), use = "pairwise.complete.obs")
+                             select(-c(id, group, group_factor)), use = "pairwise.complete.obs")
 
 # pivot correlation matrix to long Format
 HC_cors_long <- exercise_response_cors_HC |> 
@@ -206,22 +210,39 @@ cors_long <- rbind(ED_cors_long, HC_cors_long)
 
 save(cors_long, file = "data/cors_long.RData")
 
-
 get_cor_ci <- function(df) {
   combn(names(df), 2, function(x) {
     # Check if there are enough non-NA observations for the test
-    if (sum(complete.cases(df[x[1]], df[x[2]])) > 2) {
-      test <- cor.test(df[[x[1]]], df[[x[2]]], use = "pairwise.complete.obs")
-      data.frame(
-        var1 = x[1],
-        var2 = x[2],
-        estimate = test$estimate,
-        ci_lower = test$conf.int[1],
-        ci_upper = test$conf.int[2],
-        p_value = test$p.value
+    if (sum(complete.cases(df[[x[1]]], df[[x[2]]])) > 2) {
+      # Try running cor.test and check for errors or invalid results
+      test <- tryCatch(
+        cor.test(df[[x[1]]], df[[x[2]]], use = "pairwise.complete.obs"),
+        error = function(e) NULL
       )
+      
+      if (!is.null(test) && !is.null(test$conf.int)) {
+        # Return the results if cor.test runs successfully
+        data.frame(
+          var1 = x[1],
+          var2 = x[2],
+          estimate = test$estimate,
+          ci_lower = test$conf.int[1],
+          ci_upper = test$conf.int[2],
+          p_value = test$p.value
+        )
+      } else {
+        # Return NA for invalid or failed cor.test results
+        data.frame(
+          var1 = x[1],
+          var2 = x[2],
+          estimate = NA,
+          ci_lower = NA,
+          ci_upper = NA,
+          p_value = NA
+        )
+      }
     } else {
-      # Return NA or some indicator when there are not enough observations
+      # Return NA when there are not enough observations
       data.frame(
         var1 = x[1],
         var2 = x[2],
@@ -233,6 +254,8 @@ get_cor_ci <- function(df) {
     }
   }, simplify = FALSE) %>% bind_rows()
 }
+
+
 
 
 # filter data for ED group
@@ -253,7 +276,7 @@ cor_ci_sr_ed <- get_cor_ci(cor_vars2_ED %>% select(-id)) |>
 HC_group_variables <- cor_vars2_HC |>
   select(id, key_affect_variables, key_biomarker_variables, key_BISS_variables, Exercise_vars, Weight_vars, SP_vars, Actigraph_vars)
 
-cor_ci_sr_hc <- get_cor_ci(cor_vars2_HC %>% select(-id)) |>
+cor_ci_sr_hc <- get_cor_ci(cor_vars2_HC %>% select(-id))   |> 
   filter((var1 %in% key_affect_variables | 
             var1 %in% key_biomarker_variables | 
             var1 %in% key_BISS_variables) & 

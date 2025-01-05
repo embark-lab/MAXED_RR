@@ -13,7 +13,10 @@ cor_ci_results <- rbind(cor_ci_results_ed, cor_ci_results_control)
 
 key_biomarker_variables <- c('Leptin_ResidChange', 
                              'BDNF_ResidChange', 
-                             'Cortisol_ResidChange')
+                             'Cortisol_ResidChange',
+                             'AEA_ResidChange',
+                             'AG_ResidChange'
+                             )
 
 key_BISS_variables <- c('Average_P', 
                         'Average_SP',
@@ -91,6 +94,10 @@ get_significance_label <- function(p_value) {
 # Apply the function to create a new column for significance labels
 cor_ci_results_full <- cor_ci_results_full %>%
   mutate(significance = sapply(p_value, get_significance_label))
+
+# recode AG_ResidChange to 2-AG_ResidChange
+cor_ci_results_full$var1 <- dplyr::recode(cor_ci_results_full$var1, 'AG_ResidChange' = '2-AG_ResidChange')
+cor_ci_results_full$var2 <- dplyr::recode(cor_ci_results_full$var2, 'AG_ResidChange' = '2-AG_ResidChange')
 
 # save the full corr table for display
 save(cor_ci_results_full, file = 'results/Exercise_Response_Correlation_Matrix.RData')
