@@ -98,7 +98,7 @@ Full study flow is outlined in Supplemental @tbl-aim1. There were `r total_scree
 Specific models tested are noted in @tbl-params.
 
 | Model Name | Parameters |
-|----|----|
+|------------------------------------|------------------------------------|
 | **Overall Model: Affect and Body Image Variables** | DV \~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + Time\*Group\*Condition + (1+Time |
 | **Within ED: Affect and Body Image Variables** | DV \~ 1 + Age + Time + BMI\*Condition + Time\*Condition + Time\*Condition + (1+Time |
 | **Overall Biomarker Model** | Biomarker \~ 1 + Age + Group + Time + BMI\*Condition + Time\*Condition + (1 + Time |
@@ -287,7 +287,7 @@ knitr::kable(milkshake_results_a) |>
 ### Study Flow
 
 | **Inflow/Retention** | Outflow | Reason |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | **Eligibility Screenings (n = `r total_screenings`)** | Ineligible screenings (n = `r ineligible_screens + 8`) | Duplicates (n = 8)<br> Outside of age range (n = `r ineligible_reasons[[1]]`)<br> Binge eating reported (n = `r ineligible_reasons[[2]]`)<br> Unable to attend in-person visits (n = `r ineligible_reasons[[3]]`)<br> Medical Exclusion (n = `r ineligible_reasons[[4]]`)<br> Blood Draw (n = `r ineligible_reasons[[5]]`)<br> Other (n = `r ineligible_reasons[[6]]`) |
 | **Intake (n = `r sum(intake_dx)`)** | Did not schedule Intake (n = `r 230-sum(ineligible_reasons)-sum(intake_dx)`) |   |
 |   | Ineligible intakes (n = `r sum(intake_ineligible_reasons)`) | Binge Eating Disorder (n = `r intake_ineligible_reasons[[1]]`)<br> ARFID (n = `r intake_ineligible_reasons[[2]]`)<br> Bipolar 1 Disorder (n = `r intake_ineligible_reasons[[3]]`)<br> Other (n = `r intake_ineligible_reasons[[4]]`) |
@@ -732,48 +732,48 @@ library(openxlsx)
 
 wb <- createWorkbook()
 
-addWorksheet(wb, "ST1-postshake_ttable")
-writeData(wb, "ST1-postshake_ttable", milkshake_results_a, rowNames = FALSE)
+addWorksheet(wb, "ST4-postshake_ttable")
+writeData(wb, "ST4-postshake_ttable", milkshake_results_a, rowNames = FALSE)
 
-addWorksheet(wb, "ST3-Affect_Descriptives")
-writeData(wb, "ST3-Affect_Descriptives", affect_descriptives, rowNames = FALSE)
+addWorksheet(wb, "ST5-Affect_Descriptives")
+writeData(wb, "ST5-Affect_Descriptives", affect_descriptives, rowNames = FALSE)
 
 # Add more sheets for other dataframes
-addWorksheet(wb, "ST4-Affect_Models")
-writeData(wb, "ST4-Affect_Models", affect_models_summary, rowNames = FALSE)
+addWorksheet(wb, "ST6-Affect_Models")
+writeData(wb, "ST6-Affect_Models", affect_models_summary, rowNames = FALSE)
 
-addWorksheet(wb, "ST5-Affect_ModelFit_Indices")
-writeData(wb, "ST5-Affect_ModelFit_Indices", AMFI, rowNames = FALSE)
+addWorksheet(wb, "ST7-Affect_ModelFit_Indices")
+writeData(wb, "ST7-Affect_ModelFit_Indices", AMFI, rowNames = FALSE)
 
-addWorksheet(wb, "ST6-Affect_HOV")
-writeData(wb, "ST6-Affect_HOV", affect_hov_results, rowNames = FALSE)
+addWorksheet(wb, "ST8-Affect_HOV")
+writeData(wb, "ST8-Affect_HOV", affect_hov_results, rowNames = FALSE)
 
-addWorksheet(wb, "ST7-Affect_Models_ED")
-writeData(wb, "ST7-Affect_Models_ED", affect_models_ed_summary, rowNames = FALSE)
+addWorksheet(wb, "ST9-Affect_Models_ED")
+writeData(wb, "ST9-Affect_Models_ED", affect_models_ed_summary, rowNames = FALSE)
 
-addWorksheet(wb, "ST8-BISS_Models")
-writeData(wb, "ST8-BISS_Models", biss_models_summary, rowNames = FALSE)
+addWorksheet(wb, "ST10-BISS_Models")
+writeData(wb, "ST10-BISS_Models", biss_models_summary, rowNames = FALSE)
 
-addWorksheet(wb, "ST9-BISS_ModelFit_Indices")
-writeData(wb, "ST9-BISS_ModelFit_Indices", BMFI, rowNames = FALSE)
+addWorksheet(wb, "ST11-BISS_ModelFit_Indices")
+writeData(wb, "ST11-BISS_ModelFit_Indices", BMFI, rowNames = FALSE)
 
-addWorksheet(wb, "ST10-BISS_HOV")
-writeData(wb, "ST10-BISS_HOV", biss_hov_results, rowNames = FALSE)
+addWorksheet(wb, "ST12-BISS_HOV")
+writeData(wb, "ST12-BISS_HOV", biss_hov_results, rowNames = FALSE)
 
-addWorksheet(wb, "ST11-BISS_Models_ED")
-writeData(wb, "ST11-BISS_Models_ED", biss_models_ed_summary, rowNames = FALSE)
+addWorksheet(wb, "ST13-BISS_Models_ED")
+writeData(wb, "ST13-BISS_Models_ED", biss_models_ed_summary, rowNames = FALSE)
 
-addWorksheet(wb, "ST12-BiomarkerChange")
-writeData(wb, "ST12-BiomarkerChange", supplement_ttable, rowNames = FALSE)
+addWorksheet(wb, "ST14-BiomarkerChange")
+writeData(wb, "ST14-BiomarkerChange", supplement_ttable, rowNames = FALSE)
 
-addWorksheet(wb, "ST13-BiomarkerChange_ED")
-writeData(wb, "ST13-BiomarkerChange_ED", ed_biomarkers, rowNames = FALSE)
+addWorksheet(wb, "ST15-BiomarkerChange_ED")
+writeData(wb, "ST15-BiomarkerChange_ED", ed_biomarkers, rowNames = FALSE)
 
-addWorksheet(wb, "ST14-ExResponseCorrelations")
-writeData(wb, "ST14-ExResponseCorrelations", cor_ci_results_wide, rowNames = FALSE)
+addWorksheet(wb, "ST16-ExResponseCorrelations")
+writeData(wb, "ST16-ExResponseCorrelations", cor_ci_results_wide, rowNames = FALSE)
 
-addWorksheet(wb, "ST15-FullResponseCorrelations")
-writeData(wb, "ST15-FullResponseCorrelations", corrs_wide_all, rowNames = FALSE)
+addWorksheet(wb, "ST17-FullResponseCorrelations")
+writeData(wb, "ST17-FullResponseCorrelations", corrs_wide_all, rowNames = FALSE)
 
 
 # Save the workbook

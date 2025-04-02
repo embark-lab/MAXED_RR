@@ -315,7 +315,7 @@ ggplot(ed_biomarkers, aes(x = Estimate, y = Assay, color = Condition)) +
   facet_wrap(~Assay, scales = "free", ncol = 1) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   labs(title = "Pre-Post Biomarker Differences by Assay \n within the ED Group",
-       x = "Mean Difference (Post-Pre pg/mL)",
+       x = "Mean Difference (Post-Pre)",
        y = "Assay") +
   embarktools::embark_theme_a +
   theme(strip.text = element_blank()) +
